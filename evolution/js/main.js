@@ -56,8 +56,23 @@
 		// If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
 	};
 	var UI = {
+        //return functions
+	    bySel: (x) => { return document.querySelector(x) },
+	    bySelAll: (x) => { return document.querySelectorAll(x) },
+	    createEle: (x) => { return document.createElement(x) },
+        //intitializing and localStorage sync
 	    init: () => {
-	        dvContain.innerHTML = "HI";
+	        UI.myLoad();
+	    },
+	    myLoad: () => {
+	        var startBtn = UI.createEle("button");
+
+	        startBtn.innerHTML = "Start";
+	        startBtn.className = "startBtn";
+
+	        dvContain.appendChild(startBtn);
+
+	        setTimeout(() => { startBtn.className = "startBtn_full"; }, 100);
 	    }
 	};
 
