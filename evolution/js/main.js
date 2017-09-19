@@ -55,6 +55,15 @@
 		// You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
 		// If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
 	};
+	var UI = {
+	    init: () => {
+	        dvContain.innerHTML = "HI";
+	    }
+	};
+
+    window.onload = () => {
+        UI.init();
+    };
 
 	app.start();
 
