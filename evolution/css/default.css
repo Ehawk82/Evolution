@@ -3,21 +3,26 @@
     width: 100%;
     margin: 0;
     padding: 0;
-    overflow:hidden;
-    -ms-overflow-style:none;
+    overflow: hidden;
+    -ms-overflow-style: none;
+    font-family:'Comic Sans MS';
+}
+
+input, button, div, span, p {
+    font-family:'Comic Sans MS';
 }
 
 .startBtn {
     position: absolute;
-    padding:1% 0;
+    padding: 1% 0;
     top: -40%;
     left: 45%;
     width: 10%;
 }
 
 .startBtn_full {
-    transition: all 1s;
-    padding:1% 0;
+    transition: all 500ms;
+    padding: 1% 0;
     position: absolute;
     top: 40%;
     left: 45%;
@@ -26,7 +31,7 @@
 
 .startBtn_pull {
     transition: all 500ms;
-    padding:1% 0;
+    padding: 1% 0;
     position: absolute;
     top: 140%;
     left: 45%;
@@ -43,71 +48,146 @@
 }
 
 .gameFrame_full {
-    transition:all 500ms;
+    transition: all 500ms;
     width: 98%;
     height: 98%;
     background: #fff;
     position: absolute;
     top: 1%;
     left: 1%;
+}
 
+.gameArena {
+    background:#fff;
+    position:absolute;
+    width:100%;
+    height:95%;
+    top:5%;
+    left:0;
 }
 
 .turnBtn {
-    background:rgba(128, 128, 128, 1);
-    
-    border:none;
-    position:absolute;
-    width:10%;
-    height:5%;
-    padding:1% 0;
-    left:0;
-    top:0;
+    background: rgba(128, 128, 128, 1);
+    border: none;
+    position: absolute;
+    width: 10%;
+    height: 5%;
+    padding: 1% 0;
+    left: 0;
+    top: 0;
 }
+
     .turnBtn:hover {
-        background:rgba(28, 28, 28, 0.4);
+        background: rgba(28, 28, 28, 0.4);
     }
 
 .clock {
-    position:absolute;
-    text-indent:4%;
-    background:rgba(128, 128, 128, 1);
-    border:none;
-    width:20%;
-    height:3%;
-    padding:1% 0;
-    right:0;
-    top:0;
+    position: absolute;
+    text-indent: 4%;
+    background: rgba(128, 128, 128, 1);
+    border: none;
+    width: 20%;
+    height: 3%;
+    padding: 1% 0;
+    right: 0;
+    top: 0;
 }
 
 .menuTab {
-    position:absolute;
-    color:#000;
-    text-indent:4%;
-    background:rgba(128, 128, 128, 1);
-    border:none;
-    width:20%;
-    height:3%;
-    padding:1% 0;
-    right:0;
-    bottom:0;
+    transition:all 500ms;
+    position: absolute;
+    color: #000;
+    text-indent: 4%;
+    background: rgba(128, 128, 128, 1);
+    border: none;
+    width: 20%;
+    height: 3%;
+    padding: 1% 0;
+    right: 0;
+    bottom: 0;
 }
+
     .menuTab:hover {
-        background:rgba(28, 28, 28, 0.4);
+        background: rgba(28, 28, 28, 0.4);
     }
 
-.settBtn {
-
+.menuTab_full {
+    transition:all 500ms;
     position: absolute;
-    padding:1% 0;
+    color: #000;
+    text-indent: 4%;
+    background: rgba(128, 128, 128, 1);
+    border: none;
+    width: 20%;
+    height: 77%;
+    padding: 1% 0;
+    right: 0;
+    bottom: 0;
+    z-index:5;
+}
+
+.skye {
+    transition: all 500ms;
+    position: absolute;
+    background-image: url('../images/assets/skye.jpg');
+    background-size:200px 200px;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    border: none;
+    width: 200px;
+    height: 200px;
+    left: 0;
+    bottom: 1%;
+    z-index: 5;
+}
+.chatBox {
+    color:transparent !important;
+    transition: all 500ms;
+    color:transparent !important;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 0 8px black;
+    border-radius: 0 25px 25px 25px;
+    border: none;
+    width: .5%;
+    text-align:right;
+    padding-right:20px;
+    height: 6%;
+    left: 155px;
+    bottom: 1%;
+    z-index: 5;
+    
+}
+.chatBox_full {
+    transition: all 500ms;
+    position: absolute;
+    background: #fff;
+    box-shadow: 0 0 8px black;
+    border-radius: 0 25px 25px 25px;
+    border: none;
+    width: 60%;
+    transform:skew(0, -30px);
+    text-align:right;
+    padding-right:20px;
+    height: 6%;
+    left: 155px;
+    color: black;
+    bottom: 1%;
+    z-index: 5;
+}
+
+.settBtn {
+    position: absolute;
+    padding: 1% 0;
     top: -40%;
     left: 45%;
     width: 10%;
 }
 
 .settBtn_full {
-    transition: all 1s;
-    padding:1% 0;
+    transition: all 500ms;
+    padding: 1% 0;
     position: absolute;
     top: 50%;
     left: 45%;
@@ -116,23 +196,24 @@
 
 .settBtn_pull {
     transition: all 500ms;
-    padding:1% 0;
+    padding: 1% 0;
     position: absolute;
     top: 140%;
     left: 45%;
     width: 10%;
 }
+
 .clearBtn {
     position: absolute;
-    padding:1% 0;
+    padding: 1% 0;
     top: -40%;
     left: 45%;
     width: 10%;
 }
 
 .clearBtn_full {
-    transition: all 1s;
-    padding:1% 0;
+    transition: all 500ms;
+    padding: 1% 0;
     position: absolute;
     top: 50%;
     left: 45%;
@@ -141,23 +222,24 @@
 
 .clearBtn_pull {
     transition: all 500ms;
-    padding:1% 0;
+    padding: 1% 0;
     position: absolute;
     top: 140%;
     left: 45%;
     width: 10%;
 }
+
 .backBtn {
     position: absolute;
-    padding:1% 0;
+    padding: 1% 0;
     top: -40%;
     left: 45%;
     width: 10%;
 }
 
 .backBtn_full {
-    transition: all 1s;
-    padding:1% 0;
+    transition: all 500ms;
+    padding: 1% 0;
     position: absolute;
     top: 40%;
     left: 45%;
@@ -166,9 +248,42 @@
 
 .backBtn_pull {
     transition: all 500ms;
-    padding:1% 0;
+    padding: 1% 0;
     position: absolute;
     top: 140%;
     left: 45%;
     width: 10%;
+}
+
+.backMenuBtn {
+    right:1%;
+    bottom:82%;
+    color:#000;
+    font-weight:800;
+    font-size:2vh;
+    position:absolute;
+    z-index:6;
+    line-height:1%;
+    width:1%;
+}
+
+.chatBtn {
+    transition:all 1s;
+    position:absolute;
+    left:1%;
+    top:90%;
+    width:10%;
+    background:red;
+    border-radius:8px;
+    text-align:center;
+}
+.chatBtn_full {
+    transition:all 1s;
+    position:absolute;
+    left:55%;
+    top:90%;
+    width:10%;
+    background:red;
+    border-radius:8px;
+    text-align:center;
 }

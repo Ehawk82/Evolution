@@ -8,6 +8,10 @@
     var activation = Windows.ApplicationModel.Activation;
     var isFirstActivation = true;
 
+    var ViewManagement = Windows.UI.ViewManagement;
+    var ApplicationViewWindowingMode = ViewManagement.ApplicationViewWindowingMode;
+    var ApplicationView = ViewManagement.ApplicationView;
+
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.voiceCommand) {
             // TODO: Handle relevant ActivationKinds. For example, if your app can be started by voice commands,
@@ -39,6 +43,7 @@
             // TODO: The app was activated and had not been running. Do general startup initialization here.
             document.addEventListener("visibilitychange", onVisibilityChanged);
             args.setPromise(WinJS.UI.processAll());
+            ApplicationView.preferredLaunchWindowingMode = ApplicationViewWindowingMode.fullScreen;
         }
 
         isFirstActivation = false;
@@ -55,21 +60,64 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime;
+    var UI, uTime, skyeLvl, skyeChat;
     
     uTime = "4000330000";
+
+    skyeLvl = 1;
+    skyeChat = {
+        0: "",
+        1: "First things first, we have to get set up...",
+        2: "Select a location to place your source block"
+    };
+
 
     UI = {
         //return functions
         bySel: (x) => { return document.querySelector(x) },
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
+        syncChatBox: (gameFrame, chatBox, chatBtn) => {
+            var sk = localStorage.getItem("skyeLvl");
+            return setTimeout(() => {
+                if (!chatBtn) {
+                    var chatBtn = UI.createEle("div");
+                    chatBtn.className = "chatBtn";
+
+                    gameFrame.appendChild(chatBtn);
+                }
+
+                chatBox.value = skyeChat[sk];
+
+                //console.log(chatBox.value);
+                if (+sk === 1) {
+                    //console.log(sk + "n");
+                    chatBtn.innerHTML = "Start";
+                    chatBtn.onclick = UI.tutor1(gameFrame, chatBox, chatBtn);
+                }
+                if (+sk === 2) {
+                    //console.log(sk + "n");
+                    chatBtn.innerHTML = "Continue";
+                    chatBtn.onclick = UI.tutor2(gameFrame, chatBox, chatBtn);
+                }
+
+
+                setTimeout(() => {
+                    chatBtn.className = "chatBtn_full";
+                    
+                }, 10);
+
+            }, 710);
+        },
         //intitializing and localStorage sync
         init: () => {
             var uT = localStorage.getItem("uTime");
             if (!uT || uT === null) {
-
                 localStorage.setItem("uTime", uTime);
+            }
+            var sk = localStorage.getItem("skyeLvl");
+            if (!sk || sk === null) {
+                localStorage.setItem("skyeLvl", skyeLvl);
             }
 
             UI.myLoad();
@@ -78,7 +126,14 @@
             var startBtn = UI.createEle("button"),
                 settBtn = UI.createEle("button");
 
-            startBtn.innerHTML = "Start";
+            var uT = localStorage.getItem("uTime");
+            
+            if (+uT === 4000330000) {
+                startBtn.innerHTML = "Start";
+            } else {
+                startBtn.innerHTML = "Continue";
+            }
+
             startBtn.onclick = UI.loadGame(startBtn, settBtn);
             startBtn.className = "startBtn";
 
@@ -153,32 +208,130 @@
         beginGameState: (gameFrame) => {
             var turnBtn = UI.createEle("button"),
                 clock = UI.createEle("input"),
-                menu = UI.createEle("div");
+                menu = UI.createEle("div"),
+                skye = UI.createEle("div"),
+                chatBox = UI.createEle('input'),
+                gameArena = UI.createEle("div"),
+                chatBtn = UI.createEle("div");
 
-            var uT = localStorage.getItem("uTime");
+            chatBtn.className = "chatBtn";
+            chatBtn.innerHTML = "&nbsp;";
+
+            var uT = localStorage.getItem("uTime"),
+                sk = localStorage.getItem("skyeLvl");
+
+
+            gameArena.className = "gameArena";
 
             turnBtn.innerHTML = "Cycle";
             turnBtn.className = "turnBtn";
-            turnBtn.onclick = UI.cycle(turnBtn, clock);
+            
+            if (+sk < 5) {
+                turnBtn.disabled = true;
+            } else {
+                turnBtn.onclick = UI.cycle(turnBtn, clock);
+            }
 
             clock.value = uT + " BCE";
             clock.className = "clock";
             clock.readOnly = true;
 
             menu.innerHTML = "Menu";
-            menu.onclick = UI.userMenu(menu);
+            menu.onclick = UI.userMenu(menu, gameFrame);
             menu.className = "menuTab";
 
+            skye.className = "skye";
+            skye.innerHTML = "&nbsp;";
+            
+            //chatBox.value = skyeChat[sk];
+            UI.syncChatBox(gameFrame, chatBox, chatBtn);
+            chatBox.className = "chatBox";
+            chatBox.readOnly = true;
+
+            gameFrame.appendChild(gameArena);
             gameFrame.appendChild(turnBtn);
             gameFrame.appendChild(clock);
             gameFrame.appendChild(menu);
+            gameFrame.appendChild(skye);
+            gameFrame.appendChild(chatBox);
+            gameFrame.appendChild(chatBtn);
+            
 
+            setTimeout(() => {
+                chatBox.className = "chatBox_full";
+                //console.log(gameArena);
+
+            }, 400);
         },
-        userMenu: (menu) => {
+        tutor2: (gameFrame, chatBox, chatBtn) => {
             return () => {
-                
-                console.log(menu)
+                console.log(gameFrame);
             }
+        },
+        tutor1: (gameFrame, chatBox, chatBtn) => {
+            return () => {
+                var sk = localStorage.getItem("skyeLvl");
+                
+                chatBox.className = "chatBox";
+                chatBox.value = "";
+
+                chatBtn.className = "chatBtn";
+                chatBtn.value = "";
+
+                setTimeout(() => {
+                    var ssk = +2;
+
+                    localStorage.setItem("skyeLvl", ssk);
+
+                    setTimeout(() => {
+
+                        chatBox.className = "chatBox_full";
+
+                        UI.syncChatBox(gameFrame, chatBox);
+                        //console.log(chatBox);
+                    }, 600);
+                }, 100);
+            }
+        },
+        
+        backMenuClick: (menu, backMenuBtn) => {
+            return () => {
+
+                menu.innerHTML = "Menu";
+                menu.className = "menuTab";
+                
+                backMenuBtn.remove();
+                
+            }
+        },
+        userMenu: (menu, gameFrame) => {
+            return () => {
+                    menu.className = "menuTab_full";
+                    menu.innerHTML = "&nbsp;";
+
+                    setTimeout(() => {
+                        var backMenuBtn = UI.createEle("span"),
+                            homeBtn = UI.createEle("button");
+
+                        backMenuBtn.innerHTML = "x";
+                        backMenuBtn.className = "backMenuBtn";
+                        backMenuBtn.onclick = UI.backMenuClick(menu, backMenuBtn);
+
+                        homeBtn.innerHTML = "Home";
+                        homeBtn.onclick = UI.homeMenuFunc;
+                        homeBtn.className = "homeBtn";
+
+                        //console.log(menu);
+                        gameFrame.appendChild(backMenuBtn);
+                        menu.appendChild(homeBtn);
+                        //console.log(menu);
+                     
+                    }, 600);
+            }
+        },
+        homeMenuFunc: () => {
+            dvContain.innerHTML = "";
+            UI.myLoad();
         },
         cycle: (turnBtn, clock) => {
             return () => {
