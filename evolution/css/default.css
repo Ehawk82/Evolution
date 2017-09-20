@@ -1,20 +1,68 @@
 ﻿body, html {
-    height:100%;
-    width:100%;
-    margin:0;
-    padding:0;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow:hidden;
+    -ms-overflow-style:none;
 }
 
 .startBtn {
+    position: absolute;
+    padding:1% 0;
+    top: -40%;
+    left: 45%;
+    width: 10%;
+}
+
+.startBtn_full {
+    transition: all 1s;
+    padding:1% 0;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    width: 10%;
+}
+
+.startBtn_pull {
+    transition: all 500ms;
+    padding:1% 0;
+    position: absolute;
+    top: 140%;
+    left: 45%;
+    width: 10%;
+}
+
+.gameFrame {
+    width: 98%;
+    height: 98%;
+    background: #fff;
+    position: absolute;
+    top: -100%;
+    left: 1%;
+}
+
+.gameFrame_full {
+    transition:all 500ms;
+    width: 98%;
+    height: 98%;
+    background: #fff;
+    position: absolute;
+    top: 1%;
+    left: 1%;
+
+}
+
+.turnBtn {
+    background:rgba(128, 128, 128, 0.4);
+    border:none;
     position:absolute;
-    top:-40%;
-    left:45%;
     width:10%;
+    height:5%;
+    padding:1% 0;
+    left:0;
+    top:0;
 }
-    .startBtn_full {
-        transition:all 1s;
-        position:absolute;
-        top:40%;
-        left:45%;
-        width:10%;
-}
+    .turnBtn:hover {
+        background:rgba(28, 28, 28, 0.4);
+    }
