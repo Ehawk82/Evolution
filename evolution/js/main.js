@@ -55,30 +55,86 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI = {
+    var UI, uTime;
+    
+    uTime = "4000330000";
+
+    UI = {
         //return functions
         bySel: (x) => { return document.querySelector(x) },
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
         //intitializing and localStorage sync
         init: () => {
+            var uT = localStorage.getItem("uTime");
+            if (!uT || uT === null) {
+
+                localStorage.setItem("uTime", uTime);
+            }
+
             UI.myLoad();
         },
         myLoad: () => {
-            var startBtn = UI.createEle("button");
+            var startBtn = UI.createEle("button"),
+                settBtn = UI.createEle("button");
 
             startBtn.innerHTML = "Start";
-            startBtn.onclick = UI.loadGame(startBtn);
+            startBtn.onclick = UI.loadGame(startBtn, settBtn);
             startBtn.className = "startBtn";
 
-            dvContain.appendChild(startBtn);
+            settBtn.innerHTML = "Settings";
+            settBtn.onclick = UI.settPage(startBtn, settBtn);
+            settBtn.className = "settBtn";
 
-            setTimeout(() => { startBtn.className = "startBtn_full"; }, 600);
+            dvContain.appendChild(startBtn);
+            dvContain.appendChild(settBtn);
+
+            setTimeout(() => {
+                startBtn.className = "startBtn_full";
+                settBtn.className = "settBtn_full";
+            }, 600);
         },
-        loadGame: (startBtn) => {
+        settPage: (startBtn, settBtn) => {
             return () => {
                 startBtn.className = "startBtn_pull";
-                setTimeout(() => { startBtn.remove(); UI.rollGame(); }, 600);
+                settBtn.className = "settBtn_pull";
+                setTimeout(() => {
+                    startBtn.remove();
+                    settBtn.remove();
+                    UI.rollSettings();
+                }, 600);
+            }
+        },
+        rollSettings: () => {
+            var clearBtn = UI.createEle("button"),
+                backBtn = UI.createEle("button");
+
+            clearBtn.innerHTML = "Clear Local Storage";
+            clearBtn.onclick = UI.clearAll(clearBtn, backBtn);
+            clearBtn.className = "clearBtn";
+
+            backBtn.innerHTML = "Back";
+            backBtn.onclick = UI.backFunc(clearBtn, backBtn);
+            backBtn.className = "backBtn";
+
+            dvContain.appendChild(clearBtn);
+            dvContain.appendChild(backBtn);
+            //console.log(dvContain);
+
+            setTimeout(() => {
+                clearBtn.className = "clearBtn_full";
+                backBtn.className = "backBtn_full";
+            }, 600);
+        },
+        loadGame: (startBtn, settBtn) => {
+            return () => {
+                startBtn.className = "startBtn_pull";
+                settBtn.className = "settBtn_pull";
+                setTimeout(() => {
+                    startBtn.remove();
+                    settBtn.remove();
+                    UI.rollGame();
+                }, 600);
             }
         },
         rollGame: () => {
@@ -95,22 +151,74 @@
             }, 600);
         },
         beginGameState: (gameFrame) => {
+            var turnBtn = UI.createEle("button"),
+                clock = UI.createEle("input"),
+                menu = UI.createEle("div");
 
-            var turnBtn = UI.createEle("button");
+            var uT = localStorage.getItem("uTime");
 
             turnBtn.innerHTML = "Cycle";
             turnBtn.className = "turnBtn";
-            turnBtn.onclick = UI.cycle(turnBtn);
+            turnBtn.onclick = UI.cycle(turnBtn, clock);
+
+            clock.value = uT + " BCE";
+            clock.className = "clock";
+            clock.readOnly = true;
+
+            menu.innerHTML = "Menu";
+            menu.onclick = UI.userMenu(menu);
+            menu.className = "menuTab";
 
             gameFrame.appendChild(turnBtn);
+            gameFrame.appendChild(clock);
+            gameFrame.appendChild(menu);
 
         },
-        cycle: (turnBtn) => {
+        userMenu: (menu) => {
+            return () => {
+                
+                console.log(menu)
+            }
+        },
+        cycle: (turnBtn, clock) => {
             return () => {
                 turnBtn.innerHTML = "⌛";
 
-                setTimeout(() => { turnBtn.innerHTML = "Cycle"; }, 500);
+                var uT = localStorage.getItem("uTime");
+                
+
+                var uuu = +uT - +1;
+
+                localStorage.setItem("uTime", uuu);
+
+                clock.value = uuu + " BCE";
+
+                setTimeout(() => {
+                    turnBtn.innerHTML = "Cycle";
+                }, 500);
             };
+        },
+        //settings and misc funcs
+        backFunc: (clearBtn, backBtn) => {
+            return () => {
+                clearBtn.className = "clearBtn_pull";
+                backBtn.className = "backBtn_pull";
+                setTimeout(() => {
+                    clearBtn.remove();
+                    backBtn.remove();
+                    UI.myLoad();
+                }, 1000);
+            }
+        },
+        clearAll: (clearBtn, backBtn) => {
+            return () => {
+                clearBtn.className = "clearBtn_pull";
+                backBtn.className = "backBtn_pull";
+                setTimeout(() => {
+                    localStorage.clear();
+                    location.reload();
+                }, 1000);
+            }
         }
     };
 

@@ -54,7 +54,8 @@
 }
 
 .turnBtn {
-    background:rgba(128, 128, 128, 0.4);
+    background:rgba(128, 128, 128, 1);
+    
     border:none;
     position:absolute;
     width:10%;
@@ -66,3 +67,108 @@
     .turnBtn:hover {
         background:rgba(28, 28, 28, 0.4);
     }
+
+.clock {
+    position:absolute;
+    text-indent:4%;
+    background:rgba(128, 128, 128, 1);
+    border:none;
+    width:20%;
+    height:3%;
+    padding:1% 0;
+    right:0;
+    top:0;
+}
+
+.menuTab {
+    position:absolute;
+    color:#000;
+    text-indent:4%;
+    background:rgba(128, 128, 128, 1);
+    border:none;
+    width:20%;
+    height:3%;
+    padding:1% 0;
+    right:0;
+    bottom:0;
+}
+    .menuTab:hover {
+        background:rgba(28, 28, 28, 0.4);
+    }
+
+.settBtn {
+
+    position: absolute;
+    padding:1% 0;
+    top: -40%;
+    left: 45%;
+    width: 10%;
+}
+
+.settBtn_full {
+    transition: all 1s;
+    padding:1% 0;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    width: 10%;
+}
+
+.settBtn_pull {
+    transition: all 500ms;
+    padding:1% 0;
+    position: absolute;
+    top: 140%;
+    left: 45%;
+    width: 10%;
+}
+.clearBtn {
+    position: absolute;
+    padding:1% 0;
+    top: -40%;
+    left: 45%;
+    width: 10%;
+}
+
+.clearBtn_full {
+    transition: all 1s;
+    padding:1% 0;
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    width: 10%;
+}
+
+.clearBtn_pull {
+    transition: all 500ms;
+    padding:1% 0;
+    position: absolute;
+    top: 140%;
+    left: 45%;
+    width: 10%;
+}
+.backBtn {
+    position: absolute;
+    padding:1% 0;
+    top: -40%;
+    left: 45%;
+    width: 10%;
+}
+
+.backBtn_full {
+    transition: all 1s;
+    padding:1% 0;
+    position: absolute;
+    top: 40%;
+    left: 45%;
+    width: 10%;
+}
+
+.backBtn_pull {
+    transition: all 500ms;
+    padding:1% 0;
+    position: absolute;
+    top: 140%;
+    left: 45%;
+    width: 10%;
+}
