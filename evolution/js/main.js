@@ -60,25 +60,47 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title;
     
+    myBlocks = {
+        bNum: 0,
+        DNA: "GAT",
+        top: 0,
+        left: 0
+    }
+
+    uData = {
+        lvl: 0
+    };
+
     uTime = "4000330000";
 
     skyeLvl = 1;
     skyeChat = {
         0: "",
         1: "First things first, we have to get set up...",
-        2: "Select a location to place your source block"
+        2: "Select a location to place your carbon",
+        3: "Well Done! You are on your way to making organic compounds!",
+        4: "For now, you are just a small peice of carbon floating in a vast ocean"
     };
 
-
+    title = {
+        0: "Abiogenesis Phase I",
+        1: "Abiogenesis Phase II"
+    };
     UI = {
         //return functions
         bySel: (x) => { return document.querySelector(x) },
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
-        syncChatBox: (gameFrame, chatBox, chatBtn) => {
+        syncChatBox: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
             var sk = localStorage.getItem("skyeLvl");
+            var uD = localStorage.getItem("uData");
+
+            if (uD) {
+                var uuu = JSON.parse(uD);
+            }
+
             return setTimeout(() => {
                 if (!chatBtn) {
                     var chatBtn = UI.createEle("div");
@@ -88,25 +110,58 @@
                 }
 
                 chatBox.value = skyeChat[sk];
-
-                //console.log(chatBox.value);
+               
+                //console.log(uuu.lvl);
                 if (+sk === 1) {
                     //console.log(sk + "n");
                     chatBtn.innerHTML = "Start";
-                    chatBtn.onclick = UI.tutor1(gameFrame, chatBox, chatBtn);
+                    chatBtn.onclick = UI.tutor1(gameFrame, chatBox, chatBtn, gameArena);
+                    setTimeout(() => {
+                        chatBtn.className = "chatBtn_full";
+                    }, 10);
                 }
                 if (+sk === 2) {
                     //console.log(sk + "n");
                     chatBtn.innerHTML = "Continue";
-                    chatBtn.onclick = UI.tutor2(gameFrame, chatBox, chatBtn);
+                    if (uuu.lvl === 1) {
+                        chatBtn.className = "chatBtn";
+                        chatBtn.onclick = UI.tutor2(gameFrame, chatBox, chatBtn);
+                        setTimeout(() => {
+                            chatBtn.className = "chatBtn";
+                        }, 10);
+                    } else {
+                        setTimeout(() => {
+                            chatBtn.className = "chatBtn_sleep";
+                            gameFrame.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                        }, 10);
+                        
+                    }
                 }
+                if (+sk === 3) {
+                    chatBtn.innerHTML = "Continue";
+                    setTimeout(() => {
+                        chatBtn.className = "chatBtn_full";
+                        
+                        
+                        chatBtn.onclick = UI.tutor3(gameFrame, chatBox, chatBtn, gameArena);
+                    }, 10);
+                }
+                if (+sk >= 4) {
 
+                    setTimeout(() => {
+                        var turnBtn = UI.bySel(".turnBtn");
 
-                setTimeout(() => {
-                    chatBtn.className = "chatBtn_full";
-                    
-                }, 10);
+                        turnBtn.className = "turnBtn_lit";
 
+                        turnBtn.disabled = false;
+                        
+                        setTimeout(() => {
+                            turnBtn.className = "turnBtn";
+                            turnBtn.onclick = UI.cycle(turnBtn, clock);
+                        }, 1010);
+                        //console.log(turnBtn);
+                    }, 60);
+                }
             }, 710);
         },
         //intitializing and localStorage sync
@@ -119,8 +174,67 @@
             if (!sk || sk === null) {
                 localStorage.setItem("skyeLvl", skyeLvl);
             }
+            var uD = localStorage.getItem("uData");
+            if (!uD || uD === null) {
+                localStorage.setItem("uData", JSON.stringify(uData));
+            }
+            var mB = localStorage.getItem("myBlocks_1");
+            if (!mB || mB === null) {
+                localStorage.setItem("myBlocks_1", JSON.stringify(myBlocks));
+            }
+
+            /*
+            var xx = localStorage.getItem("myBlocks");
+            if (xx) {
+                var xxx = JSON.parse(xx);
+            }
+            console.log(xxx.DNA);
+            */
 
             UI.myLoad();
+        },
+        //loading and UI stuffs
+        addCell: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, e) => {
+            var sk = localStorage.getItem("skyeLvl"),
+                mB = localStorage.getItem("myBlocks_1");
+            
+            if (mB) {
+                var mmm = JSON.parse(mB);
+            }
+            return () => {
+                var cell = UI.createEle("div"),
+                    posX = event.clientX,
+                    posY = event.clientY;
+
+                cell.className = "cell";
+                cell.innerHTML = "&nbsp;";
+                cell.style.left = posX + "px";
+                cell.style.top = posY + "px";
+
+                gameArena.appendChild(cell);
+
+                mmm.bNum = 1;
+                mmm.left = posX;
+                mmm.top = posY;
+
+                localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
+
+                //var xxx = localStorage.getItem("myBlocks_1");
+                //console.log(xxx);
+                if (+sk === 2) {
+
+                    localStorage.setItem("skyeLvl", 3);
+                    gameFrame.onclick = null;
+                    chatBox.value = "";
+                    chatBox.className = "chatBox";
+
+                    setTimeout(() => {
+                        chatBox.className = "chatBox_full";
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                    }, 600);
+                    
+                }
+            }
         },
         myLoad: () => {
             var startBtn = UI.createEle("button"),
@@ -206,7 +320,15 @@
             }, 600);
         },
         beginGameState: (gameFrame) => {
+            var uD = localStorage.getItem("uData");
+
+            if (uD) {
+                var uuu = JSON.parse(uD);
+            }
+
             var turnBtn = UI.createEle("button"),
+                header = UI.createEle("h1"),
+                slot = UI.createEle("div"),
                 clock = UI.createEle("input"),
                 menu = UI.createEle("div"),
                 skye = UI.createEle("div"),
@@ -222,15 +344,39 @@
 
 
             gameArena.className = "gameArena";
+            var mB = localStorage.getItem("myBlocks_1");
+            if (mB) {
+                var mmm = JSON.parse(mB);
+                //console.log(mB);
+                if (mmm.bNum === 0) {  } else {
+                    var cell = UI.createEle("div");
 
+                    cell.className = "cell";
+                    cell.innerHTML = "&nbsp;";
+                    cell.style.left = mmm.left + "px";
+                    cell.style.top = mmm.top + "px";
+
+                    setTimeout(() => {
+                        gameArena.appendChild(cell);
+                    }, 500);
+                    
+                }
+            }
+            
             turnBtn.innerHTML = "Cycle";
             turnBtn.className = "turnBtn";
             
-            if (+sk < 5) {
+            if (+sk < 4) {
                 turnBtn.disabled = true;
             } else {
                 turnBtn.onclick = UI.cycle(turnBtn, clock);
             }
+
+            header.innerHTML = title[uuu.lvl];
+            header.className = "header";
+            
+            slot.innerHTML = "&nbsp;";
+            slot.className = "slot";
 
             clock.value = uT + " BCE";
             clock.className = "clock";
@@ -244,31 +390,65 @@
             skye.innerHTML = "&nbsp;";
             
             //chatBox.value = skyeChat[sk];
-            UI.syncChatBox(gameFrame, chatBox, chatBtn);
+            UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
             chatBox.className = "chatBox";
             chatBox.readOnly = true;
 
             gameFrame.appendChild(gameArena);
             gameFrame.appendChild(turnBtn);
+            gameFrame.appendChild(header);
+            gameFrame.appendChild(slot);
             gameFrame.appendChild(clock);
             gameFrame.appendChild(menu);
             gameFrame.appendChild(skye);
             gameFrame.appendChild(chatBox);
             gameFrame.appendChild(chatBtn);
             
+            
 
             setTimeout(() => {
                 chatBox.className = "chatBox_full";
+      
                 //console.log(gameArena);
 
             }, 400);
         },
-        tutor2: (gameFrame, chatBox, chatBtn) => {
+        tutor3: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
             return () => {
-                console.log(gameFrame);
+                var sk = localStorage.getItem("skyeLvl");
+                
+                chatBox.className = "chatBox";
+                chatBox.value = "";
+
+                chatBtn.className = "chatBtn";
+                chatBtn.value = "";
+
+                setTimeout(() => {
+                    var ssk = +4;
+
+                    localStorage.setItem("skyeLvl", ssk);
+
+                    setTimeout(() => {
+
+                        chatBox.className = "chatBox_full";
+
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                        //console.log(chatBox);
+                    }, 600);
+                }, 100);
             }
         },
-        tutor1: (gameFrame, chatBox, chatBtn) => {
+        tutor2: (gameFrame, chatBox, chatBtn) => {
+            return () => {
+                var uD = localStorage.getItem("uData");
+
+                if (uD) {
+                    var uuu = JSON.parse(uD);
+                }
+                console.log(uuu.lvl);
+            }
+        },
+        tutor1: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
             return () => {
                 var sk = localStorage.getItem("skyeLvl");
                 
@@ -287,17 +467,18 @@
 
                         chatBox.className = "chatBox_full";
 
-                        UI.syncChatBox(gameFrame, chatBox);
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn);
                         //console.log(chatBox);
                     }, 600);
                 }, 100);
             }
         },
         
-        backMenuClick: (menu, backMenuBtn) => {
+        backMenuClick: (menu, backMenuBtn, gameFrame) => {
             return () => {
 
                 menu.innerHTML = "Menu";
+                menu.onclick = UI.userMenu(menu, gameFrame);
                 menu.className = "menuTab";
                 
                 backMenuBtn.remove();
@@ -306,7 +487,8 @@
         },
         userMenu: (menu, gameFrame) => {
             return () => {
-                    menu.className = "menuTab_full";
+                menu.className = "menuTab_full";
+                menu.onclick = null;
                     menu.innerHTML = "&nbsp;";
 
                     setTimeout(() => {
@@ -315,7 +497,7 @@
 
                         backMenuBtn.innerHTML = "x";
                         backMenuBtn.className = "backMenuBtn";
-                        backMenuBtn.onclick = UI.backMenuClick(menu, backMenuBtn);
+                        backMenuBtn.onclick = UI.backMenuClick(menu, backMenuBtn, gameFrame);
 
                         homeBtn.innerHTML = "Home";
                         homeBtn.onclick = UI.homeMenuFunc;
@@ -343,9 +525,12 @@
                 var uuu = +uT - +1;
 
                 localStorage.setItem("uTime", uuu);
-
-                clock.value = uuu + " BCE";
-
+                if (!clock) {
+                    var clock = UI.bySel(".clock");
+                    clock.value = uuu + " BCE";
+                } else { 
+                     clock.value = uuu + " BCE";
+                }
                 setTimeout(() => {
                     turnBtn.innerHTML = "Cycle";
                 }, 500);
