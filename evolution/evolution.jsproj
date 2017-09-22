@@ -58,6 +58,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="images\assets\sheet.jpg" />
     <Content Include="images\assets\skye.jpg" />
     <Content Include="index.html" />
     <Content Include="images\LockScreenLogo.scale-200.png" />

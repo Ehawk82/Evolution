@@ -81,12 +81,31 @@
         1: "First things first, we have to get set up...",
         2: "Select a location to place your carbon",
         3: "Well Done! You are on your way to making organic compounds!",
-        4: "For now, you are just a small peice of carbon floating in a vast ocean"
+        4: "For now, you are just a small peice of carbon floating in a vast primordial soup!"
     };
 
     title = {
-        0: "Abiogenesis Phase I",
-        1: "Abiogenesis Phase II"
+        0: "Pre Abiogenesis Phase",
+        1: "Abiogenesis Phase I",
+        2: "Abiogenesis Phase II",
+        3: "Abiogenesis Phase III",
+        4: "Abiogenesis Phase IV",
+        5: "Abiogenesis Phase V",
+        6: "Pre Metobolic Phase",
+        7: "Metobolic Phase I",
+        8: "Metobolic Phase II",
+        9: "Metobolic Phase III",
+        10: "Metobolic Phase IV",
+        11: "Metobolic Phase V",
+        12: "Pre-Life Phase",
+        13: "Life Phase I",
+        14: "Life Phase  II",
+        15: "Life Phase  III",
+        16: "Life Phase  IV",
+        17: "Life Phase  V",
+        18: "Pre Complex Life Phase",
+        19: "Complex Life Phase"
+
     };
     UI = {
         //return functions
@@ -94,6 +113,8 @@
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
         syncChatBox: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
+
+
             var sk = localStorage.getItem("skyeLvl");
             var uD = localStorage.getItem("uData");
 
@@ -132,10 +153,10 @@
                     } else {
                         setTimeout(() => {
                             chatBtn.className = "chatBtn_sleep";
-                            gameFrame.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                            gameArena.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
                         }, 10);
-                        
-                    }
+
+                    } 
                 }
                 if (+sk === 3) {
                     chatBtn.innerHTML = "Continue";
@@ -206,25 +227,28 @@
                     posX = event.clientX,
                     posY = event.clientY;
 
-                cell.className = "cell";
-                cell.innerHTML = "&nbsp;";
-                cell.style.left = posX + "px";
-                cell.style.top = posY + "px";
+                
 
-                gameArena.appendChild(cell);
+                
 
-                mmm.bNum = 1;
-                mmm.left = posX;
-                mmm.top = posY;
-
-                localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
-
-                //var xxx = localStorage.getItem("myBlocks_1");
+                var skk = localStorage.getItem("skyeLvl");
+                //console.log(skk);
                 //console.log(xxx);
-                if (+sk === 2) {
+                if (+skk === 2) {
+
+                    cell.className = "cell";
+                    cell.innerHTML = "&nbsp;";
+                    cell.style.left = posX + "px";
+                    cell.style.top = posY + "px";
+
+                    gameArena.appendChild(cell);
+
+                    mmm.bNum = 1;
+                    mmm.left = posX;
+                    mmm.top = posY;
 
                     localStorage.setItem("skyeLvl", 3);
-                    gameFrame.onclick = null;
+                    localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
                     chatBox.value = "";
                     chatBox.className = "chatBox";
 
@@ -232,7 +256,7 @@
                         chatBox.className = "chatBox_full";
                         UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
                     }, 600);
-                    
+
                 }
             }
         },
@@ -363,7 +387,7 @@
                 }
             }
             
-            turnBtn.innerHTML = "Cycle";
+            turnBtn.innerHTML = "▶";
             turnBtn.className = "turnBtn";
             
             if (+sk < 4) {
@@ -532,7 +556,7 @@
                      clock.value = uuu + " BCE";
                 }
                 setTimeout(() => {
-                    turnBtn.innerHTML = "Cycle";
+                    turnBtn.innerHTML = "▶";
                 }, 500);
             };
         },
