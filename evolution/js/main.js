@@ -61,7 +61,7 @@
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
     var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title;
-    
+
     myBlocks = {
         bNum: 0,
         DNA: "GAT",
@@ -131,7 +131,7 @@
                 }
 
                 chatBox.value = skyeChat[sk];
-               
+
                 //console.log(uuu.lvl);
                 if (+sk === 1) {
                     //console.log(sk + "n");
@@ -156,14 +156,14 @@
                             gameArena.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
                         }, 10);
 
-                    } 
+                    }
                 }
                 if (+sk === 3) {
                     chatBtn.innerHTML = "Continue";
                     setTimeout(() => {
                         chatBtn.className = "chatBtn_full";
-                        
-                        
+
+
                         chatBtn.onclick = UI.tutor3(gameFrame, chatBox, chatBtn, gameArena);
                     }, 10);
                 }
@@ -175,7 +175,7 @@
                         turnBtn.className = "turnBtn_lit";
 
                         turnBtn.disabled = false;
-                        
+
                         setTimeout(() => {
                             turnBtn.className = "turnBtn";
                             turnBtn.onclick = UI.cycle(turnBtn, clock);
@@ -218,7 +218,7 @@
         addCell: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, e) => {
             var sk = localStorage.getItem("skyeLvl"),
                 mB = localStorage.getItem("myBlocks_1");
-            
+
             if (mB) {
                 var mmm = JSON.parse(mB);
             }
@@ -227,13 +227,13 @@
                     posX = event.clientX,
                     posY = event.clientY;
 
-                
 
-                
+
+
 
                 var skk = localStorage.getItem("skyeLvl");
-                //console.log(skk);
-                //console.log(xxx);
+
+
                 if (+skk === 2) {
 
                     cell.className = "cell";
@@ -254,6 +254,7 @@
 
                     setTimeout(() => {
                         chatBox.className = "chatBox_full";
+                        UI.animateCell(cell, mmm);
                         UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
                     }, 600);
 
@@ -265,7 +266,7 @@
                 settBtn = UI.createEle("button");
 
             var uT = localStorage.getItem("uTime");
-            
+
             if (+uT === 4000330000) {
                 startBtn.innerHTML = "Start";
             } else {
@@ -372,7 +373,7 @@
             if (mB) {
                 var mmm = JSON.parse(mB);
                 //console.log(mB);
-                if (mmm.bNum === 0) {  } else {
+                if (mmm.bNum === 0) { } else {
                     var cell = UI.createEle("div");
 
                     cell.className = "cell";
@@ -382,14 +383,15 @@
 
                     setTimeout(() => {
                         gameArena.appendChild(cell);
+                        UI.animateCell(cell, mmm);
                     }, 500);
-                    
+
                 }
             }
-            
-            turnBtn.innerHTML = "▶";
+
+            turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
-            
+
             if (+sk < 4) {
                 turnBtn.disabled = true;
             } else {
@@ -398,7 +400,7 @@
 
             header.innerHTML = title[uuu.lvl];
             header.className = "header";
-            
+
             slot.innerHTML = "&nbsp;";
             slot.className = "slot";
 
@@ -412,7 +414,7 @@
 
             skye.className = "skye";
             skye.innerHTML = "&nbsp;";
-            
+
             //chatBox.value = skyeChat[sk];
             UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
             chatBox.className = "chatBox";
@@ -427,20 +429,46 @@
             gameFrame.appendChild(skye);
             gameFrame.appendChild(chatBox);
             gameFrame.appendChild(chatBtn);
-            
-            
+
+
 
             setTimeout(() => {
                 chatBox.className = "chatBox_full";
-      
+
                 //console.log(gameArena);
 
             }, 400);
         },
+        animateCell: (cell, mmm) => {
+            var rand = Math.floor((Math.random() * 10) + 1);
+
+            var nLeft1 = +mmm.left + +rand;
+            var nLeft2 = +mmm.left - +rand;
+            var nTop1 = +mmm.top + +rand;
+            var nTop2 = +mmm.top - +rand;
+
+            cell.style.left = "" + nLeft1 + "px";
+            setTimeout(() => {
+                cell.style.top = "" + nTop1 + "px";
+                setTimeout(() => {
+                    cell.style.left = "" + nLeft2 + "px";
+                    setTimeout(() => {
+                        cell.style.top = "" + nTop2 + "px";
+                        setTimeout(() => {
+                            cell.style.left = "" + mmm.left + "px";
+                            setTimeout(() => {
+                                cell.style.top = "" + mmm.top + "px";
+                                UI.animateCell(cell, mmm);
+                            }, 50);
+                        }, 50);
+                    }, 50);
+                }, 50);
+            }, 50);
+        },
         tutor3: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
             return () => {
                 var sk = localStorage.getItem("skyeLvl");
-                
+
                 chatBox.className = "chatBox";
                 chatBox.value = "";
 
@@ -475,7 +503,7 @@
         tutor1: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
             return () => {
                 var sk = localStorage.getItem("skyeLvl");
-                
+
                 chatBox.className = "chatBox";
                 chatBox.value = "";
 
@@ -497,42 +525,42 @@
                 }, 100);
             }
         },
-        
+
         backMenuClick: (menu, backMenuBtn, gameFrame) => {
             return () => {
 
                 menu.innerHTML = "Menu";
                 menu.onclick = UI.userMenu(menu, gameFrame);
                 menu.className = "menuTab";
-                
+
                 backMenuBtn.remove();
-                
+
             }
         },
         userMenu: (menu, gameFrame) => {
             return () => {
                 menu.className = "menuTab_full";
                 menu.onclick = null;
-                    menu.innerHTML = "&nbsp;";
+                menu.innerHTML = "&nbsp;";
 
-                    setTimeout(() => {
-                        var backMenuBtn = UI.createEle("span"),
-                            homeBtn = UI.createEle("button");
+                setTimeout(() => {
+                    var backMenuBtn = UI.createEle("span"),
+                        homeBtn = UI.createEle("button");
 
-                        backMenuBtn.innerHTML = "x";
-                        backMenuBtn.className = "backMenuBtn";
-                        backMenuBtn.onclick = UI.backMenuClick(menu, backMenuBtn, gameFrame);
+                    backMenuBtn.innerHTML = "x";
+                    backMenuBtn.className = "backMenuBtn";
+                    backMenuBtn.onclick = UI.backMenuClick(menu, backMenuBtn, gameFrame);
 
-                        homeBtn.innerHTML = "Home";
-                        homeBtn.onclick = UI.homeMenuFunc;
-                        homeBtn.className = "homeBtn";
+                    homeBtn.innerHTML = "Home";
+                    homeBtn.onclick = UI.homeMenuFunc;
+                    homeBtn.className = "homeBtn";
 
-                        //console.log(menu);
-                        gameFrame.appendChild(backMenuBtn);
-                        menu.appendChild(homeBtn);
-                        //console.log(menu);
-                     
-                    }, 600);
+                    //console.log(menu);
+                    gameFrame.appendChild(backMenuBtn);
+                    menu.appendChild(homeBtn);
+                    //console.log(menu);
+
+                }, 600);
             }
         },
         homeMenuFunc: () => {
@@ -543,8 +571,12 @@
             return () => {
                 turnBtn.innerHTML = "⌛";
 
-                var uT = localStorage.getItem("uTime");
-                
+                var uT = localStorage.getItem("uTime"),
+                    uD = localStorage.getItem("uData");
+
+                if (uD) {
+                    var udd = JSON.parse(uD);
+                }
 
                 var uuu = +uT - +1;
 
@@ -552,13 +584,22 @@
                 if (!clock) {
                     var clock = UI.bySel(".clock");
                     clock.value = uuu + " BCE";
-                } else { 
-                     clock.value = uuu + " BCE";
+                } else {
+                    clock.value = uuu + " BCE";
                 }
+                if (udd.lvl <= 9) {
+
+                    UI.cellFlush(udd);
+
+                }
+
                 setTimeout(() => {
-                    turnBtn.innerHTML = "▶";
+                    turnBtn.innerHTML = "🌞";
                 }, 500);
             };
+        },
+        cellFlush: (udd) => {
+            //console.log(udd.lvl);
         },
         //settings and misc funcs
         backFunc: (clearBtn, backBtn) => {

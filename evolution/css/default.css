@@ -91,7 +91,7 @@ input, button, div, span, p {
 }
 
     .turnBtn:hover {
-        opacity:0.7;
+        opacity:0.9;
     }
 
 .turnBtn_lit {
@@ -100,9 +100,8 @@ input, button, div, span, p {
     background-position:center;
     background-repeat:repeat;
     background-size:auto;
-    color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
-    box-shadow:0 0 50px #bebe13 inset;
+    box-shadow:1px 1px 80px #bebe13 inset;
     border: none;
     position: absolute;
     width: 10%;
@@ -374,6 +373,7 @@ input, button, div, span, p {
 }
 
 .cell {
+    transition:all 40ms;
     border-radius: 2.5px;
     position:fixed;
     background:#fff;
