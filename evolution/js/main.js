@@ -589,7 +589,7 @@
                 }
                 if (udd.lvl <= 9) {
 
-                    UI.cellFlush(udd);
+                    UI.cellFlush();
 
                 }
 
@@ -598,8 +598,47 @@
                 }, 500);
             };
         },
-        cellFlush: (udd) => {
+        cellFlush: () => {
+           
+                var matter = UI.createEle("div");
+                var rand = Math.floor((Math.random() * window.screen.availHeight));
+
+                var mB = localStorage.getItem("myBlocks_1");
+                if (mB) {
+                    var mmm = JSON.parse(mB);
+                }
+                matter.className = "matter";
+                matter.style.top = "" + rand + "px";
+                matter.style.left = "101%";
+                matter.innerHTML = "&nbsp;";
+
+                var mUpper = +mmm.top + +10;
+                var mLower = +mmm.top - +10;
+
+                if (!gameArena) {
+                    var gameArena = UI.bySel(".gameArena");
+                }
+                
+                gameArena.appendChild(matter);
+
+                setTimeout(() => {
+                    if (rand <= mUpper && rand >= mLower) {
+                        var x = Math.floor((Math.random() * 10)),
+                            rSpot = +mmm.left +- +x;
+                        matter.style.left = rSpot + "px";
+                        matter.setAttribute( 'transition', 'all 10ms');
+
+                    } else {
+                        matter.style.left = "-10%";
+                    }
+                    
+
+                }, 300);
+                
+
+            
             //console.log(udd.lvl);
+            
         },
         //settings and misc funcs
         backFunc: (clearBtn, backBtn) => {
@@ -624,7 +663,7 @@
             }
         }
     };
-
+    
     window.onload = () => {
         UI.init();
     };
