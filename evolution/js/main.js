@@ -60,7 +60,9 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls;
+
+    ls = 1;
 
     myBlocks = {
         bNum: 0,
@@ -112,7 +114,7 @@
         bySel: (x) => { return document.querySelector(x) },
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
-        syncChatBox: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
+        syncChatBox: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
 
 
             var sk = localStorage.getItem("skyeLvl");
@@ -153,7 +155,7 @@
                     } else {
                         setTimeout(() => {
                             chatBtn.className = "chatBtn_sleep";
-                            gameArena.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                            gameArena.onclick = UI.addCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                         }, 10);
 
                     }
@@ -164,7 +166,7 @@
                         chatBtn.className = "chatBtn_full";
 
 
-                        chatBtn.onclick = UI.tutor3(gameFrame, chatBox, chatBtn, gameArena);
+                        chatBtn.onclick = UI.tutor3(gameFrame, chatBox, chatBtn, gameArena, cells, mmb);
                     }, 10);
                 }
                 if (+sk >= 4) {
@@ -203,19 +205,18 @@
             if (!mB || mB === null) {
                 localStorage.setItem("myBlocks_1", JSON.stringify(myBlocks));
             }
-
-            /*
-            var xx = localStorage.getItem("myBlocks");
-            if (xx) {
-                var xxx = JSON.parse(xx);
+            var ls = localStorage.getItem("ls");
+            if (!ls || ls === null) {
+                localStorage.setItem("ls", 1);
             }
-            console.log(xxx.DNA);
-            */
-
+            ls = localStorage.getItem("ls");
+            var xx = localStorage.getItem("myBlocks_" + ls);
+            //console.log(ls);
+            //console.log(localStorage);
             UI.myLoad();
         },
         //loading and UI stuffs
-        addCell: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, e) => {
+        addCell: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, e, cells, mmb) => {
             var sk = localStorage.getItem("skyeLvl"),
                 mB = localStorage.getItem("myBlocks_1");
 
@@ -227,12 +228,7 @@
                     posX = event.clientX,
                     posY = event.clientY;
 
-
-
-
-
                 var skk = localStorage.getItem("skyeLvl");
-
 
                 if (+skk === 2) {
 
@@ -254,10 +250,12 @@
 
                     setTimeout(() => {
                         chatBox.className = "chatBox_full";
-                        UI.animateCell(cell, mmm);
-                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
-                    }, 600);
 
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
+                    }, 600);
+                    setTimeout(() => {
+                        //console.log(mmm.left = posX;);
+                    }, 1000);
                 }
             }
         },
@@ -370,25 +368,30 @@
 
             gameArena.className = "gameArena";
             var mB = localStorage.getItem("myBlocks_1");
+            var ls = localStorage.getItem("ls");
+
+            console.log(localStorage);
             if (mB) {
                 var mmm = JSON.parse(mB);
                 //console.log(mB);
                 if (mmm.bNum === 0) { } else {
-                    var cell = UI.createEle("div");
+                    for (var k = 1; k < ls; k++) {
+                        var mBs = localStorage.getItem("myBlocks_" + k);
+                        if (mBs != null) {
+                            if (mBs) {
+                                var mmb = JSON.parse(mBs);
 
-                    cell.className = "cell";
-                    cell.innerHTML = "&nbsp;";
-                    cell.style.left = mmm.left + "px";
-                    cell.style.top = mmm.top + "px";
-
-                    setTimeout(() => {
-                        gameArena.appendChild(cell);
-                        UI.animateCell(cell, mmm);
-                    }, 500);
-
+                                var cells = UI.createEle("div");
+                                gameArena.appendChild(cells);
+                                cells.className = "cells";
+                                cells.innerHTML = "&nbsp;";
+                                cells.style.left = mmb.left + "px";
+                                cells.style.top = mmb.top + "px";
+                            }
+                        }
+                    }
                 }
             }
-
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
 
@@ -416,7 +419,7 @@
             skye.innerHTML = "&nbsp;";
 
             //chatBox.value = skyeChat[sk];
-            UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+            UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
             chatBox.className = "chatBox";
             chatBox.readOnly = true;
 
@@ -439,33 +442,7 @@
 
             }, 400);
         },
-        animateCell: (cell, mmm) => {
-            var rand = Math.floor((Math.random() * 10) + 1);
-
-            var nLeft1 = +mmm.left + +rand;
-            var nLeft2 = +mmm.left - +rand;
-            var nTop1 = +mmm.top + +rand;
-            var nTop2 = +mmm.top - +rand;
-
-            cell.style.left = "" + nLeft1 + "px";
-            setTimeout(() => {
-                cell.style.top = "" + nTop1 + "px";
-                setTimeout(() => {
-                    cell.style.left = "" + nLeft2 + "px";
-                    setTimeout(() => {
-                        cell.style.top = "" + nTop2 + "px";
-                        setTimeout(() => {
-                            cell.style.left = "" + mmm.left + "px";
-                            setTimeout(() => {
-                                cell.style.top = "" + mmm.top + "px";
-                                UI.animateCell(cell, mmm);
-                            }, 50);
-                        }, 50);
-                    }, 50);
-                }, 50);
-            }, 50);
-        },
-        tutor3: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
+        tutor3: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
             return () => {
                 var sk = localStorage.getItem("skyeLvl");
 
@@ -484,7 +461,7 @@
 
                         chatBox.className = "chatBox_full";
 
-                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock);
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                         //console.log(chatBox);
                     }, 600);
                 }, 100);
@@ -500,7 +477,7 @@
                 console.log(uuu.lvl);
             }
         },
-        tutor1: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock) => {
+        tutor1: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
             return () => {
                 var sk = localStorage.getItem("skyeLvl");
 
@@ -519,7 +496,7 @@
 
                         chatBox.className = "chatBox_full";
 
-                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn);
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                         //console.log(chatBox);
                     }, 600);
                 }, 100);
@@ -599,46 +576,73 @@
             };
         },
         cellFlush: () => {
-           
-                var matter = UI.createEle("div");
-                var rand = Math.floor((Math.random() * window.screen.availHeight));
+            var matter = UI.createEle("div"),
+                rand = Math.floor((Math.random() * window.screen.availHeight));
 
-                var mB = localStorage.getItem("myBlocks_1");
-                if (mB) {
-                    var mmm = JSON.parse(mB);
-                }
-                matter.className = "matter";
-                matter.style.top = "" + rand + "px";
-                matter.style.left = "101%";
-                matter.innerHTML = "&nbsp;";
+            var mB = localStorage.getItem("myBlocks_1");
+            var ls = localStorage.getItem("ls");
 
-                var mUpper = +mmm.top + +10;
-                var mLower = +mmm.top - +10;
+            if (mB) {
+                var mmm = JSON.parse(mB);
+            }
+            matter.className = "matter";
+            matter.style.top = "" + rand + "px";
+            matter.style.left = "101%";
+            matter.innerHTML = "&nbsp;";
 
-                if (!gameArena) {
-                    var gameArena = UI.bySel(".gameArena");
-                }
-                
-                gameArena.appendChild(matter);
+            var mUpper = +mmm.top + +10;
+            var mLower = +mmm.top - +10;
 
-                setTimeout(() => {
-                    if (rand <= mUpper && rand >= mLower) {
-                        var x = Math.floor((Math.random() * 10)),
-                            rSpot = +mmm.left +- +x;
-                        matter.style.left = rSpot + "px";
-                        matter.setAttribute( 'transition', 'all 10ms');
+            if (!gameArena) {
+                var gameArena = UI.bySel(".gameArena");
+            }
 
-                    } else {
-                        matter.style.left = "-10%";
+            gameArena.style.boxShadow = "0px 172px 70px gold inset";
+            gameArena.appendChild(matter);
+
+            setTimeout(() => {
+                gameArena.style.boxShadow = "0 0 20px transparent inset";
+
+                if (rand <= mUpper && rand >= mLower) {
+                    console.log(ls)
+                    var x = Math.floor((Math.random() * (+15 + +ls))),
+                        rSpot = +mmm.left + - +x;
+                    matter.style.left = rSpot + "px";
+                    matter.style.transition = "all 400ms";
+                    UI.newCellBlock(matter, mmm);
+
+                } else {
+                    matter.style.left = "-10%";
+                    if (matter.style.left === "-10%") {
+                        setTimeout(() => {
+                            matter.remove();
+                        }, 1000);
+
                     }
-                    
+                }
+            }, 300);
+        },
+        newCellBlock: (matter, mmm) => {
+            var ls = localStorage.getItem("ls"),
+                mB = localStorage.getItem("myBlocks_" + ls);
+            var mst = matter.style.top,
+                msl = matter.style.left;
+            var ms = mst.slice(0, 3),
+                ml = msl.slice(0, 3);
+            var nLs = +ls + +1;
+            console.log(ms);
+            myBlocks.bNum = nLs;
+            myBlocks.DNA = "GAT";
+            myBlocks.top = +ms;
+            myBlocks.left = +ml;
 
-                }, 300);
-                
+            localStorage.setItem("ls", +nLs);
 
-            
-            //console.log(udd.lvl);
-            
+            localStorage.setItem("myBlocks_" + nLs, JSON.stringify(myBlocks));
+
+            //var dsdg = localStorage.getItem("myBlocks_" + nLs);
+            //console.log(dsdg);
+
         },
         //settings and misc funcs
         backFunc: (clearBtn, backBtn) => {
@@ -663,7 +667,7 @@
             }
         }
     };
-    
+
     window.onload = () => {
         UI.init();
     };

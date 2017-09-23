@@ -63,8 +63,9 @@ input, button, div, span, p {
 }
 
 .gameArena {
+    transition:all 800ms;
     background:#112D5C;
-    box-shadow: 0 0 20px #000;
+    box-shadow: 0 0 20px transparent inset;
     position:absolute;
     width:100%;
     height:80%;
@@ -381,7 +382,15 @@ input, button, div, span, p {
     height:5px;
     box-shadow:0 0 5px #000;
 }
-
+.cells {
+    transition:all 40ms;
+    border-radius: 2.5px;
+    position:fixed;
+    background:#fff;
+    width:5px;
+    height:5px;
+    box-shadow:0 0 5px #000;
+}
 .matter {
     transition:all 1s;
     position:fixed;
