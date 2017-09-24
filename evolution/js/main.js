@@ -390,7 +390,7 @@
                         cells.style.left = mmb.left + "px";
                         cells.style.top = mmb.top + "px";
                         cells.style.backgroundColor = mmb.bg;
-                        console.log(mmb);
+                        //console.log(mmb);
                     }
                     gameArena.appendChild(cells);
                             
@@ -633,7 +633,7 @@
                     matter.style.left = rSpot + "px";
                     matter.style.transition = "all 400ms";
                     UI.newCellBlock(matter, mmm);
-
+                    console.log(nls);
                 } else {
                     matter.style.left = "-10%";
                     if (matter.style.left === "-10%") {
@@ -652,6 +652,9 @@
                 msl = matter.style.left;
             //console.log(matter);
             var x = mst.length, y = msl.length, ms, ml;
+            if (+x === +6) {
+                ms = mst.slice(0, 4);
+            }
             if (+x === +5) {
                 ms = mst.slice(0, 3);
             }
@@ -660,6 +663,9 @@
             }
             if (+x === +3) {
                 ms = mst.slice(0, 1);
+            }
+            if (+y === +6) {
+                ml = msl.slice(0, 4);
             }
             if (+y === +5) {
                 ml = msl.slice(0, 3);
