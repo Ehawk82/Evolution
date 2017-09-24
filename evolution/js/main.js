@@ -68,7 +68,8 @@
         bNum: 0,
         DNA: "GAT",
         top: 0,
-        left: 0
+        left: 0,
+        bg: "grey"
     }
 
     uData = {
@@ -236,12 +237,13 @@
                     cell.innerHTML = "&nbsp;";
                     cell.style.left = posX + "px";
                     cell.style.top = posY + "px";
-
+                    cell.style.backgroundColor = "grey";
                     gameArena.appendChild(cell);
 
                     mmm.bNum = 1;
                     mmm.left = posX;
                     mmm.top = posY;
+                    mmm.bg = "grey";
 
                     localStorage.setItem("skyeLvl", 3);
                     localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
@@ -365,33 +367,36 @@
             var uT = localStorage.getItem("uTime"),
                 sk = localStorage.getItem("skyeLvl");
 
-
+            //console.log(localStorage);
             gameArena.className = "gameArena";
             var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
 
-            console.log(localStorage);
-            if (mB) {
-                var mmm = JSON.parse(mB);
-                //console.log(mB);
-                if (mmm.bNum === 0) { } else {
-                    for (var k = 1; k < ls; k++) {
-                        var mBs = localStorage.getItem("myBlocks_" + k);
-                        if (mBs != null) {
-                            if (mBs) {
-                                var mmb = JSON.parse(mBs);
-
-                                var cells = UI.createEle("div");
-                                gameArena.appendChild(cells);
-                                cells.className = "cells";
-                                cells.innerHTML = "&nbsp;";
-                                cells.style.left = mmb.left + "px";
-                                cells.style.top = mmb.top + "px";
-                            }
-                        }
+            var b = JSON.parse(mB);
+            //console.log(b.bNum);
+            if (b.bNum === 0) {} else {
+            for (var k = 0; k < +ls; k++) {
+                var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
+             
+                if (mBs != null) {
+                    if (mBs) {
+                        var mmb = JSON.parse(mBs);
+                                
+                        var cells = UI.createEle("div");
+                                
+                                
+                        cells.className = "cells";
+                        cells.innerHTML = "&nbsp;";
+                        cells.style.left = mmb.left + "px";
+                        cells.style.top = mmb.top + "px";
+                        cells.style.backgroundColor = mmb.bg;
+                        console.log(mmb);
                     }
+                    gameArena.appendChild(cells);
+                            
                 }
             }
+        }
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
 
@@ -577,17 +582,34 @@
         },
         cellFlush: () => {
             var matter = UI.createEle("div"),
-                rand = Math.floor((Math.random() * window.screen.availHeight));
-
+                rand = Math.floor((Math.random() * window.screen.availHeight)),
+                rColor = Math.floor((Math.random() * 5) + 1), tColor;
+            
             var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
 
             if (mB) {
                 var mmm = JSON.parse(mB);
             }
+            if (rColor === 5) {
+                matter.style.backgroundColor = "red";
+            }
+            if (rColor === 4) {
+                matter.style.backgroundColor = "grey";
+            }
+            if (rColor === 3) {
+                matter.style.backgroundColor = "blue";
+            }
+            if (rColor === 2) {
+                matter.style.backgroundColor = "white";
+            }
+            if (rColor === 1) {
+                matter.style.backgroundColor = "limegreen";
+            }
             matter.className = "matter";
             matter.style.top = "" + rand + "px";
             matter.style.left = "101%";
+            
             matter.innerHTML = "&nbsp;";
 
             var mUpper = +mmm.top + +10;
@@ -604,9 +626,10 @@
                 gameArena.style.boxShadow = "0 0 20px transparent inset";
 
                 if (rand <= mUpper && rand >= mLower) {
-                    console.log(ls)
-                    var x = Math.floor((Math.random() * (+15 + +ls))),
-                        rSpot = +mmm.left + - +x;
+                    //console.log(ls)
+                    var nls = localStorage.getItem("ls");
+                    var x = Math.floor((Math.random() * (+15 + +nls))),
+                        rSpot = +mmm.left - +x;
                     matter.style.left = rSpot + "px";
                     matter.style.transition = "all 400ms";
                     UI.newCellBlock(matter, mmm);
@@ -627,14 +650,33 @@
                 mB = localStorage.getItem("myBlocks_" + ls);
             var mst = matter.style.top,
                 msl = matter.style.left;
-            var ms = mst.slice(0, 3),
+            //console.log(matter);
+            var x = mst.length, y = msl.length, ms, ml;
+            if (+x === +5) {
+                ms = mst.slice(0, 3);
+            }
+            if (+x === +4) {
+                ms = mst.slice(0, 2);
+            }
+            if (+x === +3) {
+                ms = mst.slice(0, 1);
+            }
+            if (+y === +5) {
                 ml = msl.slice(0, 3);
+            }
+            if (+y === +4) {
+                ml = msl.slice(0, 2);
+            }
+            if (+y === +3) {
+                ml = msl.slice(0, 1);
+            }
             var nLs = +ls + +1;
-            console.log(ms);
+
             myBlocks.bNum = nLs;
             myBlocks.DNA = "GAT";
             myBlocks.top = +ms;
             myBlocks.left = +ml;
+            myBlocks.bg = matter.style.backgroundColor;
 
             localStorage.setItem("ls", +nLs);
 

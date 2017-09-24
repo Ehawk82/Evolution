@@ -395,7 +395,6 @@ input, button, div, span, p {
     transition:all 1s;
     position:fixed;
     border-radius: 2.5px;
-    background:#fff;
     width:5px;
     height:5px;
     box-shadow:0 0 5px #000;
@@ -405,7 +404,7 @@ input, button, div, span, p {
     transition:all 1s;
     position:fixed;
     border-radius: 2.5px;
-    background:#fff;
+
     width:5px;
     height:5px;
     box-shadow:0 0 5px #000;
