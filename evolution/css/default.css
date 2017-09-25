@@ -7,7 +7,9 @@
     -ms-overflow-style: none;
     font-family:'Comic Sans MS';
 }
-
+a {
+    color:#000;
+}
 h1 {
     margin:0;
 }
@@ -71,6 +73,38 @@ input, button, div, span, p {
     height:80%;
     top:55px;
     left:0;
+}
+
+.changeHomeCellBtn {
+    transition:all 500ms;
+    color: rgba(78, 78, 78, 1);
+    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    box-shadow: 0 0 27px #000 inset;
+    border: none;
+    position: absolute;
+    width: 50px;
+    line-height:50px;
+    font-size:2rem;
+    text-align:center;
+    left: -75px;
+    top: 50%;
+    background:#fff;
+}
+
+.changeHomeCellBtn_full {
+    transition:all 500ms;
+    color: rgba(78, 78, 78, 1);
+    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    box-shadow: 0 0 35px rgba(0,0,0,1) inset;
+    border: none;
+    position: absolute;
+    width: 50px;
+    line-height:50px;
+    font-size:2rem;
+    text-align:center;
+    left: 5px;
+    top: 50%;
+    background:#fff;
 }
 
 .turnBtn {
