@@ -67,10 +67,10 @@
 
     myBlocks = {
         bNum: 0,
-        DNA: "GAT",
+        DNA: "C",
         top: 0,
         left: 0,
-        bg: "grey"
+        bg: "black"
     }
 
     uData = {
@@ -184,21 +184,21 @@
                     }, 10);
                 }
                 if (+sk >= 4) {
-
+                    var turnBtn = UI.bySel(".turnBtn") || UI.bySel(".turnBtn_lit");
                     setTimeout(() => {
-                        var turnBtn = UI.bySel(".turnBtn") || UI.bySel(".turnBtn_lit");
+                        if (turnBtn) {
+                            turnBtn.className = "turnBtn_lit";
 
-                        turnBtn.className = "turnBtn_lit";
+                            turnBtn.disabled = false;
 
-                        turnBtn.disabled = false;
+                            setTimeout(() => {
 
-                        setTimeout(() => {
-                           
-                            turnBtn.className = "turnBtn";
-                            turnBtn.onclick = UI.cycle(turnBtn, clock);
-                        }, 1010);
-                        //console.log(turnBtn);
-                    }, 60);
+                                turnBtn.className = "turnBtn";
+                                turnBtn.onclick = UI.cycle(turnBtn, clock);
+                            }, 1010);
+                            //console.log(turnBtn);
+                        }
+                        }, 60);   
                 }
                 if (+sk === 5) {
                     chatBtn.innerHTML = "Continue";
@@ -260,14 +260,14 @@
                     cell.innerHTML = "&nbsp;";
                     cell.style.left = posX + "px";
                     cell.style.top = posY + "px";
-                    cell.style.backgroundColor = "grey";
+                    cell.style.backgroundColor = "black";
                     gameArena.appendChild(cell);
                     
 
                     mmm.bNum = 1;
                     mmm.left = posX;
                     mmm.top = posY;
-                    mmm.bg = "grey";
+                    mmm.bg = "black";
 
                     localStorage.setItem("skyeLvl", 7);
                     localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
@@ -279,6 +279,7 @@
                         
                         UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                     }, 600);
+
                         document.body.style.cursor = "initial";
                         if (!changeHomeCellBtn) {
                             var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn") || UI.bySel(".changeHomeCellBtn_full");
@@ -343,13 +344,13 @@
                     cell.innerHTML = "&nbsp;";
                     cell.style.left = posX + "px";
                     cell.style.top = posY + "px";
-                    cell.style.backgroundColor = "grey";
+                    cell.style.backgroundColor = "black";
                     gameArena.appendChild(cell);
 
                     mmm.bNum = 1;
                     mmm.left = posX;
                     mmm.top = posY;
-                    mmm.bg = "grey";
+                    mmm.bg = "black";
 
                     localStorage.setItem("skyeLvl", 3);
                     localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
@@ -370,7 +371,7 @@
         myLoad: () => {
             var startBtn = UI.createEle("button"),
                 settBtn = UI.createEle("button");
-
+            //console.log(localStorage);
             var uT = localStorage.getItem("uTime");
 
             if (+uT === 4000330000) {
@@ -501,6 +502,7 @@
                             cells.innerHTML = "&nbsp;";
                             cells.style.left = mmb.left + "px";
                             cells.style.top = mmb.top + "px";
+                            cells.id = mmb.DNA;
                             cells.style.backgroundColor = mmb.bg;
                             //cells[0].className = "cell";
                         }
@@ -560,7 +562,7 @@
                     var bb = UI.bySelAll(".cells");
 
                         bb[0].className = "cell";
-                    
+                        console.log(gameArena);
                 }
 
             }, 400);
@@ -714,12 +716,8 @@
                     homeBtn.innerHTML = "Home";
                     homeBtn.onclick = UI.homeMenuFunc;
                     homeBtn.className = "homeBtn";
-
-                    //console.log(menu);
                     gameFrame.appendChild(backMenuBtn);
                     menu.appendChild(homeBtn);
-                    //console.log(menu);
-
                 }, 600);
             }
         },
@@ -761,7 +759,7 @@
         cellFlush: () => {
             var matter = UI.createEle("div"),
                 rand = Math.floor((Math.random() * window.screen.availHeight)),
-                rColor = Math.floor((Math.random() * 5) + 1), tColor;
+                rColor = Math.floor((Math.random() * 6) + 1), tColor;
 
             var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
@@ -769,20 +767,29 @@
             if (mB) {
                 var mmm = JSON.parse(mB);
             }
-            if (rColor === 5) {
+            if (rColor === 6) {//Phosphorous
+                matter.style.backgroundColor = "yellow";
+                matter.id = "P";
+            }
+            if (rColor === 5) {//Oxygen
                 matter.style.backgroundColor = "red";
+                matter.id = "O";
             }
-            if (rColor === 4) {
-                matter.style.backgroundColor = "grey";
+            if (rColor === 4) {//Carbon
+                matter.style.backgroundColor = "black";
+                matter.id = "C";
             }
-            if (rColor === 3) {
+            if (rColor === 3) {//Hydrogen
                 matter.style.backgroundColor = "blue";
+                matter.id = "H";
             }
-            if (rColor === 2) {
+            if (rColor === 2) {//Sodium
                 matter.style.backgroundColor = "white";
+                matter.id = "S";
             }
-            if (rColor === 1) {
+            if (rColor === 1) {//Nitrogen
                 matter.style.backgroundColor = "limegreen";
+                matter.id = "N";
             }
             matter.className = "matter";
             matter.style.top = "" + rand + "px";
@@ -790,18 +797,18 @@
 
             matter.innerHTML = "&nbsp;";
 
-            var mUpper = +mmm.top + +10;
-            var mLower = +mmm.top - +10;
+            var mUpper = +mmm.top + +15;
+            var mLower = +mmm.top - +15;
 
             if (!gameArena) {
                 var gameArena = UI.bySel(".gameArena");
             }
-
-            gameArena.style.boxShadow = "0px 172px 70px gold inset";
+            //-moz-box-shadow: inset 0 20px 20px -20px rgba(0,0,0,
+            gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
             gameArena.appendChild(matter);
 
             setTimeout(() => {
-                gameArena.style.boxShadow = "0 0 20px transparent inset";
+                gameArena.style.boxShadow = "0 70px 170px -70px red inset";
 
                 if (rand <= mUpper && rand >= mLower) {
                     //console.log(ls)
@@ -830,17 +837,8 @@
                 msl = matter.style.left;
             var cell = UI.bySelAll(".cell");
 
-            
-            
-            if (cell) {
-                console.log(cell);
-                for (var g = 0; g < cell.length; g++) {
-                    cell[g].remove();
-                    //console.log(cell[g]);
-                }
-                //cell.className = "cells";
-            }
             var x = mst.length, y = msl.length, ms, ml;
+
             if (+x === +6) {
                 ms = mst.slice(0, 4);
             }
@@ -868,7 +866,7 @@
             var nLs = +ls + +1;
 
             myBlocks.bNum = nLs;
-            myBlocks.DNA = "GAT";
+            myBlocks.DNA = matter.id;
             myBlocks.top = +ms;
             myBlocks.left = +ml;
             myBlocks.bg = matter.style.backgroundColor;

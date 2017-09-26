@@ -76,11 +76,11 @@ input, button, div, span, p {
 }
 
 .changeHomeCellBtn {
-    transition:all 500ms;
+    transition:all 200ms;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 27px #000 inset;
-    border: none;
+    border: 2px solid rgba(78, 78, 78, 1) ;
     position: absolute;
     width: 50px;
     line-height:50px;
@@ -92,11 +92,11 @@ input, button, div, span, p {
 }
 
 .changeHomeCellBtn_full {
-    transition:all 500ms;
+    transition:all 200ms;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 35px rgba(0,0,0,1) inset;
-    border: none;
+    border: 5px ridge rgba(48, 48, 48, 1) ;
     position: absolute;
     width: 50px;
     line-height:50px;
@@ -106,6 +106,9 @@ input, button, div, span, p {
     top: 50%;
     background:#fff;
 }
+    .changeHomeCellBtn_full:hover {
+        border: 5px groove rgba(48, 48, 48, 1) ;
+    }
 
 .turnBtn {
     transition:all 500ms;
@@ -409,38 +412,162 @@ input, button, div, span, p {
 
 .cell {
     transition:all 40ms;
-    border-radius: 2.5px;
+    border-radius: 7px;
     position:fixed;
     background:#fff;
-    width:5px;
-    height:5px;
-    box-shadow:0 0 5px #000;
+    width:15px;
+    height:15px;
+    box-shadow:0 0 8px #fff inset;
+}
+
+
+@keyframes orbitC {
+    from {
+        box-shadow:0 0 8px #fff inset;
+        
+    }
+    to {
+        box-shadow:0 0 8px #000 inset;
+
+    }
+}
+@keyframes orbitO {
+    from {
+        box-shadow:0 0 8px #fff inset;
+        margin-top:0;
+    }
+    to {
+        box-shadow:0 0 8px #000 inset;
+        margin-top:5px;
+    }
+}
+@keyframes orbitH {
+    from {
+        box-shadow:0 0 8px #bebe13 inset;
+
+    }
+    to {
+        box-shadow:0 0 8px rgba(255, 255, 255, 1) inset;
+
+    }
+}
+@keyframes orbitS {
+    from {
+        box-shadow:0 0 8px #000 inset;
+
+    }
+    to {
+        box-shadow:0 0 18px purple inset;
+
+    }
+}
+@keyframes orbitP {
+    from {
+        box-shadow:0 0 8px #112D5C inset;
+
+    }
+    to {
+        box-shadow:0 0 18px #fff inset;
+
+    }
+}
+@keyframes orbitN {
+    from {
+        box-shadow:0 0 8px #fff inset;
+        margin-top:-5px;
+
+    }
+    to {
+        box-shadow:0 0 18px purple inset;
+        margin-top:5px;
+    }
+}
+#O {
+    animation-name: orbitO;
+  animation-duration: 500ms; 
+  animation-timing-function:ease; 
+  animation-delay: 10ms;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
+}
+#C {
+    animation-name: orbitC;
+  animation-duration: 1.6s; 
+  animation-timing-function:ease-in-out; 
+  animation-delay: 0s;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
+}
+#H {
+    animation-name: orbitH;
+  animation-duration: 1s; 
+  animation-timing-function:ease-in-out; 
+  animation-delay: 0s;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
+}
+#S {
+    animation-name: orbitS;
+  animation-duration: 710ms; 
+  animation-timing-function:linear; 
+  animation-delay: 0s;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
+}
+#P {
+    animation-name: orbitP;
+  animation-duration: 710ms; 
+  animation-timing-function:linear; 
+  animation-delay: 0s;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
+}
+#N {
+    animation-name: orbitN;
+  animation-duration: 360ms; 
+  animation-timing-function:linear; 
+  animation-delay: 200ms;
+  animation-direction:normal;
+  animation-iteration-count: infinite;
+  animation-fill-mode: none;
+  animation-play-state: running; 
 }
 .cells {
     transition:all 40ms;
-    border-radius: 2.5px;
+    border-radius: 7px;
     position:fixed;
     background:#fff;
-    width:5px;
-    height:5px;
-    box-shadow:0 0 5px #000;
+    width:15px;
+    height:15px;
+    box-shadow:0 0 8px #fff inset;
+    
 }
 .matter {
     transition:all 1s;
     position:fixed;
-    border-radius: 2.5px;
-    width:5px;
-    height:5px;
-    box-shadow:0 0 5px #000;
+    border-radius: 7px;
+    width:15px;
+    height:15px;
+    box-shadow:0 0 8px #fff inset;
 
 }
 .matter_throw {
     transition:all 1s;
     position:fixed;
-    border-radius: 2.5px;
+    border-radius: 7px;
 
-    width:5px;
-    height:5px;
-    box-shadow:0 0 5px #000;
+    width:15px;
+    height:15px;
+    box-shadow:0 0 8px #fff inset;
 
 }
