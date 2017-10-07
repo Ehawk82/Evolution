@@ -576,6 +576,7 @@
             header.className = "header";
 
             slot.innerHTML = "🛒";
+            slot.onclick = UI.marketPage(gameFrame);
             slot.className = "slot";
 
             clock.value = uT + " BCE";
@@ -615,6 +616,38 @@
                     ///console.log(sk);
                 }
             }, 400);
+        },
+        closeMarket: (market) => {
+            return () => {
+                market.className = "market";
+
+                setTimeout(() => {
+                    market.remove();
+                }, 1005);
+            }
+        },
+        marketPage: (gameFrame) => {
+            return () => {
+                var market = UI.createEle("div"),
+                    closeBtn = UI.createEle("button");
+
+                closeBtn.className = "closeBtn";
+                closeBtn.onclick = UI.closeMarket(market);
+                closeBtn.innerHTML = "close";
+
+                market.className = "market";
+                market.innerHTML = "&nbsp;";
+                market.appendChild(closeBtn);
+
+
+                gameFrame.appendChild(market);
+
+                setTimeout(() => {
+                    market.className = "market_full";
+                    console.log(market);
+                }, 80);
+                
+            }
         },
         timerToggle: (turnBtn, clock, timeBtn) => {
             return () => {

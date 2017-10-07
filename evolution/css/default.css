@@ -637,3 +637,25 @@ input, button, div, span, p {
     height: 15px;
     box-shadow: 0 0 8px #fff inset;
 }
+
+.market {
+    transition:all 1s ;
+    position:fixed;
+    height:100%;
+    width:100%;
+    z-index:51;
+    background:black;
+    top:-100%;
+    left:0;
+}
+
+.market_full {
+    transition:all 1s ;
+    position:fixed;
+    height:100%;
+    width:100%;
+    z-index:51;
+    background:green;
+    top:0;
+    left:0;
+}
