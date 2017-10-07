@@ -5,17 +5,19 @@
     padding: 0;
     overflow: hidden;
     -ms-overflow-style: none;
-    font-family:'Comic Sans MS';
+    font-family: 'Comic Sans MS';
 }
+
 a {
-    color:#000;
+    color: #000;
 }
+
 h1 {
-    margin:0;
+    margin: 0;
 }
 
 input, button, div, span, p {
-    font-family:'Comic Sans MS';
+    font-family: 'Comic Sans MS';
 }
 
 .startBtn {
@@ -57,93 +59,129 @@ input, button, div, span, p {
     transition: all 500ms;
     width: 98%;
     height: 98%;
-    background:#000;
-
+    background: #000;
     position: absolute;
     top: 1%;
     left: 1%;
 }
 
 .gameArena {
-    transition:all 800ms;
-    background:#112D5C;
+    transition: all 800ms;
+    background: #112D5C;
     box-shadow: 0 0 20px transparent inset;
-    position:absolute;
-    width:100%;
-    height:80%;
-    top:55px;
-    left:0;
+    position: absolute;
+    width: 100%;
+    height: 80%;
+    top: 55px;
+    left: 0;
 }
 
 .changeHomeCellBtn {
-    transition:all 200ms;
+    transition: all 200ms;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 27px #000 inset;
-    border: 2px solid rgba(78, 78, 78, 1) ;
+    border: 2px solid rgba(78, 78, 78, 1);
     position: absolute;
     width: 50px;
-    line-height:50px;
-    font-size:2rem;
-    text-align:center;
+    line-height: 50px;
+    font-size: 2rem;
+    text-align: center;
     left: -75px;
-    top: 50%;
-    background:#fff;
+    bottom: 205px;
+    background: #fff;
 }
 
 .changeHomeCellBtn_full {
-    transition:all 200ms;
+    transition: all 200ms;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 35px rgba(0,0,0,1) inset;
-    border: 5px ridge rgba(48, 48, 48, 1) ;
+    border: 5px ridge rgba(48, 48, 48, 1);
     position: absolute;
     width: 50px;
-    line-height:50px;
-    font-size:2rem;
-    text-align:center;
+    line-height: 50px;
+    font-size: 2rem;
+    text-align: center;
     left: 5px;
-    top: 50%;
-    background:#fff;
+    bottom: 205px;
+    background: #fff;
 }
+
     .changeHomeCellBtn_full:hover {
-        border: 5px groove rgba(48, 48, 48, 1) ;
+        border: 5px groove rgba(48, 48, 48, 1);
+    }
+
+.timeBtn {
+    transition: all 200ms;
+    color: rgba(78, 78, 78, 1);
+    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    box-shadow: 0 0 35px rgba(0,0,0,1) inset;
+    border: 5px ridge rgba(48, 48, 48, 1);
+    position: absolute;
+    width: 50px;
+    line-height: 50px;
+    font-size: 2rem;
+    text-align: center;
+    left: -75px;
+    bottom: 275px;
+    background: #fff;
+}
+
+.timeBtn_full {
+    transition: all 200ms;
+    color: rgba(78, 78, 78, 1);
+    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    box-shadow: 0 0 35px rgba(0,0,0,1) inset;
+    border: 5px ridge rgba(48, 48, 48, 1);
+    position: absolute;
+    width: 50px;
+    line-height: 50px;
+    font-size: 2rem;
+    text-align: center;
+    left: 5px;
+    bottom: 275px;
+    background: #fff;
+}
+
+    .timeBtn_full:hover {
+        border: 5px groove rgba(48, 48, 48, 1);
     }
 
 .turnBtn {
-    transition:all 500ms;
+    transition: all 500ms;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 20px #000 inset;
     border: none;
     position: absolute;
     width: 10%;
-    line-height:50px;
-    font-size:1rem;
+    line-height: 50px;
+    font-size: 1rem;
     left: 0;
     top: 0;
     background-image: url('../images/assets/sheet.jpg');
-    background-position:center;
-    background-repeat:repeat;
-    background-size:auto;
+    background-position: center;
+    background-repeat: repeat;
+    background-size: auto;
 }
 
     .turnBtn:hover {
-        opacity:0.9;
+        opacity: 0.9;
     }
 
 .turnBtn_lit {
-    transition:all 500ms;
+    transition: all 500ms;
     background-image: url('../images/assets/sheet.jpg');
-    background-position:center;
-    background-repeat:repeat;
-    background-size:auto;
+    background-position: center;
+    background-repeat: repeat;
+    background-size: auto;
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
-    box-shadow:1px 1px 80px #bebe13 inset;
+    box-shadow: 1px 1px 80px #bebe13 inset;
     border: none;
     position: absolute;
     width: 10%;
-    line-height:50px;
+    line-height: 50px;
     left: 0;
     top: 0;
 }
@@ -153,10 +191,10 @@ input, button, div, span, p {
     top: 0;
     left: 10.2%;
     background-image: url('../images/assets/sheet.jpg');
-    background-position:left;
+    background-position: left;
     box-shadow: 0 0 20px #000 inset;
-    background-repeat:repeat;
-    background-size:auto;
+    background-repeat: repeat;
+    background-size: auto;
     width: 51.6%;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
@@ -166,43 +204,42 @@ input, button, div, span, p {
 }
 
 .slot {
-    position:absolute;
+    position: absolute;
     background-image: url('../images/assets/sheet.jpg');
-    background-position:left;
-    background-repeat:repeat;
-    background-size:auto;
-    top:0;
+    background-position: left;
+    background-repeat: repeat;
+    background-size: auto;
+    top: 0;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 20px #000 inset;
-    left:62%;
-    width:17.7%;
-    line-height:52px;
-    text-align:center;
-
+    left: 62%;
+    width: 17.7%;
+    line-height: 52px;
+    text-align: center;
 }
 
 .clock {
     position: absolute;
     text-indent: 4%;
     background-image: url('../images/assets/sheet.jpg');
-    background-position:left;
-    background-repeat:repeat;
-    background-size:auto;
+    background-position: left;
+    background-repeat: repeat;
+    background-size: auto;
     color: rgba(78, 78, 78, 1);
     text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
     box-shadow: 0 0 20px #000 inset;
     border: none;
     width: 20%;
-    line-height:50px;
+    line-height: 50px;
     right: 0;
-    font-size:1rem;
+    font-size: 1rem;
     top: 0;
-    cursor:auto;
+    cursor: auto;
 }
 
 .menuTab {
-    transition:all 500ms;
+    transition: all 500ms;
     position: absolute;
     color: #000;
     text-indent: 4%;
@@ -220,7 +257,7 @@ input, button, div, span, p {
     }
 
 .menuTab_full {
-    transition:all 500ms;
+    transition: all 500ms;
     position: absolute;
     color: #000;
     text-indent: 4%;
@@ -231,42 +268,48 @@ input, button, div, span, p {
     padding: 1% 0;
     right: 0;
     bottom: 0;
-    z-index:5;
+    z-index: 5;
 }
+
+    .menuTab_full button {
+        background: none;
+        border: none;
+        font-weight: 900;
+    }
 
 .skye {
     transition: all 500ms;
     position: absolute;
     background-image: url('../images/assets/skye.jpg');
-    background-size:200px 200px;
-    background-position:center;
-    background-repeat:no-repeat;
-
+    background-size: 200px 200px;
+    background-position: center;
+    background-repeat: no-repeat;
     border: none;
     width: 200px;
     height: 200px;
     left: 5px;
-    bottom: 1%;
+    bottom: 0;
     z-index: 5;
 }
+
 .chatBox {
-    color:transparent !important;
+    color: transparent !important;
     transition: all 500ms;
-    color:transparent !important;
+    color: transparent !important;
     position: absolute;
     background: #fff;
     box-shadow: 0 0 8px black;
     border-radius: 0 25px 25px 25px;
     border: none;
     width: .5%;
-    text-align:right;
-    padding-right:20px;
+    text-align: right;
+    padding-right: 20px;
     height: 6%;
     left: 155px;
     bottom: 1%;
     z-index: 5;
-    
 }
+
 .chatBox_full {
     transition: all 500ms;
     position: absolute;
@@ -275,9 +318,9 @@ input, button, div, span, p {
     border-radius: 0 25px 25px 25px;
     border: none;
     width: 60%;
-    transform:skew(0, -30px);
-    text-align:right;
-    padding-right:20px;
+    transform: skew(0, -30px);
+    text-align: right;
+    padding-right: 20px;
     height: 6%;
     left: 155px;
     color: black;
@@ -364,210 +407,233 @@ input, button, div, span, p {
 }
 
 .backMenuBtn {
-    right:1%;
-    bottom:82%;
-    color:rgba(177, 10, 9, 0.6);
+    right: 1%;
+    bottom: 82%;
+    color: rgba(177, 10, 9, 0.6);
     text-shadow: 0 2px 0 #000;
-    font-weight:800;
-    font-size:2vh;
-    position:absolute;
-    z-index:7;
-    height:1%;
-    width:1%;
+    font-weight: 800;
+    font-size: 2vh;
+    position: absolute;
+    z-index: 7;
+    height: 1%;
+    width: 1%;
 }
 
 .chatBtn {
-    transition:all 1s;
-    position:absolute;
-    left:1%;
-    top:90%;
-    opacity:1;
-    width:10%;
-    background:red;
-    border-radius:8px;
-    text-align:center;
+    transition: all 1s;
+    position: absolute;
+    left: 1%;
+    top: 90%;
+    opacity: 1;
+    width: 10%;
+    background: red;
+    border-radius: 8px;
+    text-align: center;
 }
+
 .chatBtn_full {
-    transition:all 1s;
-    position:absolute;
-    left:55%;
-    top:90%;
-    width:10%;
-    opacity:1;
-    background:red;
-    border-radius:8px;
-    text-align:center;
+    transition: all 1s;
+    position: absolute;
+    left: 55%;
+    top: 90%;
+    width: 10%;
+    opacity: 1;
+    background: red;
+    border-radius: 8px;
+    text-align: center;
 }
+
 .chatBtn_sleep {
-    transition:all 1s;
-    position:absolute;
-    left:0%;
-    top:90%;
-    width:10%;
-    opacity:0.3;
-    background:transparent;
-    border-radius:8px;
-    text-align:center;
+    transition: all 1s;
+    position: absolute;
+    left: 0%;
+    top: 90%;
+    width: 10%;
+    opacity: 0.3;
+    background: transparent;
+    border-radius: 8px;
+    text-align: center;
 }
 
 .cell {
-    transition:all 40ms;
+    transition: all 40ms;
     border-radius: 7px;
-    position:fixed;
-    background:#fff;
-    width:15px;
-    height:15px;
-    box-shadow:0 0 8px #fff inset;
+    position: fixed;
+    background: #fff;
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 0 8px #fff inset;
 }
 
 
 @keyframes orbitC {
     from {
-        box-shadow:0 0 8px #fff inset;
-        
+        box-shadow: 0 0 8px #fff inset;
     }
-    to {
-        box-shadow:0 0 8px #000 inset;
 
+    to {
+        box-shadow: 0 0 8px #000 inset;
     }
 }
+
 @keyframes orbitO {
     from {
-        box-shadow:0 0 8px #fff inset;
-        margin-top:0;
+        box-shadow: 0 0 8px #fff inset;
     }
+
     to {
-        box-shadow:0 0 8px #000 inset;
-        margin-top:5px;
+        box-shadow: 0 0 8px #000 inset;
     }
 }
+
 @keyframes orbitH {
     from {
-        box-shadow:0 0 8px #bebe13 inset;
-
+        box-shadow: 0 0 8px #bebe13 inset;
     }
-    to {
-        box-shadow:0 0 8px rgba(255, 255, 255, 1) inset;
 
+    to {
+        box-shadow: 0 0 8px rgba(255, 255, 255, 1) inset;
     }
 }
+
 @keyframes orbitS {
     from {
-        box-shadow:0 0 8px #000 inset;
-
+        box-shadow: 0 0 8px #000 inset;
     }
-    to {
-        box-shadow:0 0 18px purple inset;
 
+    to {
+        box-shadow: 0 0 18px purple inset;
     }
 }
+
 @keyframes orbitP {
-    from {
-        box-shadow:0 0 8px #112D5C inset;
-
+    0% {
+        box-shadow: 0 0 18px #fff inset;
     }
-    to {
-        box-shadow:0 0 18px #fff inset;
 
+    25% {
+        box-shadow: 0 0 8px #112D5C inset;
+    }
+
+    50% {
+        box-shadow: 0 0 18px purple inset;
+    }
+
+    75% {
+        box-shadow: 0 0 18px #bebe13 inset;
+    }
+
+    100% {
+        box-shadow: 0 0 18px #fff inset;
     }
 }
+
 @keyframes orbitN {
     from {
-        box-shadow:0 0 8px #fff inset;
-        margin-top:-5px;
-
+        box-shadow: 0 0 8px #fff inset;
     }
+
     to {
-        box-shadow:0 0 18px purple inset;
-        margin-top:5px;
+        box-shadow: 0 0 18px purple inset;
     }
 }
+
 #O {
     animation-name: orbitO;
-  animation-duration: 500ms; 
-  animation-timing-function:ease; 
-  animation-delay: 10ms;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: ease;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-play-state: running;
 }
+
 #C {
     animation-name: orbitC;
-  animation-duration: 1.6s; 
-  animation-timing-function:ease-in-out; 
-  animation-delay: 0s;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: ease-in-out;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    animation-play-state: running;
 }
+
 #H {
     animation-name: orbitH;
-  animation-duration: 1s; 
-  animation-timing-function:ease-in-out; 
-  animation-delay: 0s;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: ease-in-out;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    animation-play-state: running;
 }
+
 #S {
     animation-name: orbitS;
-  animation-duration: 710ms; 
-  animation-timing-function:linear; 
-  animation-delay: 0s;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    animation-play-state: running;
 }
+
 #P {
     animation-name: orbitP;
-  animation-duration: 710ms; 
-  animation-timing-function:linear; 
-  animation-delay: 0s;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: linear;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: none;
+    animation-play-state: running;
 }
+
 #N {
     animation-name: orbitN;
-  animation-duration: 360ms; 
-  animation-timing-function:linear; 
-  animation-delay: 200ms;
-  animation-direction:normal;
-  animation-iteration-count: infinite;
-  animation-fill-mode: none;
-  animation-play-state: running; 
+    animation-duration: 1200ms;
+    animation-timing-function: ease-in-out;
+    animation-direction: normal;
+    animation-iteration-count: infinite;
+    animation-fill-mode: both;
+    animation-play-state: running;
 }
+
 .cells {
-    transition:all 40ms;
+    transition: all 40ms;
     border-radius: 7px;
-    position:fixed;
-    background:#fff;
-    width:15px;
-    height:15px;
-    box-shadow:0 0 8px #fff inset;
-    
+    position: fixed;
+    background: #fff;
+    width: 15px;
+    height: 15px;
+    opacity: 1;
+    box-shadow: 0 0 8px #fff inset;
 }
+
+.cells_hidden {
+    transition: all 40ms;
+    border-radius: 7px;
+    position: fixed;
+    background: #fff;
+    width: 15px;
+    height: 15px;
+    opacity: 0;
+    box-shadow: 0 0 8px #fff inset;
+}
+
 .matter {
-    transition:all 1s;
-    position:fixed;
+    transition: all 1s;
+    position: fixed;
     border-radius: 7px;
-    width:15px;
-    height:15px;
-    box-shadow:0 0 8px #fff inset;
-
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 0 8px #fff inset;
 }
+
 .matter_throw {
-    transition:all 1s;
-    position:fixed;
+    transition: all 1s;
+    position: fixed;
     border-radius: 7px;
-
-    width:15px;
-    height:15px;
-    box-shadow:0 0 8px #fff inset;
-
+    width: 15px;
+    height: 15px;
+    box-shadow: 0 0 8px #fff inset;
 }

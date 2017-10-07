@@ -60,10 +60,12 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls, cBool;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls, cBool, atoms, tBool;
 
+    tBool = 0; // game timer status
+    atoms = ""; // atom strand
     cBool = 0;
-    ls = 1;
+    ls = 1; //length of myBlocks saved
 
     myBlocks = {
         bNum: 0,
@@ -71,15 +73,15 @@
         top: 0,
         left: 0,
         bg: "black"
-    }
+    }// game board peices.
 
     uData = {
         lvl: 0
-    };
+    };  //used to track user level
 
-    uTime = "4000330000";
+    uTime = "4000330000"; // the time is measured during BCE
 
-    skyeLvl = 1;
+    skyeLvl = 1; // AI steps
     skyeChat = {
         0: "",
         1: "First things first, we have to get set up...",
@@ -88,8 +90,9 @@
         4: "For now, you are just a small peice of carbon floating in a vast primordial soup! <br /> New tool unlocked! <strong>Sol Button</strong>",
         5: "Pushing the <strong>Sol button</strong> will cycle the time. Try it!",
         6: "Once your carbon has collected enough debris, plot a new carbon point.<br />New tool unlocked: <strong>Change Plot</strong>",
-        7: "Keep collecting and making clusters, you might just make life!"
-    };
+        7: "Keep collecting and making clusters, you might just make life!",
+        8: "Now that you are familiar with some controls, you are now able to idle time!<br /> New tool unlocked: <strong>Idle Time</strong>"
+    };  // AI chat stuff
 
     title = {
         0: "Pre Abiogenesis Phase",
@@ -112,16 +115,14 @@
         17: "Life Phase  V",
         18: "Pre Complex Life Phase",
         19: "Complex Life Phase"
-
-    };
+    }; // game phases
+    //begin UI object
     UI = {
         //return functions
         bySel: (x) => { return document.querySelector(x) },
         bySelAll: (x) => { return document.querySelectorAll(x) },
         createEle: (x) => { return document.createElement(x) },
         syncChatBox: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
-
-
             var sk = localStorage.getItem("skyeLvl");
             var uD = localStorage.getItem("uData");
 
@@ -139,7 +140,8 @@
 
                 chatBox.innerHTML = skyeChat[sk];
 
-                //console.log(uuu.lvl);
+                //UI.checkTheThings(gameArena);
+
                 if (+sk === 1) {
                     //console.log(sk + "n");
                     chatBtn.innerHTML = "Start";
@@ -198,7 +200,7 @@
                             }, 1010);
                             //console.log(turnBtn);
                         }
-                        }, 60);   
+                    }, 60);
                 }
                 if (+sk === 5) {
                     chatBtn.innerHTML = "Continue";
@@ -211,12 +213,13 @@
                     } else {
                         setTimeout(() => {
                             chatBtn.className = "chatBtn_full";
-  
+
                             chatBtn.onclick = UI.tutor5(gameFrame, chatBox, chatBtn, gameArena, cells, mmb);
                             //gameArena.onclick = UI.changeHomeCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                         }, 10);
                     }
                 }
+
                 if (+sk >= 6) {
 
                     setTimeout(() => {
@@ -226,11 +229,36 @@
                             if (x[j].className === "changeHomeCellBtn") {
 
                                 return x[j].className = "changeHomeCellBtn_full";
-                                      
 
-                            } 
-                            
+
+                            }
+
                         }
+                    }, 60);
+                }
+                if (+sk === 7) {
+                    chatBtn.innerHTML = "Continue";
+                    setTimeout(() => {
+
+                        chatBtn.className = "chatBtn_full";
+                        chatBtn.onclick = UI.tutor6(gameFrame, chatBox, chatBtn);
+
+                    }, 10);
+                }
+                if (+sk >= 8) {
+                    setTimeout(() => {
+                        //var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn");
+                        var x = gameFrame.childNodes;
+                        for (var j = 0; j < x.length; j++) {
+                            if (x[j].className === "timeBtn") {
+
+                                return x[j].className = "timeBtn_full";
+
+
+                            }
+
+                        }
+
                     }, 60);
                 }
             }, 710);
@@ -262,36 +290,38 @@
                     cell.style.top = posY + "px";
                     cell.style.backgroundColor = "black";
                     gameArena.appendChild(cell);
-                    
+                    gameArena.onclick = null;
 
                     mmm.bNum = 1;
                     mmm.left = posX;
                     mmm.top = posY;
                     mmm.bg = "black";
-
-                    localStorage.setItem("skyeLvl", 7);
+                    if (+skk === 6) {
+                        localStorage.setItem("skyeLvl", 7);
+                    }
+                    //localStorage.setItem("skyeLvl", 7);
                     localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
                     chatBox.innerHTML = "";
                     chatBox.className = "chatBox";
 
                     setTimeout(() => {
                         chatBox.className = "chatBox_full";
-                        
+
                         UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                     }, 600);
 
-                        document.body.style.cursor = "initial";
-                        if (!changeHomeCellBtn) {
-                            var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn") || UI.bySel(".changeHomeCellBtn_full");
-                            changeHomeCellBtn.className = "changeHomeCellBtn_full";
-                            gameArena.onclick = null;
-                        } else {
-                            changeHomeCellBtn.className = "changeHomeCellBtn_full";
-                            gameArena.onclick = null;
-                        }
+                    document.body.style.cursor = "initial";
+                    if (!changeHomeCellBtn) {
+                        var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn") || UI.bySel(".changeHomeCellBtn_full");
+                        changeHomeCellBtn.className = "changeHomeCellBtn_full";
+
+                    } else {
+                        changeHomeCellBtn.className = "changeHomeCellBtn_full";
+
+                    }
                 }
             }
-    
+
         },
         //intitializing and localStorage sync
         init: () => {
@@ -319,8 +349,17 @@
             if (!cBool) {
                 localStorage.setItem("cBool", 0);
             }
-            //console.log(ls);
-            //console.log(localStorage);
+
+            var atoms = localStorage.getItem("atoms");
+            if (!atoms) {
+                localStorage.setItem("atoms", "");
+            }
+
+            var tBool = localStorage.getItem("tBool");
+            if (!tBool) {
+                localStorage.setItem("tBool", 0);
+            }
+
             UI.myLoad();
         },
         //loading and UI stuffs
@@ -467,6 +506,7 @@
                 chatBox = UI.createEle('div'),
                 gameArena = UI.createEle("div"),
                 changeHomeCellBtn = UI.createEle("div"),
+                timeBtn = UI.createEle("div"),
                 chatBtn = UI.createEle("div");
 
             chatBtn.className = "chatBtn";
@@ -474,6 +514,10 @@
 
             var uT = localStorage.getItem("uTime"),
                 sk = localStorage.getItem("skyeLvl");
+
+            timeBtn.className = "timeBtn";
+            timeBtn.innerHTML = "▶";
+            timeBtn.onclick = UI.timerToggle(turnBtn, clock, timeBtn);
 
             changeHomeCellBtn.innerHTML = "💠";
             changeHomeCellBtn.className = "changeHomeCellBtn";
@@ -502,17 +546,22 @@
                             cells.innerHTML = "&nbsp;";
                             cells.style.left = mmb.left + "px";
                             cells.style.top = mmb.top + "px";
-                            cells.id = mmb.DNA;
+                            //cells.id = mmb.DNA;
                             cells.style.backgroundColor = mmb.bg;
-                            //cells[0].className = "cell";
+
                         }
+
                         gameArena.appendChild(cells);
-  
+                        setTimeout(() => {
+                            UI.setCells();
+                        }, 300);
+
                     }
                 }
-                
+
+
             }
-            
+
 
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
@@ -526,7 +575,7 @@
             header.innerHTML = title[uuu.lvl];
             header.className = "header";
 
-            slot.innerHTML = "&nbsp;";
+            slot.innerHTML = "🛒";
             slot.className = "slot";
 
             clock.value = uT + " BCE";
@@ -546,6 +595,7 @@
 
             gameFrame.appendChild(gameArena);
             gameFrame.appendChild(changeHomeCellBtn);
+            gameFrame.appendChild(timeBtn);
             gameFrame.appendChild(turnBtn);
             gameFrame.appendChild(header);
             gameFrame.appendChild(slot);
@@ -561,11 +611,71 @@
                     changeHomeCellBtn.className = "changeHomeCellBtn_full";
                     var bb = UI.bySelAll(".cells");
 
-                        bb[0].className = "cell";
-                        console.log(gameArena);
+                    bb[0].className = "cell";
+                    ///console.log(sk);
                 }
-
             }, 400);
+        },
+        timerToggle: (turnBtn, clock, timeBtn) => {
+            return () => {
+                var tBool = localStorage.getItem("tBool");
+
+                if (timeBtn.innerHTML === "▶") {// on
+                    timeBtn.innerHTML = "⏹";
+                    localStorage.setItem("tBool", 1);
+                } else { // off
+                    timeBtn.innerHTML = "▶";
+                    localStorage.setItem("tBool", 0);
+                }
+                var t = localStorage.getItem("tBool");
+                UI.runTimerCheck();
+            }
+        },
+        runTimerCheck: () => {
+            var t = localStorage.getItem("tBool");
+            if (+t === 1) {
+                UI.cellFlush();
+                setTimeout(() => {
+                    UI.runTimerCheck();
+                }, 500);
+                
+            } else {
+                return false;
+            }
+        },
+        setCells: () => {
+            var ls = localStorage.getItem("ls");
+            for (var k = 0; k < +ls; k++) {
+                var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
+
+                if (mBs != null) {
+                    if (mBs) {
+                        var mmb = JSON.parse(mBs);
+                        var cs = UI.bySelAll(".cells");
+                        cs[k].style.animationDelay = k + "0ms";
+                        //cs[k].style.transition = "all " + k + "200ms";
+                        //cs[k].style.left = mmb.left + "px";
+                        cs[k].id = mmb.DNA;
+                    }
+                }
+            }
+        },
+        checkTheThings: (gameArena) => {
+            if (!gameArena) { } else {
+                var gA = gameArena.childNodes;
+                localStorage.setItem("atoms", "C");
+                for (var f = 0; f < gA.length; f++) {
+                    var aa = gA[f].id, bb;
+                    var atoms = localStorage.getItem("atoms");
+
+                    localStorage.setItem("atoms", atoms + aa);
+
+                }
+                var ats = localStorage.getItem("atoms");
+
+                //var x = ats.replace(/[^O]/g, "").length;
+                //console.log(x);
+            }
         },
         homeCellCreate: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb, changeHomeCellBtn) => {
             return () => {
@@ -574,7 +684,31 @@
                 changeHomeCellBtn.className = "changeHomeCellBtn";
                 gameArena.onclick = UI.changeHomeCell(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
                 //console.log(changeHomeCellBtn);
-                
+
+            }
+        },
+        tutor6: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
+            return () => {
+                var sk = localStorage.getItem("skyeLvl");
+
+                chatBox.className = "chatBox";
+                chatBox.innerHTML = "";
+
+                chatBtn.className = "chatBtn";
+                chatBtn.value = "";
+
+                setTimeout(() => {
+                    var ssk = +8;
+
+                    localStorage.setItem("skyeLvl", ssk);
+
+                    setTimeout(() => {
+                        chatBox.className = "chatBox_full";
+
+                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
+
+                    }, 600);
+                }, 100);
             }
         },
         tutor5: (gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb) => {
@@ -617,7 +751,7 @@
                     localStorage.setItem("skyeLvl", ssk);
 
                     setTimeout(() => {
-           
+
 
                         chatBox.className = "chatBox_full";
 
@@ -643,7 +777,7 @@
                     localStorage.setItem("skyeLvl", ssk);
 
                     setTimeout(() => {
-          
+
                         chatBox.className = "chatBox_full";
 
                         UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
@@ -791,19 +925,32 @@
                 matter.style.backgroundColor = "limegreen";
                 matter.id = "N";
             }
+            if (rand > 100 && rand < 800) {
+                matter.style.top = "" + rand + "px";
+            } else {
+                if (rand < 100) {
+                    matter.style.top = "" + (rand + 200) + "px";
+                    //console.log(matter.style.top);
+                } else {
+                    matter.style.top = "" + (rand - 200) + "px";
+                    //console.log(matter.style.top);
+                }
+            }
+
+
             matter.className = "matter";
-            matter.style.top = "" + rand + "px";
+
             matter.style.left = "101%";
 
             matter.innerHTML = "&nbsp;";
 
-            var mUpper = +mmm.top + +15;
-            var mLower = +mmm.top - +15;
+            var mUpper = +mmm.top + +20;
+            var mLower = +mmm.top - +20;
 
             if (!gameArena) {
                 var gameArena = UI.bySel(".gameArena");
             }
-            //-moz-box-shadow: inset 0 20px 20px -20px rgba(0,0,0,
+
             gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
             gameArena.appendChild(matter);
 
@@ -817,7 +964,7 @@
                         rSpot = +mmm.left - +x;
                     matter.style.left = rSpot + "px";
                     matter.style.transition = "all 400ms";
-                    UI.newCellBlock(matter, mmm);
+                    UI.newCellBlock(matter, mmm, gameArena);
                     //console.log(nls);
                 } else {
                     matter.style.left = "-10%";
@@ -830,7 +977,7 @@
                 }
             }, 300);
         },
-        newCellBlock: (matter, mmm) => {
+        newCellBlock: (matter, mmm, gameArena) => {
             var ls = localStorage.getItem("ls"),
                 mB = localStorage.getItem("myBlocks_" + ls);
             var mst = matter.style.top,
@@ -874,7 +1021,7 @@
             localStorage.setItem("ls", +nLs);
 
             localStorage.setItem("myBlocks_" + nLs, JSON.stringify(myBlocks));
-
+            UI.checkTheThings(gameArena);
             //var dsdg = localStorage.getItem("myBlocks_" + nLs);
             //console.log(dsdg);
 
