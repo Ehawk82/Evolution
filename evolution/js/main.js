@@ -546,7 +546,9 @@
                             cells.innerHTML = "&nbsp;";
                             cells.style.left = mmb.left + "px";
                             cells.style.top = mmb.top + "px";
-                            //cells.id = mmb.DNA;
+                            cells.onmouseover = UI.hoverCell(cells);
+                            cells.onmouseout = UI.outHoverCell(cells);
+                            cells.onclick = UI.cellSelected(cells);
                             cells.style.backgroundColor = mmb.bg;
 
                         }
@@ -617,6 +619,30 @@
                 }
             }, 400);
         },
+        cellSelected: (cells) => {
+            return () => {
+
+                if (cells.className === "cells_selected") {
+                    cells.className = "cells";
+                } else {
+                    cells.className = "cells_selected";
+                }
+            }
+        },
+        outHoverCell: (cells) => {
+            return () => {
+                if (cells.className === "cells_selected") { return false;} else {
+                    cells.style.padding = "0 0";
+                    cells.style.borderRadius = "7px";
+                }
+            }
+        },
+        hoverCell: (cells) => {
+            return () => {
+                cells.style.padding = "10px 10px";
+                cells.style.borderRadius = "20px";
+            }
+        },
         closeMarket: (market) => {
             return () => {
                 market.className = "market";
@@ -628,25 +654,29 @@
         },
         marketPage: (gameFrame) => {
             return () => {
-                var market = UI.createEle("div"),
-                    closeBtn = UI.createEle("button");
+                var mk = UI.bySel(".market");
 
-                closeBtn.className = "closeBtn";
-                closeBtn.onclick = UI.closeMarket(market);
-                closeBtn.innerHTML = "close";
+                if (mk) { } else {
+                    var market = UI.createEle("div"),
+                        closeBtn = UI.createEle("button");
 
-                market.className = "market";
-                market.innerHTML = "&nbsp;";
-                market.appendChild(closeBtn);
+                    closeBtn.className = "closeBtn";
+                    closeBtn.onclick = UI.closeMarket(market);
+                    closeBtn.innerHTML = "❌";
 
+                    market.className = "market";
+                    market.innerHTML = "&nbsp;";
 
-                gameFrame.appendChild(market);
+                    market.appendChild(closeBtn);
 
-                setTimeout(() => {
-                    market.className = "market_full";
-                    console.log(market);
-                }, 80);
-                
+                    gameFrame.appendChild(market);
+
+                    setTimeout(() => {
+                        market.className = "market_full";
+                        
+                    }, 600);
+
+                }
             }
         },
         timerToggle: (turnBtn, clock, timeBtn) => {

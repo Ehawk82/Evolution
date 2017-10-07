@@ -603,10 +603,23 @@ input, button, div, span, p {
     border-radius: 7px;
     position: fixed;
     background: #fff;
+    padding:0 0;
     width: 15px;
     height: 15px;
     opacity: 1;
     box-shadow: 0 0 8px #fff inset;
+}
+
+.cells_selected {
+    transition: all 40ms;
+    border-radius: 7px;
+    position: fixed;
+    background: #fff;
+    padding:20px 20px;
+    width: 15px;
+    height: 15px;
+    opacity: 1;
+    border: 2px solid #bebe13 ;
 }
 
 .cells_hidden {
@@ -639,23 +652,27 @@ input, button, div, span, p {
 }
 
 .market {
-    transition:all 1s ;
+    transition:all 500ms ;
     position:fixed;
     height:100%;
     width:100%;
     z-index:51;
-    background:black;
+    background-image: url('../images/assets/metal1.jpg');
+    background-size: auto 100%;
+    border-bottom: 9px ridge silver;
     top:-100%;
     left:0;
 }
 
 .market_full {
-    transition:all 1s ;
-    position:fixed;
-    height:100%;
-    width:100%;
-    z-index:51;
-    background:green;
-    top:0;
-    left:0;
+    transition: all 500ms;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 51;
+    background-image: url('../images/assets/metal1.jpg');
+    background-size:auto 100% ;
+    border-bottom: 9px ridge silver;
+    top: 5%;
+    left: 0;
 }
