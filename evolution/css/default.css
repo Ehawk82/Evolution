@@ -67,8 +67,12 @@ input, button, div, span, p {
 
 .gameArena {
     transition: all 800ms;
-    background: #112D5C;
-    box-shadow: 0 0 20px transparent inset;
+    
+    background-image: url('../images/assets/ooze.jpg');
+    
+    background-size: cover ;
+    background-repeat:no-repeat;
+    box-shadow:0 70px 170px -70px red inset;
     position: absolute;
     width: 100%;
     height: 80%;
@@ -478,7 +482,7 @@ input, button, div, span, p {
 
 @keyframes orbitO {
     from {
-        box-shadow: 0 0 8px #fff inset;
+        box-shadow: 0 0 8px silver inset;
     }
 
     to {
@@ -488,7 +492,7 @@ input, button, div, span, p {
 
 @keyframes orbitH {
     from {
-        box-shadow: 0 0 8px #bebe13 inset;
+        box-shadow: 0 0 8px #6b6b3b inset;
     }
 
     to {
@@ -502,7 +506,7 @@ input, button, div, span, p {
     }
 
     to {
-        box-shadow: 0 0 18px purple inset;
+        box-shadow: 0 0 18px #9b3e9b inset;
     }
 }
 
@@ -516,11 +520,11 @@ input, button, div, span, p {
     }
 
     50% {
-        box-shadow: 0 0 18px purple inset;
+        box-shadow: 0 0 18px #5c035c inset;
     }
 
     75% {
-        box-shadow: 0 0 18px #bebe13 inset;
+        box-shadow: 0 0 18px #7a7a0f inset;
     }
 
     100% {
@@ -608,6 +612,8 @@ input, button, div, span, p {
     height: 15px;
     opacity: 1;
     box-shadow: 0 0 8px #fff inset;
+    border: 0 solid rgba(0,0,0,0);
+    cursor:grab;
 }
 
 .cells_selected {
@@ -619,18 +625,23 @@ input, button, div, span, p {
     width: 15px;
     height: 15px;
     opacity: 1;
-    border: 2px solid #bebe13 ;
+    border: 2px solid rgba(255, 255, 0, 0.88) ;
+    cursor:grabbing;
 }
 
-.cells_hidden {
-    transition: all 40ms;
+.cells_collide {
+    transition: all 400ms;
     border-radius: 7px;
-    position: fixed;
+    position:center;
     background: #fff;
-    width: 15px;
-    height: 15px;
-    opacity: 0;
+    padding:0 0;
+    width: 1px;
+    margin:0 auto;
+    height: 1px;
+    opacity: 1;
     box-shadow: 0 0 8px #fff inset;
+    border: 0 solid rgba(0,0,0,0);
+    cursor:grab;
 }
 
 .matter {
@@ -657,10 +668,10 @@ input, button, div, span, p {
     height:100%;
     width:100%;
     z-index:51;
-    background-image: url('../images/assets/metal1.jpg');
+    background-image: url('../images/assets/window.jpg');
     background-size: auto 100%;
     border-bottom: 9px ridge silver;
-    top:-100%;
+    top:-105%;
     left:0;
 }
 
@@ -670,9 +681,104 @@ input, button, div, span, p {
     height: 100%;
     width: 100%;
     z-index: 51;
-    background-image: url('../images/assets/metal1.jpg');
+    background-image: url('../images/assets/window.jpg');
     background-size:auto 100% ;
     border-bottom: 9px ridge silver;
-    top: 5%;
+    top: 0;
     left: 0;
+}
+
+.closeBtn {
+    margin-top:2.5%;
+    margin-left:1.7%;
+}
+
+.icon {
+    transition:all 500ms;
+    display:inline-block;
+    position:relative;
+    border: 3px solid rgba(220,220,220,0.5);
+    z-index:92;
+    margin-top:40%;
+    margin-left:-10%;
+    color:silver;
+    width:20px;
+    line-height:20px;
+    text-align:center;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;
+
+}
+.icon_full {
+    transition:all 500ms;
+    display:inline-block;
+    position:relative;
+    border: 3px solid rgba(220,220,220,0.5);
+    z-index:92;
+    margin-top:40%;
+    margin-left:5px;
+    color:silver;
+    width:20px;
+    line-height:20px;
+    text-align:center;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;;
+}
+
+.Co2Btn, .sn2Btn, .ns2Btn, .sh2Btn, .np2Btn, .c3Btn, .o3Btn, .h3Btn, .p3Btn, .n3Btn, .s3Btn, .no2Btn {
+    transition:all 500ms;
+    display:block;
+    position:relative;
+    border: 3px solid rgba(220,220,220,0.5);
+    z-index:92;
+    margin-top:20%;
+    margin-left:-10%;
+    color:silver;
+    width:20px;
+    line-height:20px;
+    text-align:center;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;
+}
+
+.Co2Btn_full, .sn2Btn_full, .ns2Btn_full, .sh2Btn_full, .np2Btn_full, .c3Btn_full, .o3Btn_full, .h3Btn_full, .p3Btn_full, .n3Btn_full, .s3Btn_full, .no2Btn_full {
+    transition:all 500ms;
+    display:block;
+    position:relative;
+    border: 3px solid rgba(220,220,220,0.5);
+    z-index:92;
+    margin-top:1%;
+    margin-left:5px;
+    color:silver;
+    width:40px;
+    line-height:20px;
+    text-align:center;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;;
+}
+
+.co2Win, .sn2Win, .ns2Win, .sh2Win, .np2Win, .c3Win, .o3Win, .h3Win, .p3Win, .n3Win, .s3Win, .no2Win {
+    transition:all 200ms;
+    opacity:1;
+    text-align:center;
+    position:fixed;
+    width:100%;
+    line-height:100vh;
+    top:0;
+    color:black;
+    background:rgba(0,0,0,0);
+}
+.co2Win_full, .sn2Win_full, .ns2Win_full, .sh2Win_full, .np2Win_full, .c3Win_full, .o3Win_full, .h3Win_full, .p3Win_full, .n3Win_full, .s3Win_full, .no2Win_full {
+    transition:all 100ms;
+    opacity:1;
+    text-align:center;
+    position:fixed;
+    width:100%;
+    line-height:100vh;
+    top:0;
+    color:#fff;
+    background:rgba(0,0,0,0.28);
+}
+
+.progressBar {
+    transition:all 500ms;
+    position:relative;
+    margin-top:-52px;
+    background:rgba(255, 255, 0, 0.19);
 }

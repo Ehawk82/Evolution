@@ -60,8 +60,9 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls, cBool, atoms, tBool;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls, cBool, atoms, tBool, progMark;
 
+    progMark = 0;
     tBool = 0; // game timer status
     atoms = ""; // atom strand
     cBool = 0;
@@ -271,57 +272,57 @@
             //console.log(gameArena);
             if (mB) {
                 var mmm = JSON.parse(mB);
-            }
-            return () => {
-                var cell = UI.createEle("div"),
-                    posX = event.clientX,
-                    posY = event.clientY;
 
-                var skk = localStorage.getItem("skyeLvl");
-                //console.log(skk);
-                if (+skk >= 6) {
-                    if (oldCell) {
-                        oldCell.remove();
-                    }
-                    document.body.style.cursor = "initial";
-                    cell.className = "cell";
-                    cell.innerHTML = "&nbsp;";
-                    cell.style.left = posX + "px";
-                    cell.style.top = posY + "px";
-                    cell.style.backgroundColor = "black";
-                    gameArena.appendChild(cell);
-                    gameArena.onclick = null;
+                return () => {
+                    var cell = UI.createEle("div"),
+                        posX = event.clientX,
+                        posY = event.clientY;
 
-                    mmm.bNum = 1;
-                    mmm.left = posX;
-                    mmm.top = posY;
-                    mmm.bg = "black";
-                    if (+skk === 6) {
-                        localStorage.setItem("skyeLvl", 7);
-                    }
-                    //localStorage.setItem("skyeLvl", 7);
-                    localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
-                    chatBox.innerHTML = "";
-                    chatBox.className = "chatBox";
+                    var skk = localStorage.getItem("skyeLvl");
+                    //console.log(skk);
+                    if (+skk >= 6) {
+                        if (oldCell) {
+                            oldCell.remove();
+                        }
+                        document.body.style.cursor = "initial";
+                        cell.className = "cell";
+                        cell.innerHTML = "&nbsp;";
+                        cell.style.left = posX + "px";
+                        cell.style.top = posY + "px";
+                        cell.style.backgroundColor = "black";
+                        gameArena.appendChild(cell);
+                        gameArena.onclick = null;
 
-                    setTimeout(() => {
-                        chatBox.className = "chatBox_full";
+                        mmm.bNum = 1;
+                        mmm.left = posX;
+                        mmm.top = posY;
+                        mmm.bg = "black";
+                        if (+skk === 6) {
+                            localStorage.setItem("skyeLvl", 7);
+                        }
+                        //localStorage.setItem("skyeLvl", 7);
+                        localStorage.setItem("myBlocks_1", JSON.stringify(mmm));
+                        chatBox.innerHTML = "";
+                        chatBox.className = "chatBox";
 
-                        UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
-                    }, 600);
+                        setTimeout(() => {
+                            chatBox.className = "chatBox_full";
 
-                    document.body.style.cursor = "initial";
-                    if (!changeHomeCellBtn) {
-                        var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn") || UI.bySel(".changeHomeCellBtn_full");
-                        changeHomeCellBtn.className = "changeHomeCellBtn_full";
+                            UI.syncChatBox(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb);
+                        }, 600);
 
-                    } else {
-                        changeHomeCellBtn.className = "changeHomeCellBtn_full";
+                        document.body.style.cursor = "initial";
+                        if (!changeHomeCellBtn) {
+                            var changeHomeCellBtn = UI.bySel(".changeHomeCellBtn") || UI.bySel(".changeHomeCellBtn_full");
+                            changeHomeCellBtn.className = "changeHomeCellBtn_full";
 
+                        } else {
+                            changeHomeCellBtn.className = "changeHomeCellBtn_full";
+
+                        }
                     }
                 }
             }
-
         },
         //intitializing and localStorage sync
         init: () => {
@@ -360,6 +361,10 @@
                 localStorage.setItem("tBool", 0);
             }
 
+            var progMark = localStorage.getItem("progMark");
+            if (!progMark) {
+                localStorage.setItem("progMark", 0);
+            }
             UI.myLoad();
         },
         //loading and UI stuffs
@@ -507,7 +512,20 @@
                 gameArena = UI.createEle("div"),
                 changeHomeCellBtn = UI.createEle("div"),
                 timeBtn = UI.createEle("div"),
-                chatBtn = UI.createEle("div");
+                chatBtn = UI.createEle("div"),
+                progressBar = UI.createEle("div"),
+                progMark = localStorage.getItem("progMark");
+
+            if (progMark <= 100) {
+                progressBar.className = "progressBar";
+                progressBar.style.width = progMark + "%";
+                progressBar.innerHTML = "&nbsp;";
+            }
+            //if (progMark >= 101 && progMark >= 20) {
+               // progressBar.className = "progressBar";
+              //  progressBar.style.width = progMark + "%";
+              //  progressBar.innerHTML = "&nbsp;";
+           // }
 
             chatBtn.className = "chatBtn";
             chatBtn.innerHTML = "&nbsp;";
@@ -528,43 +546,45 @@
             gameArena.className = "gameArena";
             var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
+            if (mB) {
+                var b = JSON.parse(mB);
+                //console.log(b.bNum);
 
-            var b = JSON.parse(mB);
-            //console.log(b.bNum);
-            if (b.bNum === 0) { } else {
-                for (var k = 0; k < +ls; k++) {
-                    var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
+                if (b.bNum === 0) { } else {
+                    for (var k = 0; k < +ls; k++) {
+                        var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
 
-                    if (mBs != null) {
-                        if (mBs) {
-                            var mmb = JSON.parse(mBs);
+                        if (mBs != null) {
+                            if (mBs) {
+                                var mmb = JSON.parse(mBs);
 
-                            var cells = UI.createEle("div");
+                                var cells = UI.createEle("div");
 
 
-                            cells.className = "cells";
-                            cells.innerHTML = "&nbsp;";
-                            cells.style.left = mmb.left + "px";
-                            cells.style.top = mmb.top + "px";
-                            cells.onmouseover = UI.hoverCell(cells);
-                            cells.onmouseout = UI.outHoverCell(cells);
-                            cells.onclick = UI.cellSelected(cells);
-                            cells.style.backgroundColor = mmb.bg;
+                                cells.className = "cells";
+                                cells.innerHTML = "&nbsp;";
+                                cells.style.left = mmb.left + "px";
+                                cells.style.top = mmb.top + "px";
+                                cells.style.transition = "all 400ms";
+                                cells.onmouseover = UI.hoverCell(cells);
+                                cells.onmouseout = UI.outHoverCell(cells);
+                                cells.onclick = UI.cellSelected(cells);
+                                cells.style.backgroundColor = mmb.bg;
+
+                            }
+
+                            gameArena.appendChild(cells);
+                            setTimeout(() => {
+                                UI.setCells();
+                            }, 300);
 
                         }
-
-                        gameArena.appendChild(cells);
-                        setTimeout(() => {
-                            UI.setCells();
-                        }, 300);
-
                     }
+
+
                 }
 
-
             }
-
-
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
 
@@ -575,6 +595,7 @@
             }
 
             header.innerHTML = title[uuu.lvl];
+            header.appendChild(progressBar);
             header.className = "header";
 
             slot.innerHTML = "🛒";
@@ -613,34 +634,824 @@
                 if (+sk >= 6) {
                     changeHomeCellBtn.className = "changeHomeCellBtn_full";
                     var bb = UI.bySelAll(".cells");
+                    if (bb[0]) {
+                        bb[0].className = "cell";
+                    }
 
-                    bb[0].className = "cell";
-                    ///console.log(sk);
                 }
             }, 400);
         },
-        cellSelected: (cells) => {
+        saveCellState: (cells) => {   
+            for (var c = 1; c < cells.length; c++) {
+                var mst = cells[c].style.left, msl = cells[c].style.top;
+
+                var x = mst.length, y = msl.length, ms, ml;
+
+                if (+x === +6) {
+                    ms = mst.slice(0, 4);
+                }
+                if (+x === +5) {
+                    ms = mst.slice(0, 3);
+                }
+                if (+x === +4) {
+                    ms = mst.slice(0, 2);
+                }
+                if (+x === +3) {
+                    ms = mst.slice(0, 1);
+                }
+                if (+y === +6) {
+                    ml = msl.slice(0, 4);
+                }
+                if (+y === +5) {
+                    ml = msl.slice(0, 3);
+                }
+                if (+y === +4) {
+                    ml = msl.slice(0, 2);
+                }
+                if (+y === +3) {
+                    ml = msl.slice(0, 1);
+                }
+
+                myBlocks.bNum = c;
+                myBlocks.DNA = cells[c].id;
+                myBlocks.left = +ms;
+                myBlocks.top = +ml;
+                myBlocks.bg = cells[c].style.backgroundColor;
+                localStorage.setItem("myBlocks_" + +c, JSON.stringify(myBlocks));
+                localStorage.setItem("ls", +cells.length);
+            }
+        },
+        addPoint: () => {
+            var progBar = UI.bySel(".progressBar"),
+                progMark = localStorage.getItem("progMark"),
+                uD = localStorage.getItem("uData");
+            if (uD) {
+                var uuu = JSON.parse(uD);
+            }
+            if (progBar && progMark <= 99) {
+                localStorage.setItem("progMark", +progMark + +1);
+                var newProMark = localStorage.getItem("progMark");
+
+                progBar.style.width = +newProMark + "%";
+                progBar.style.backgroundColor = "rgba(255, 255, 0, 0.19);";
+                var pg = progBar.parentNode;
+                if (+newProMark === 100) {
+
+                    uuu.lvl = +uuu.lvl + +1;
+                    localStorage.setItem("uData", JSON.stringify(uuu));
+
+                    
+                    pg.innerHTML = title[uuu.lvl]
+                    localStorage.setItem("progMark", 1);
+                    
+                }
+                
+            }
+            var nPm = localStorage.getItem("progMark");
+            var progBar = UI.bySel(".progressBar");
+            if (!progBar) {
+                var progBar = UI.createEle("div");
+                progBar.innerHTML = "&nbsp;";
+                progBar.className = "progressBar";
+                progBar.style.width = +nPm + "%";
+
+                pg.appendChild(progBar);
+
+            }
+            progBar.style.width = +nPm + "%";
+        },
+        no2Collect: (active_cells, icon_full, no2Btn, cells) => {//Nitrogen dioxide 
+            return () => {
+                var no2Win = UI.createEle("h1");
+                no2Win.className = "no2Win";
+                no2Win.innerHTML = "Nitrogen dioxide";
+
+                document.body.appendChild(no2Win);
+                setTimeout(() => {
+                    no2Win.className = "no2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                no2Btn.innerHTML = "💥";
+                no2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    no2Win.remove();
+                    no2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        s3Collect: (active_cells, icon_full, s3Btn, cells) => {//Trisulfur 
+            return () => {
+                var s3Win = UI.createEle("h1");
+                s3Win.className = "s3Win";
+                s3Win.innerHTML = "Trisulfur";
+
+                document.body.appendChild(s3Win);
+                setTimeout(() => {
+                    s3Win.className = "s3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                s3Btn.innerHTML = "💥";
+                s3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    s3Win.remove();
+                    s3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        n3Collect: (active_cells, icon_full, n3Btn, cells) => {//Trinitrogen 
+            return () => {
+                var n3Win = UI.createEle("h1");
+                n3Win.className = "n3Win";
+                n3Win.innerHTML = "Trinitrogen";
+
+                document.body.appendChild(n3Win);
+                setTimeout(() => {
+                    n3Win.className = "n3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                n3Btn.innerHTML = "💥";
+                n3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    n3Win.remove();
+                    n3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        p3Collect: (active_cells, icon_full, p3Btn, cells) => {//Triphosphorus 
+            return () => {
+                var p3Win = UI.createEle("h1");
+                p3Win.className = "p3Win";
+                p3Win.innerHTML = "Triphosphorus";
+
+                document.body.appendChild(p3Win);
+                setTimeout(() => {
+                    p3Win.className = "p3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                p3Btn.innerHTML = "💥";
+                p3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    p3Win.remove();
+                    p3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        h3Collect: (active_cells, icon_full, h3Btn, cells) => {//Molecular Hydrogen
+            return () => {
+                var h3Win = UI.createEle("h1");
+                h3Win.className = "h3Win";
+                h3Win.innerHTML = "Molecular Hydrogen 3";
+
+                document.body.appendChild(h3Win);
+                setTimeout(() => {
+                    h3Win.className = "h3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                h3Btn.innerHTML = "💥";
+                h3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    h3Win.remove();
+                    h3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        o3Collect: (active_cells, icon_full, o3Btn, cells) => {//Ozone
+            return () => {
+                var o3Win = UI.createEle("h1");
+                o3Win.className = "o3Win";
+                o3Win.innerHTML = "Ozone";
+
+                document.body.appendChild(o3Win);
+                setTimeout(() => {
+                    o3Win.className = "o3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                o3Btn.innerHTML = "💥";
+                o3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    o3Win.remove();
+                    o3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        c3Collect: (active_cells, icon_full, c3Btn, cells) => {//Diphosphorus mononitride
+            return () => {
+                var c3Win = UI.createEle("h1");
+                c3Win.className = "c3Win";
+                c3Win.innerHTML = "Tricarbon";
+
+                document.body.appendChild(c3Win);
+                setTimeout(() => {
+                    c3Win.className = "c3Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                c3Btn.innerHTML = "💥";
+                c3Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    c3Win.remove();
+                    c3Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        np2Collect: (active_cells, icon_full, np2Btn, cells) => {//Diphosphorus mononitride
+            return () => {
+                var np2Win = UI.createEle("h1");
+                np2Win.className = "np2Win";
+                np2Win.innerHTML = "Diphosphorus Mononitride";
+
+                document.body.appendChild(np2Win);
+                setTimeout(() => {
+                    np2Win.className = "np2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                np2Btn.innerHTML = "💥";
+                np2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    np2Win.remove();
+                    np2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        sh2Collect: (active_cells, icon_full, sh2Btn, cells) => {//Dihydrogen monosulfide
+            return () => {
+                var sh2Win = UI.createEle("h1");
+                sh2Win.className = "sh2Win";
+                sh2Win.innerHTML = "Dihydrogen Monosulfide";
+
+                document.body.appendChild(sh2Win);
+                setTimeout(() => {
+                    sh2Win.className = "sh2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                sh2Btn.innerHTML = "💥";
+                sh2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    sh2Win.remove();
+                    sh2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        ns2Collect: (active_cells, icon_full, ns2Btn, cells) => {//Disulfur mononitride
+            return () => {
+                var ns2Win = UI.createEle("h1");
+                ns2Win.className = "ns2Win";
+                ns2Win.innerHTML = "Disulfur mononitride";
+
+                document.body.appendChild(ns2Win);
+                setTimeout(() => {
+                    ns2Win.className = "ns2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                ns2Btn.innerHTML = "💥";
+                ns2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    ns2Win.remove();
+                    ns2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
+        sn2Collect: (active_cells, icon_full, sn2Btn, cells) => {//Sulfur dinitride
+
+
+            return () => {
+                var sn2Win = UI.createEle("h1");
+                sn2Win.className = "sn2Win";
+                sn2Win.innerHTML = "Sulfur Dinitride";
+
+                document.body.appendChild(sn2Win);
+                setTimeout(() => {
+                    sn2Win.className = "sn2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+                
+                sn2Btn.innerHTML = "💥";
+                sn2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    sn2Win.remove();
+                    sn2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+        },
+        co2Collect: (active_cells, icon_full, co2Btn, cells) => {//Carbon dioxide
+            return () => {
+                var co2Win = UI.createEle("h1");
+                co2Win.className = "co2Win";
+                co2Win.innerHTML = "Carbon Dioxide";
+
+                document.body.appendChild(co2Win);
+                setTimeout(() => {
+                    co2Win.className = "co2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+                
+                co2Btn.innerHTML = "💥";
+                co2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[2].remove();
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    co2Win.remove();
+                    co2Btn.remove();
+
+                    icon_full[2].remove();
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+        },
+        runCellChecker: () => {
+            localStorage.setItem("atoms", "");
+
+            var icon_full = UI.bySelAll(".icon_full");
+            var active_cells = UI.bySelAll(".cells_selected");
+            var cells = UI.bySelAll(".cells");
+
+            for (var i = 0; i < icon_full.length; i++) {
+                var stuffs = icon_full[i].innerHTML;
+                var atoms = localStorage.getItem("atoms");
+                localStorage.setItem("atoms", atoms + stuffs);
+            };
+
+            var x = localStorage.getItem("atoms");
+
+            if (x === "OCO" || x === "COO" || x === "OOC") {//Carbon dioxide
+                var co2Btn = UI.createEle("button");
+
+                co2Btn.className = "Co2Btn";
+                co2Btn.innerHTML = "💢";
+
+                document.body.appendChild(co2Btn);
+
+                setTimeout(() => {
+                    co2Btn.className = "Co2Btn_full";
+                    co2Btn.onclick = UI.co2Collect(active_cells, icon_full, co2Btn, cells);
+                }, 80);
+                //UI.co2Collect(active_cells, icon_full);
+            } else {
+                var co2Btn_full = UI.bySel(".Co2Btn_full") || UI.bySel(".Co2Btn");
+
+                if (!co2Btn_full || co2Btn_full === null) { } else {
+                    co2Btn_full.remove();
+                }
+
+            }
+            if (x === "NSN" || x === "SNN" || x === "NNS") {//Sulfur dinitride
+                var sn2Btn = UI.createEle("button");
+
+                sn2Btn.className = "sn2Btn";
+                sn2Btn.innerHTML = "💢";
+
+                document.body.appendChild(sn2Btn);
+
+                setTimeout(() => {
+                    sn2Btn.className = "sn2Btn_full";
+                    sn2Btn.onclick = UI.sn2Collect(active_cells, icon_full, sn2Btn, cells);
+                }, 80);
+
+            } else {
+                var sn2Btn_full = UI.bySel(".sn2Btn_full") || UI.bySel(".sn2Btn");
+
+                if (!sn2Btn_full || sn2Btn_full === null) { } else {
+                    sn2Btn_full.remove();
+                }
+
+            }
+            if (x === "NSS" || x === "SNS" || x === "SSN") {//Disulfur mononitride
+                var ns2Btn = UI.createEle("button");
+
+                ns2Btn.className = "ns2Btn";
+                ns2Btn.innerHTML = "💢";
+
+                document.body.appendChild(ns2Btn);
+
+                setTimeout(() => {
+                    ns2Btn.className = "ns2Btn_full";
+                    ns2Btn.onclick = UI.ns2Collect(active_cells, icon_full, ns2Btn, cells);
+                }, 80);
+
+            } else {
+                var ns2Btn_full = UI.bySel(".ns2Btn_full") || UI.bySel(".ns2Btn");
+
+                if (!ns2Btn_full || ns2Btn_full === null) { } else {
+                    ns2Btn_full.remove();
+                }
+
+            }
+            if (x === "SHH" || x === "HSH" || x === "HHS") {//Dihydrogen monosulfide
+                var sh2Btn = UI.createEle("button");
+
+                sh2Btn.className = "sh2Btn";
+                sh2Btn.innerHTML = "💢";
+
+                document.body.appendChild(sh2Btn);
+
+                setTimeout(() => {
+                    sh2Btn.className = "sh2Btn_full";
+                    sh2Btn.onclick = UI.ns2Collect(active_cells, icon_full, sh2Btn, cells);
+                }, 80);
+
+            } else {
+                var sh2Btn_full = UI.bySel(".sh2Btn_full") || UI.bySel(".sh2Btn");
+
+                if (!sh2Btn_full || sh2Btn_full === null) { } else {
+                    sh2Btn_full.remove();
+                }
+
+            }
+            
+            if (x === "NPP" || x === "PNP" || x === "PPN") {//Diphosphorus mononitride
+                var np2Btn = UI.createEle("button");
+
+                np2Btn.className = "sh2Btn";
+                np2Btn.innerHTML = "💢";
+
+                document.body.appendChild(np2Btn);
+
+                setTimeout(() => {
+                    np2Btn.className = "sh2Btn_full";
+                    np2Btn.onclick = UI.np2Collect(active_cells, icon_full, np2Btn, cells);
+                }, 80);
+
+            } else {
+                var np2Btn_full = UI.bySel(".np2Btn_full") || UI.bySel(".np2Btn");
+
+                if (!np2Btn_full || np2Btn_full === null) { } else {
+                    np2Btn_full.remove();
+                }
+
+            }
+            if (x === "CCC") {//Tricarbon
+                var c3Btn = UI.createEle("button");
+
+                c3Btn.className = "c3Btn";
+                c3Btn.innerHTML = "💢";
+
+                document.body.appendChild(c3Btn);
+
+                setTimeout(() => {
+                    c3Btn.className = "c3Btn_full";
+                    c3Btn.onclick = UI.c3Collect(active_cells, icon_full, c3Btn, cells);
+                }, 80);
+
+            } else {
+                var c3Btn_full = UI.bySel(".c3Btn_full") || UI.bySel(".c3Btn");
+
+                if (!c3Btn_full || c3Btn_full === null) { } else {
+                    c3Btn_full.remove();
+                }
+
+            }
+            if (x === "OOO") {//Ozone
+                var o3Btn = UI.createEle("button");
+
+                o3Btn.className = "o3Btn";
+                o3Btn.innerHTML = "💢";
+
+                document.body.appendChild(o3Btn);
+
+                setTimeout(() => {
+                    o3Btn.className = "o3Btn_full";
+                    o3Btn.onclick = UI.o3Collect(active_cells, icon_full, o3Btn, cells);
+                }, 80);
+
+            } else {
+                var o3Btn_full = UI.bySel(".o3Btn_full") || UI.bySel(".o3Btn");
+
+                if (!o3Btn_full || o3Btn_full === null) { } else {
+                    o3Btn_full.remove();
+                }
+
+            }
+            if (x === "HHH") {//Molecular Hydrogen
+                var h3Btn = UI.createEle("button");
+
+                h3Btn.className = "h3Btn";
+                h3Btn.innerHTML = "💢";
+
+                document.body.appendChild(h3Btn);
+
+                setTimeout(() => {
+                    h3Btn.className = "h3Btn_full";
+                    h3Btn.onclick = UI.h3Collect(active_cells, icon_full, h3Btn, cells);
+                }, 80);
+
+            } else {
+                var h3Btn_full = UI.bySel(".h3Btn_full") || UI.bySel(".h3Btn");
+
+                if (!h3Btn_full || h3Btn_full === null) { } else {
+                    h3Btn_full.remove();
+                }
+            }
+            if (x === "PPP") {//Triphosphorus
+                var p3Btn = UI.createEle("button");
+
+                p3Btn.className = "p3Btn";
+                p3Btn.innerHTML = "💢";
+
+                document.body.appendChild(p3Btn);
+
+                setTimeout(() => {
+                    p3Btn.className = "p3Btn_full";
+                    p3Btn.onclick = UI.p3Collect(active_cells, icon_full, p3Btn, cells);
+                }, 80);
+
+            } else {
+                var p3Btn_full = UI.bySel(".p3Btn_full") || UI.bySel(".p3Btn");
+
+                if (!p3Btn_full || p3Btn_full === null) { } else {
+                    p3Btn_full.remove();
+                }
+            }
+            if (x === "NNN") {//Trinitrogen
+                var n3Btn = UI.createEle("button");
+
+                n3Btn.className = "n3Btn";
+                n3Btn.innerHTML = "💢";
+
+                document.body.appendChild(n3Btn);
+
+                setTimeout(() => {
+                    n3Btn.className = "n3Btn_full";
+                    n3Btn.onclick = UI.n3Collect(active_cells, icon_full, n3Btn, cells);
+                }, 80);
+
+            } else {
+                var n3Btn_full = UI.bySel(".n3Btn_full") || UI.bySel(".n3Btn");
+
+                if (!n3Btn_full || n3Btn_full === null) { } else {
+                    n3Btn_full.remove();
+                }
+            }
+            if (x === "SSS") {//Trisulfur
+                var s3Btn = UI.createEle("button");
+
+                s3Btn.className = "s3Btn";
+                s3Btn.innerHTML = "💢";
+
+                document.body.appendChild(s3Btn);
+
+                setTimeout(() => {
+                    s3Btn.className = "s3Btn_full";
+                    s3Btn.onclick = UI.n3Collect(active_cells, icon_full, s3Btn, cells);
+                }, 80);
+
+            } else {
+                var s3Btn_full = UI.bySel(".s3Btn_full") || UI.bySel(".s3Btn");
+
+                if (!s3Btn_full || s3Btn_full === null) { } else {
+                    s3Btn_full.remove();
+                }
+            }
+            if (x === "NOO" || x === "ONO" || x === "OON") {//Nitrogen dioxide
+                var no2Btn = UI.createEle("button");
+
+                no2Btn.className = "no2Btn";
+                no2Btn.innerHTML = "💢";
+
+                document.body.appendChild(no2Btn);
+
+                setTimeout(() => {
+                    no2Btn.className = "no2Btn_full";
+                    no2Btn.onclick = UI.no2Collect(active_cells, icon_full, no2Btn, cells);
+                }, 80);
+
+            } else {
+                var no2Btn_full = UI.bySel(".no2Btn_full") || UI.bySel(".no2Btn");
+
+                if (!no2Btn_full || no2Btn_full === null) { } else {
+                    no2Btn_full.remove();
+                }
+            }
+        },
+        generateCellIcon: (cells) => {
+
+            var icon = UI.createEle("div");
+
+            icon.className = "icon";
+            icon.style.backgroundColor = cells.style.backgroundColor;
+            icon.innerHTML = cells.id;
+
+            document.body.appendChild(icon);
+
+            setTimeout(() => {
+                icon.className = "icon_full";
+                UI.runCellChecker();
+            }, 40);
+        },
+        takeAwayCellIcon: (cells) => {
+            var icons = UI.bySelAll(".icon_full") || UI.bySelAll(".icon");
+
+            for (var i = 0; i < icons.length; i++) {
+                if (icons[i].innerHTML === cells.id) {
+                    return UI.iconRemover(icons, i);
+                }
+            }
+        },
+        iconRemover: (icons, i) => {
+            icons[i].className = "icon";
+
+            setTimeout(() => {
+                icons[i].remove();
+                UI.runCellChecker();
+            }, 200);
+
+        },
+        cellSelected: (cells, matter) => {
             return () => {
 
                 if (cells.className === "cells_selected") {
                     cells.className = "cells";
+
+                    UI.takeAwayCellIcon(cells);
                 } else {
                     cells.className = "cells_selected";
+
+                    UI.generateCellIcon(cells);
                 }
             }
         },
-        outHoverCell: (cells) => {
+        outHoverCell: (cells, matter) => {
             return () => {
-                if (cells.className === "cells_selected") { return false;} else {
-                    cells.style.padding = "0 0";
-                    cells.style.borderRadius = "7px";
+                if (cells) {
+                    if (cells.className === "cells_selected") { return false; } else {
+                        cells.style.padding = "0 0";
+                        cells.style.borderRadius = "7px";
+                    }
+                } else {
+                    if (matter.className === "cells_selected") { return false; } else {
+                        matter.style.padding = "0 0";
+                        matter.style.borderRadius = "7px";
+                    }
                 }
             }
         },
-        hoverCell: (cells) => {
+        hoverCell: (cells, matter) => {
             return () => {
-                cells.style.padding = "10px 10px";
-                cells.style.borderRadius = "20px";
+                if (cells) {
+                    cells.style.padding = "10px 10px";
+                    cells.style.borderRadius = "20px";
+
+                } else {
+                    matter.style.padding = "10px 10px";
+                    matter.style.borderRadius = "20px";
+                }
             }
         },
         closeMarket: (market) => {
@@ -673,7 +1484,7 @@
 
                     setTimeout(() => {
                         market.className = "market_full";
-                        
+
                     }, 600);
 
                 }
@@ -701,13 +1512,14 @@
                 setTimeout(() => {
                     UI.runTimerCheck();
                 }, 500);
-                
+
             } else {
                 return false;
             }
         },
         setCells: () => {
             var ls = localStorage.getItem("ls");
+            
             for (var k = 0; k < +ls; k++) {
                 var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
 
@@ -715,10 +1527,13 @@
                     if (mBs) {
                         var mmb = JSON.parse(mBs);
                         var cs = UI.bySelAll(".cells");
-                        cs[k].style.animationDelay = k + "0ms";
-                        //cs[k].style.transition = "all " + k + "200ms";
-                        //cs[k].style.left = mmb.left + "px";
-                        cs[k].id = mmb.DNA;
+                        if (cs[k]) {
+                            cs[k].style.animationDelay = k + "0ms";
+                            //cs[k].style.transition = "all " + k + "200ms";
+                            //cs[k].style.left = mmb.left + "px";
+                            cs[k].id = mmb.DNA;
+                        }
+                        //if (cs[k] ) {}
                     }
                 }
             }
@@ -932,25 +1747,26 @@
                 if (uD) {
                     var udd = JSON.parse(uD);
                 }
+                if (udd.lvl <= 20) {
+                    var uuu = +uT - +1;
 
-                var uuu = +uT - +1;
+                    localStorage.setItem("uTime", uuu);
+                    if (!clock) {
+                        var clock = UI.bySel(".clock");
+                        clock.value = uuu + " BCE";
+                    } else {
+                        clock.value = uuu + " BCE";
+                    }
 
-                localStorage.setItem("uTime", uuu);
-                if (!clock) {
-                    var clock = UI.bySel(".clock");
-                    clock.value = uuu + " BCE";
-                } else {
-                    clock.value = uuu + " BCE";
-                }
-                if (udd.lvl <= 9) {
 
                     UI.cellFlush();
 
-                }
 
-                setTimeout(() => {
-                    turnBtn.innerHTML = "🌞";
-                }, 500);
+
+                    setTimeout(() => {
+                        turnBtn.innerHTML = "🌞";
+                    }, 500);
+                }
             };
         },
         cellFlush: () => {
@@ -1007,38 +1823,50 @@
 
             matter.innerHTML = "&nbsp;";
 
-            var mUpper = +mmm.top + +20;
-            var mLower = +mmm.top - +20;
-
+            matter.onmouseover = UI.hoverCell(matter);
+            matter.onmouseout = UI.outHoverCell(matter);
+            matter.onclick = UI.cellSelected(matter);
+            if (mmm) {
+                var mUpper = +mmm.top + +20;
+                var mLower = +mmm.top - +20;
+                
+            }
+            var gameArena = UI.bySel(".gameArena");
             if (!gameArena) {
-                var gameArena = UI.bySel(".gameArena");
+
+
+
+            } else {
+                gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
+                gameArena.appendChild(matter);
+
+                setTimeout(() => {
+                    gameArena.style.boxShadow = "0 70px 170px -70px red inset";
+
+                    if (rand <= mUpper && rand >= mLower) {
+                        //console.log(ls)
+                        var nls = localStorage.getItem("ls");
+                        var x = Math.floor((Math.random() * (+15 + +nls))),
+                            rSpot = +mmm.left - +x;
+                        matter.style.left = rSpot + "px";
+                        matter.style.transition = "all 400ms";
+                        UI.newCellBlock(matter, mmm, gameArena);
+                        //console.log(nls);
+                    } else {
+                        matter.style.left = "-10%";
+                        if (matter.style.left === "-10%") {
+                            setTimeout(() => {
+                                matter.remove();
+                            }, 1000);
+
+                        }
+                    }
+                }, 300);
             }
 
-            gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
-            gameArena.appendChild(matter);
 
-            setTimeout(() => {
-                gameArena.style.boxShadow = "0 70px 170px -70px red inset";
 
-                if (rand <= mUpper && rand >= mLower) {
-                    //console.log(ls)
-                    var nls = localStorage.getItem("ls");
-                    var x = Math.floor((Math.random() * (+15 + +nls))),
-                        rSpot = +mmm.left - +x;
-                    matter.style.left = rSpot + "px";
-                    matter.style.transition = "all 400ms";
-                    UI.newCellBlock(matter, mmm, gameArena);
-                    //console.log(nls);
-                } else {
-                    matter.style.left = "-10%";
-                    if (matter.style.left === "-10%") {
-                        setTimeout(() => {
-                            matter.remove();
-                        }, 1000);
 
-                    }
-                }
-            }, 300);
         },
         newCellBlock: (matter, mmm, gameArena) => {
             var ls = localStorage.getItem("ls"),
@@ -1084,7 +1912,7 @@
             localStorage.setItem("ls", +nLs);
 
             localStorage.setItem("myBlocks_" + nLs, JSON.stringify(myBlocks));
-            UI.checkTheThings(gameArena);
+            //UI.checkTheThings(gameArena);
             //var dsdg = localStorage.getItem("myBlocks_" + nLs);
             //console.log(dsdg);
 
@@ -1115,6 +1943,8 @@
 
     window.onload = () => {
         UI.init();
+
+        //console.log(localStorage);
     };
 
     app.start();
