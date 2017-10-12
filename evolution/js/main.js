@@ -60,7 +60,7 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, ls, cBool, atoms, tBool, progMark;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, images, ls, cBool, atoms, tBool, progMark;
 
     progMark = 0;
     tBool = 0; // game timer status
@@ -117,6 +117,48 @@
         18: "Pre Complex Life Phase",
         19: "Complex Life Phase"
     }; // game phases
+
+    images = {
+        0: "url(../images/assets/sheet.jpg)",
+        1: "url(../images/assets/sheet1.jpg)",
+        2: "url(../images/assets/sheet2.jpg)",
+        3: "url(../images/assets/sheet3.jpg)",
+        4: "url(../images/assets/sheet4.jpg)",
+        5: "url(../images/assets/sheet5.jpg)",
+        6: "url(../images/assets/sheet6.jpg)",
+        7: "url(../images/assets/sheet7.jpg)",
+        8: "url(../images/assets/sheet8.jpg)",
+        9: "url(../images/assets/sheet9.jpg)",
+        10: "url(../images/assets/sheet10.jpg)",
+        11: "url(../images/assets/sheet11.jpg)",
+        12: "url(../images/assets/sheet12.jpg)",
+        13: "url(../images/assets/sheet13.jpg)",
+        14: "url(../images/assets/sheet14.jpg)",
+        15: "url(../images/assets/sheet15.jpg)",
+        16: "url(../images/assets/sheet16.jpg)",
+        17: "url(../images/assets/sheet17.jpg)",
+        18: "url(../images/assets/sheet18.jpg)",
+        19: "url(../images/assets/sheet19.jpg)"
+    }; // game images
+
+    var molecules = {
+        CO2: 0,
+        C2: 0,
+        SN2: 0,
+        NS2: 0,
+        SH2: 0,
+        NP2: 0,
+        C3: 0,
+        O3: 0,
+        O2: 0,
+        H3: 0,
+        P3: 0,
+        PP: 0,
+        N3: 0,
+        S3: 0,
+        NO2: 0
+    };
+
     //begin UI object
     UI = {
         //return functions
@@ -365,6 +407,11 @@
             if (!progMark) {
                 localStorage.setItem("progMark", 0);
             }
+
+            var mlcs = localStorage.getItem("molecules");
+            if (!mlcs) {
+                localStorage.setItem("molecules", JSON.stringify(molecules));
+            }
             UI.myLoad();
         },
         //loading and UI stuffs
@@ -522,10 +569,10 @@
                 progressBar.innerHTML = "&nbsp;";
             }
             //if (progMark >= 101 && progMark >= 20) {
-               // progressBar.className = "progressBar";
-              //  progressBar.style.width = progMark + "%";
-              //  progressBar.innerHTML = "&nbsp;";
-           // }
+            // progressBar.className = "progressBar";
+            //  progressBar.style.width = progMark + "%";
+            //  progressBar.innerHTML = "&nbsp;";
+            // }
 
             chatBtn.className = "chatBtn";
             chatBtn.innerHTML = "&nbsp;";
@@ -587,6 +634,7 @@
             }
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
+            turnBtn.style.backgroundImage = images[uuu.lvl];
 
             if (+sk < 4) {
                 turnBtn.disabled = true;
@@ -595,18 +643,22 @@
             }
 
             header.innerHTML = title[uuu.lvl];
+            header.style.backgroundImage = images[uuu.lvl];
             header.appendChild(progressBar);
             header.className = "header";
 
-            slot.innerHTML = "🛒";
+            slot.innerHTML = "🔬";
+            slot.style.backgroundImage = images[uuu.lvl];
             slot.onclick = UI.marketPage(gameFrame);
             slot.className = "slot";
 
+            clock.style.backgroundImage = images[uuu.lvl];
             clock.value = uT + " BCE";
             clock.className = "clock";
             clock.readOnly = true;
 
             menu.innerHTML = "Menu";
+            menu.style.backgroundImage = images[uuu.lvl];
             menu.onclick = UI.userMenu(menu, gameFrame);
             menu.className = "menuTab";
 
@@ -641,7 +693,7 @@
                 }
             }, 400);
         },
-        saveCellState: (cells) => {   
+        saveCellState: (cells) => {
             for (var c = 1; c < cells.length; c++) {
                 var mst = cells[c].style.left, msl = cells[c].style.top;
 
@@ -700,12 +752,11 @@
                     uuu.lvl = +uuu.lvl + +1;
                     localStorage.setItem("uData", JSON.stringify(uuu));
 
-                    
+
                     pg.innerHTML = title[uuu.lvl]
                     localStorage.setItem("progMark", 1);
-                    
+
                 }
-                
             }
             var nPm = localStorage.getItem("progMark");
             var progBar = UI.bySel(".progressBar");
@@ -719,11 +770,29 @@
 
             }
             progBar.style.width = +nPm + "%";
+            var turnBtn = UI.bySel(".turnBtn"),
+                header = UI.bySel(".header"),
+                slot = UI.bySel(".slot"),
+                clock = UI.bySel(".clock"),
+                menu = UI.bySel(".menuTab");
+
+            turnBtn.style.backgroundImage = images[uuu.lvl];
+            header.style.backgroundImage = images[uuu.lvl];
+            slot.style.backgroundImage = images[uuu.lvl];
+            clock.style.backgroundImage = images[uuu.lvl];
+            menu.style.backgroundImage = images[uuu.lvl];
+
+
         },
         no2Collect: (active_cells, icon_full, no2Btn, cells) => {//Nitrogen dioxide 
             return () => {
                 var no2Win = UI.createEle("h1");
                 no2Win.className = "no2Win";
+
+                no2Win.id = "NO2";
+                var x = no2Win.id;
+                UI.saveMolecule(x);
+
                 no2Win.innerHTML = "Nitrogen dioxide";
 
                 document.body.appendChild(no2Win);
@@ -757,6 +826,11 @@
             return () => {
                 var s3Win = UI.createEle("h1");
                 s3Win.className = "s3Win";
+
+                s3Win.id = "S3";
+                var x = s3Win.id;
+                UI.saveMolecule(x);
+
                 s3Win.innerHTML = "Trisulfur";
 
                 document.body.appendChild(s3Win);
@@ -790,6 +864,11 @@
             return () => {
                 var n3Win = UI.createEle("h1");
                 n3Win.className = "n3Win";
+
+                n3Win.id = "N3";
+                var x = n3Win.id;
+                UI.saveMolecule(x);
+
                 n3Win.innerHTML = "Trinitrogen";
 
                 document.body.appendChild(n3Win);
@@ -819,10 +898,51 @@
             }
 
         },
+        ppCollect: (active_cells, icon_full, ppBtn, cells) => {//Diphosphorus 
+            return () => {
+                var ppWin = UI.createEle("h1");
+                ppWin.className = "ppWin";
+
+                ppWin.id = "PP";
+                var x = ppWin.id;
+                UI.saveMolecule(x);
+
+                ppWin.innerHTML = "Diphosphorus";
+
+                document.body.appendChild(ppWin);
+                setTimeout(() => {
+                    ppWin.className = "ppWin_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                ppBtn.innerHTML = "💥";
+                ppBtn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    ppWin.remove();
+                    ppBtn.remove();
+
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
         p3Collect: (active_cells, icon_full, p3Btn, cells) => {//Triphosphorus 
             return () => {
                 var p3Win = UI.createEle("h1");
                 p3Win.className = "p3Win";
+
+                p3Win.id = "P3";
+                var x = p3Win.id;
+                UI.saveMolecule(x);
+
                 p3Win.innerHTML = "Triphosphorus";
 
                 document.body.appendChild(p3Win);
@@ -856,6 +976,11 @@
             return () => {
                 var h3Win = UI.createEle("h1");
                 h3Win.className = "h3Win";
+
+                h3Win.id = "H3";
+                var x = h3Win.id;
+                UI.saveMolecule(x);
+
                 h3Win.innerHTML = "Molecular Hydrogen 3";
 
                 document.body.appendChild(h3Win);
@@ -885,10 +1010,53 @@
             }
 
         },
+        o2Collect: (active_cells, icon_full, o2Btn, cells) => {//Ozone
+            return () => {
+                var o2Win = UI.createEle("h1");
+                o2Win.className = "o2Win";
+
+                o2Win.id = "O2";
+                var x = o2Win.id;
+                UI.saveMolecule(x);
+
+                o2Win.innerHTML = "Molecular Oxygen";
+
+                document.body.appendChild(o2Win);
+                setTimeout(() => {
+                    o2Win.className = "o2Win_full";
+                }, 100);
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                o2Btn.innerHTML = "💥";
+                o2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    o2Win.remove();
+                    o2Btn.remove();
+
+
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+
+        },
         o3Collect: (active_cells, icon_full, o3Btn, cells) => {//Ozone
             return () => {
                 var o3Win = UI.createEle("h1");
                 o3Win.className = "o3Win";
+
+                o3Win.id = "O3";
+                var x = o3Win.id;
+                UI.saveMolecule(x);
+
                 o3Win.innerHTML = "Ozone";
 
                 document.body.appendChild(o3Win);
@@ -922,6 +1090,11 @@
             return () => {
                 var c3Win = UI.createEle("h1");
                 c3Win.className = "c3Win";
+
+                c3Win.id = "C3";
+                var x = c3Win.id;
+                UI.saveMolecule(x);
+
                 c3Win.innerHTML = "Tricarbon";
 
                 document.body.appendChild(c3Win);
@@ -955,6 +1128,11 @@
             return () => {
                 var np2Win = UI.createEle("h1");
                 np2Win.className = "np2Win";
+
+                np2Win.id = "NP2";
+                var x = np2Win.id;
+                UI.saveMolecule(x);
+
                 np2Win.innerHTML = "Diphosphorus Mononitride";
 
                 document.body.appendChild(np2Win);
@@ -988,6 +1166,11 @@
             return () => {
                 var sh2Win = UI.createEle("h1");
                 sh2Win.className = "sh2Win";
+
+                sh2Win.id = "SH2";
+                var x = sh2Win.id;
+                UI.saveMolecule(x);
+
                 sh2Win.innerHTML = "Dihydrogen Monosulfide";
 
                 document.body.appendChild(sh2Win);
@@ -1021,6 +1204,11 @@
             return () => {
                 var ns2Win = UI.createEle("h1");
                 ns2Win.className = "ns2Win";
+
+                ns2Win.id = "NS2";
+                var x = ns2Win.id;
+                UI.saveMolecule(x);
+
                 ns2Win.innerHTML = "Disulfur mononitride";
 
                 document.body.appendChild(ns2Win);
@@ -1056,6 +1244,11 @@
             return () => {
                 var sn2Win = UI.createEle("h1");
                 sn2Win.className = "sn2Win";
+
+                sn2Win.id = "SN2";
+                var x = sn2Win.id;
+                UI.saveMolecule(x);
+
                 sn2Win.innerHTML = "Sulfur Dinitride";
 
                 document.body.appendChild(sn2Win);
@@ -1065,7 +1258,7 @@
                 for (var i = 0; i < active_cells.length; i++) {
                     active_cells[i].className = "cells_collide";
                 }
-                
+
                 sn2Btn.innerHTML = "💥";
                 sn2Btn.onclick = null;
                 UI.addPoint();
@@ -1084,20 +1277,70 @@
                 }, 1000);
             }
         },
+        c2Collect: (active_cells, icon_full, c2Btn, cells) => {//Diatomic Carbon
+            return () => {
+                var c2Win = UI.createEle("h1");
+                c2Win.className = "c2Win";
+
+                c2Win.id = "C2";
+                var x = c2Win.id;
+                UI.saveMolecule(x);
+
+                c2Win.innerHTML = "Diatomic Carbon";
+
+                document.body.appendChild(c2Win);
+
+
+
+                setTimeout(() => {
+                    c2Win.className = "c2Win_full";
+                }, 100);
+
+                for (var i = 0; i < active_cells.length; i++) {
+                    active_cells[i].className = "cells_collide";
+                }
+
+                c2Btn.innerHTML = "💥";
+                c2Btn.onclick = null;
+                UI.addPoint();
+                UI.saveCellState(cells);
+
+                setTimeout(() => {
+
+                    active_cells[1].remove();
+                    active_cells[0].remove();
+                    c2Win.remove();
+                    c2Btn.remove();
+
+
+                    icon_full[1].remove();
+                    icon_full[0].remove();
+                }, 1000);
+            }
+        },
         co2Collect: (active_cells, icon_full, co2Btn, cells) => {//Carbon dioxide
             return () => {
                 var co2Win = UI.createEle("h1");
                 co2Win.className = "co2Win";
+
+                co2Win.id = "CO2";
+                var x = co2Win.id;
+                UI.saveMolecule(x);
+
                 co2Win.innerHTML = "Carbon Dioxide";
 
                 document.body.appendChild(co2Win);
+
+
+
                 setTimeout(() => {
                     co2Win.className = "co2Win_full";
                 }, 100);
+
                 for (var i = 0; i < active_cells.length; i++) {
                     active_cells[i].className = "cells_collide";
                 }
-                
+
                 co2Btn.innerHTML = "💥";
                 co2Btn.onclick = null;
                 UI.addPoint();
@@ -1115,6 +1358,16 @@
                     icon_full[0].remove();
                 }, 1000);
             }
+        },
+        saveMolecule: (x) => {
+            var mlcs = localStorage.getItem("molecules");
+
+            if (mlcs) {
+                var mcc = JSON.parse(mlcs);
+            }
+
+            mcc[x] = +mcc[x] + +1;
+            localStorage.setItem("molecules", JSON.stringify(mcc));
         },
         runCellChecker: () => {
             localStorage.setItem("atoms", "");
@@ -1149,6 +1402,27 @@
 
                 if (!co2Btn_full || co2Btn_full === null) { } else {
                     co2Btn_full.remove();
+                }
+
+            }
+            if (x === "CC") {//Carbon dioxide
+                var c2Btn = UI.createEle("button");
+
+                c2Btn.className = "C2Btn";
+                c2Btn.innerHTML = "💢";
+
+                document.body.appendChild(c2Btn);
+
+                setTimeout(() => {
+                    c2Btn.className = "C2Btn_full";
+                    c2Btn.onclick = UI.c2Collect(active_cells, icon_full, c2Btn, cells);
+                }, 80);
+
+            } else {
+                var c2Btn_full = UI.bySel(".C2Btn_full") || UI.bySel(".C2Btn");
+
+                if (!c2Btn_full || c2Btn_full === null) { } else {
+                    c2Btn_full.remove();
                 }
 
             }
@@ -1215,7 +1489,7 @@
                 }
 
             }
-            
+
             if (x === "NPP" || x === "PNP" || x === "PPN") {//Diphosphorus mononitride
                 var np2Btn = UI.createEle("button");
 
@@ -1257,6 +1531,25 @@
                     c3Btn_full.remove();
                 }
 
+            }
+            if (x === "OO") {//Molecular Oxygen
+                var o2Btn = UI.createEle("button");
+
+                o2Btn.className = "o2Btn";
+                o2Btn.innerHTML = "💢";
+
+                document.body.appendChild(o2Btn);
+
+                setTimeout(() => {
+                    o2Btn.className = "o3Btn_full";
+                    o2Btn.onclick = UI.o2Collect(active_cells, icon_full, o2Btn, cells);
+                }, 80);
+            } else {
+                var o2Btn_full = UI.bySel(".o2Btn_full") || UI.bySel(".o2Btn");
+
+                if (!o2Btn_full || o2Btn_full === null) { } else {
+                    o2Btn_full.remove();
+                }
             }
             if (x === "OOO") {//Ozone
                 var o3Btn = UI.createEle("button");
@@ -1379,6 +1672,26 @@
                     no2Btn_full.remove();
                 }
             }
+            if (x === "PP" || x === "PP" || x === "PP") {//Diphosphorus
+                var ppBtn = UI.createEle("button");
+
+                ppBtn.className = "ppBtn";
+                ppBtn.innerHTML = "💢";
+
+                document.body.appendChild(ppBtn);
+
+                setTimeout(() => {
+                    ppBtn.className = "ppBtn_full";
+                    ppBtn.onclick = UI.ppCollect(active_cells, icon_full, ppBtn, cells);
+                }, 80);
+
+            } else {
+                var ppBtn_full = UI.bySel(".ppBtn_full") || UI.bySel(".ppBtn");
+
+                if (!ppBtn_full || ppBtn_full === null) { } else {
+                    ppBtn_full.remove();
+                }
+            }
         },
         generateCellIcon: (cells) => {
 
@@ -1454,10 +1767,10 @@
                 }
             }
         },
-        closeMarket: (market) => {
+        closeMarket: (market, table) => {
             return () => {
                 market.className = "market";
-
+                table.className = "table";
                 setTimeout(() => {
                     market.remove();
                 }, 1005);
@@ -1465,25 +1778,141 @@
         },
         marketPage: (gameFrame) => {
             return () => {
-                var mk = UI.bySel(".market");
+                var mk = UI.bySel(".market"),
+                    mlcs = localStorage.getItem("molecules");
+                if (mlcs) {
+                    var mcc = JSON.parse(mlcs);
+                }
 
                 if (mk) { } else {
                     var market = UI.createEle("div"),
-                        closeBtn = UI.createEle("button");
+                        closeBtn = UI.createEle("button"),
+                        table = UI.createEle("div"),
+                        tableC = UI.createEle("div"),
+                        tableO = UI.createEle("div"),
+                        tableN = UI.createEle("div"),
+                        tableH = UI.createEle("div"),
+                        tableP = UI.createEle("div"),
+                        tableS = UI.createEle("div"),
+                        CO2 = UI.createEle("div"),
+                        C2 = UI.createEle("div"),
+                        SN2 = UI.createEle("div"),
+                        NS2 = UI.createEle("div"),
+                        SH2 = UI.createEle("div"),
+                        NP2 = UI.createEle("div"),
+                        C3 = UI.createEle("div"),
+                        O3 = UI.createEle("div"),
+                        O2 = UI.createEle("div"),
+                        H3 = UI.createEle("div"),
+                        P3 = UI.createEle("div"),
+                        PP = UI.createEle("div"),
+                        N3 = UI.createEle("div"),
+                        S3 = UI.createEle("div"),
+                        NO2 = UI.createEle("div");
+
+
+
+                    NO2.innerHTML = "<span>Nitrogen Dioxide</span>" + "<span>&nbsp;</span><span>" + mcc.NO2 + "</span>";
+                    S3.innerHTML = "<span>Trisulfur</span>" + "<span>&nbsp;</span><span>" + mcc.S3 + "</span>";
+                    N3.innerHTML = "<span>Trinitrogen</span>" + "<span>&nbsp;</span><span>" + mcc.N3 + "</span>";
+                    PP.innerHTML = "<span>Diphosphorus</span>" + "<span>&nbsp;</span><span>" + mcc.PP + "</span>";
+                    P3.innerHTML = "<span>Triphosphorus</span>" + "<span>&nbsp;</span><span>" + mcc.P3 + "</span>";
+                    H3.innerHTML = "<span>Molecular Hydrogen III</span>" + "<span>&nbsp;</span><span>" + mcc.H3 + "</span>";
+                    O3.innerHTML = "<span>Ozone</span>" + "<span>&nbsp;</span><span>" + mcc.O3 + "</span>";
+                    O2.innerHTML = "<span>Molecular Oxygen II</span>" + "<span>&nbsp;</span><span>" + mcc.O2 + "</span>";
+                    NP2.innerHTML = "<span>Diphosphorus Mononitride</span>" + "<span>&nbsp;</span><span>" + mcc.NP2 + "</span>";
+                    SH2.innerHTML = "<span>Dihydrogen Monosulfide</span>" + "<span>&nbsp;</span><span>" + mcc.SH2 + "</span>";
+                    NS2.innerHTML = "<span>Disulfur Mononitride</span>" + "<span>&nbsp;</span><span>" + mcc.NS2 + "</span>";
+                    SN2.innerHTML = "<span>Sulfur Dinitride</span>" + "<span>&nbsp;</span><span>" + mcc.SN2 + "</span>";
+                    C3.innerHTML = "<span>Tricarbon</span>" + "<span>&nbsp;</span><span>" + mcc.C3 + "</span>";
+                    C2.innerHTML = "<span>Diatomic Carbon</span>" + "<span>&nbsp;</span><span>" + mcc.C2 + "</span>";
+                    CO2.innerHTML = "<span>Carbon Dioxide</span>" + "<span>&nbsp;</span><span>" + mcc.CO2 + "</span>";
+                    /*  
+                    CO2 Carbon dioxide
+                    C2 Diatomic Carbon
+                    SN2 Sulfur dinitride 
+                    NS2 Disulfur mononitride
+                    SH2 Dihydrogen monosulfide
+                    NP2 Diphosphorus mononitride
+                    C3 Tricarbon 
+                    O3 Ozone 
+                    O2 Molecular Oxygen II 
+                    H3 Molecular Hydrogen III
+                    P3 Triphosphorus
+                    PP Diphosphorus
+                    N3 Trinitrogen
+                    S3 Trisulfur
+                    NO2 Nitrogen dioxide
+                    */
+                    tableS.className = "tableS";
+                    tableS.innerHTML = "<p>Sulfur Group</p>";
+
+                    tableP.className = "tableP";
+                    tableP.innerHTML = "<p>Phosphorus Group</p>";
+
+                    tableH.className = "tableH";
+                    tableH.innerHTML = "<p>Hydrogen Group</p>";
+
+                    tableN.className = "tableN";
+                    tableN.innerHTML = "<p>Nitrogen Group</p>";
+
+                    tableO.className = "tableO";
+                    tableO.innerHTML = "<p>Oxygen Group</p>";
+
+                    tableC.className = "tableC";
+                    tableC.innerHTML = "<p>Carbon Group</p>";
+
+                    table.className = "table";
+                    table.appendChild(tableC);
+                    table.appendChild(tableO);
+                    table.appendChild(tableN);
+                    table.appendChild(tableH);
+                    table.appendChild(tableP);
+                    table.appendChild(tableS);
+
+                    //sulfer elements
+                    tableS.appendChild(S3);
+                    tableS.appendChild(NS2);
+
+                    //phosphorus elements
+                    tableP.appendChild(P3);
+                    tableP.appendChild(PP);
+                    tableP.appendChild(NP2);
+
+                    //hydrogen elements
+                    tableH.appendChild(H3);
+                    tableH.appendChild(SH2);
+
+                    //nitrogen elements
+                    tableN.appendChild(N3);
+                    tableN.appendChild(SN2);
+
+                    //oxygen elements
+                    tableO.appendChild(O3);
+                    tableO.appendChild(CO2);
+                    tableO.appendChild(NO2);
+                    tableO.appendChild(O2);
+
+                    //carbon elements
+                    tableC.appendChild(C3);
+                    tableC.appendChild(C2);
 
                     closeBtn.className = "closeBtn";
-                    closeBtn.onclick = UI.closeMarket(market);
+                    closeBtn.onclick = UI.closeMarket(market, table);
                     closeBtn.innerHTML = "❌";
 
                     market.className = "market";
                     market.innerHTML = "&nbsp;";
 
                     market.appendChild(closeBtn);
+                    market.appendChild(table);
+
 
                     gameFrame.appendChild(market);
 
                     setTimeout(() => {
                         market.className = "market_full";
+                        table.className = "table_full";
 
                     }, 600);
 
@@ -1519,7 +1948,7 @@
         },
         setCells: () => {
             var ls = localStorage.getItem("ls");
-            
+
             for (var k = 0; k < +ls; k++) {
                 var mBs = localStorage.getItem("myBlocks_" + (+k + +1));
 
@@ -1829,7 +2258,7 @@
             if (mmm) {
                 var mUpper = +mmm.top + +20;
                 var mLower = +mmm.top - +20;
-                
+
             }
             var gameArena = UI.bySel(".gameArena");
             if (!gameArena) {

@@ -65,6 +65,58 @@ input, button, div, span, p {
     left: 1%;
 }
 
+.table {
+    transition:all 1s;
+    text-shadow:1px 1px 5px #000, 1px 2px 8px #112D5C;
+    width:250px;
+    height:80vh;
+    position:fixed;
+    left:-310px;
+    top:10vh;
+}
+
+.table_full {
+    transition:all 1s;
+    text-shadow:1px 1px 5px #112D5C, 1px 2px 8px #112D5C;
+    width:250px;
+    height:80vh;
+    position:fixed;
+    left:5px;
+    top:10vh;
+    overflow-y:auto;
+}
+
+
+.tableC, .tableO, .tableN, .tableH, .tableP, .tableS {
+    margin-top:5px;
+    background:silver;
+    text-align:center;
+    border:2px ridge #112D5C;
+    font-size:0.7em;
+
+}
+.table div div span:nth-child(1), .table_full div div span:nth-child(1) {
+    background:#112D5C;
+    display:inline-block;
+    text-align:left;
+    text-wrap:avoid;
+    text-indent:4px;
+    width:60%;
+    padding:15px 0;
+}
+.table div div span:nth-child(2), .table_full div div span:nth-child(2) {
+    background:#112D5C;
+    display:inline-block;
+    width:20%;
+    padding:15px 0;
+
+}
+.table div div span:nth-child(3), .table_full div div span:nth-child(3) {
+    background:#112D5C;
+    display:inline-block;
+    width:20%;
+    padding:15px 0;
+}
 .gameArena {
     transition: all 800ms;
     
@@ -155,7 +207,7 @@ input, button, div, span, p {
 .turnBtn {
     transition: all 500ms;
     color: rgba(78, 78, 78, 1);
-    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     box-shadow: 0 0 20px #000 inset;
     border: none;
     position: absolute;
@@ -164,10 +216,10 @@ input, button, div, span, p {
     font-size: 1rem;
     left: 0;
     top: 0;
-    background-image: url('../images/assets/sheet.jpg');
-    background-position: center;
-    background-repeat: repeat;
-    background-size: auto;
+
+    background-position: right;
+    background-repeat:  no-repeat;
+    background-size: cover 100%;
 }
 
     .turnBtn:hover {
@@ -176,11 +228,11 @@ input, button, div, span, p {
 
 .turnBtn_lit {
     transition: all 500ms;
-    background-image: url('../images/assets/sheet.jpg');
-    background-position: center;
-    background-repeat: repeat;
-    background-size: auto;
-    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+
+    background-position: right;
+    background-repeat:  no-repeat;
+    background-size:  cover 100%;
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     box-shadow: 1px 1px 80px #bebe13 inset;
     border: none;
     position: absolute;
@@ -194,14 +246,13 @@ input, button, div, span, p {
     position: absolute;
     top: 0;
     left: 10.2%;
-    background-image: url('../images/assets/sheet.jpg');
+    color:silver;
     background-position: left;
     box-shadow: 0 0 20px #000 inset;
-    background-repeat: repeat;
-    background-size: auto;
+    background-repeat:  no-repeat;
+    background-size:  100% auto ;
     width: 51.6%;
-    color: rgba(78, 78, 78, 1);
-    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     line-height: 52px;
     text-align: center;
     font-size: 1rem;
@@ -209,13 +260,13 @@ input, button, div, span, p {
 
 .slot {
     position: absolute;
-    background-image: url('../images/assets/sheet.jpg');
+
     background-position: left;
-    background-repeat: repeat;
-    background-size: auto;
+    background-repeat:  no-repeat;
+    background-size: 100% auto;
     top: 0;
-    color: rgba(78, 78, 78, 1);
-    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    color: silver;
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     box-shadow: 0 0 20px #000 inset;
     left: 62%;
     width: 17.7%;
@@ -226,12 +277,12 @@ input, button, div, span, p {
 .clock {
     position: absolute;
     text-indent: 4%;
-    background-image: url('../images/assets/sheet.jpg');
+
     background-position: left;
-    background-repeat: repeat;
-    background-size: auto;
-    color: rgba(78, 78, 78, 1);
-    text-shadow: 0 1px 0 rgba(228, 228, 228, 0.7);
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    color:silver;
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     box-shadow: 0 0 20px #000 inset;
     border: none;
     width: 20%;
@@ -245,9 +296,10 @@ input, button, div, span, p {
 .menuTab {
     transition: all 500ms;
     position: absolute;
-    color: #000;
+    color: silver;
     text-indent: 4%;
     background: rgba(128, 128, 128, 1);
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     border: none;
     width: 20%;
     height: 3%;
@@ -263,9 +315,10 @@ input, button, div, span, p {
 .menuTab_full {
     transition: all 500ms;
     position: absolute;
-    color: #000;
+    color: silver;
     text-indent: 4%;
     background: rgba(128, 128, 128, 1);
+    text-shadow: 0 1px 1px #000, 2px 3px 20px #fff;
     border: none;
     width: 20%;
     height: 77%;
@@ -276,7 +329,7 @@ input, button, div, span, p {
 }
 
     .menuTab_full button {
-        background: none;
+        background: rgba(255,255,255, 0.8);
         border: none;
         font-weight: 900;
     }
@@ -668,8 +721,9 @@ input, button, div, span, p {
     height:100%;
     width:100%;
     z-index:51;
-    background-image: url('../images/assets/window.jpg');
+    background-image: url('../images/assets/tray.jpg');
     background-size: auto 100%;
+    background-position: center;
     border-bottom: 9px ridge silver;
     top:-105%;
     left:0;
@@ -681,8 +735,9 @@ input, button, div, span, p {
     height: 100%;
     width: 100%;
     z-index: 51;
-    background-image: url('../images/assets/window.jpg');
+    background-image: url('../images/assets/tray.jpg');
     background-size:auto 100% ;
+    background-position: center;
     border-bottom: 9px ridge silver;
     top: 0;
     left: 0;
@@ -720,10 +775,10 @@ input, button, div, span, p {
     width:20px;
     line-height:20px;
     text-align:center;
-    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;
 }
 
-.Co2Btn, .sn2Btn, .ns2Btn, .sh2Btn, .np2Btn, .c3Btn, .o3Btn, .h3Btn, .p3Btn, .n3Btn, .s3Btn, .no2Btn {
+.Co2Btn, .C2Btn, .sn2Btn, .ns2Btn, .sh2Btn, .np2Btn, .c3Btn, .o3Btn, .o2Btn, .h3Btn, .p3Btn, .n3Btn, .s3Btn, .no2Btn, .ppBtn {
     transition:all 500ms;
     display:block;
     position:relative;
@@ -738,7 +793,7 @@ input, button, div, span, p {
     text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;
 }
 
-.Co2Btn_full, .sn2Btn_full, .ns2Btn_full, .sh2Btn_full, .np2Btn_full, .c3Btn_full, .o3Btn_full, .h3Btn_full, .p3Btn_full, .n3Btn_full, .s3Btn_full, .no2Btn_full {
+.Co2Btn_full, .C2Btn_full, .sn2Btn_full, .ns2Btn_full, .sh2Btn_full, .np2Btn_full, .c3Btn_full, .o3Btn_full, .o2Btn_full, .h3Btn_full, .p3Btn_full, .n3Btn_full, .s3Btn_full, .no2Btn_full, .ppBtn_full {
     transition:all 500ms;
     display:block;
     position:relative;
@@ -750,10 +805,10 @@ input, button, div, span, p {
     width:40px;
     line-height:20px;
     text-align:center;
-    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;;
+    text-shadow:1px 1px 1px #000, 3px 3px 5px #112D5C;
 }
 
-.co2Win, .sn2Win, .ns2Win, .sh2Win, .np2Win, .c3Win, .o3Win, .h3Win, .p3Win, .n3Win, .s3Win, .no2Win {
+.co2Win, .c2Win, .sn2Win, .ns2Win, .sh2Win, .np2Win, .c3Win, .o3Win, .o2Win, .h3Win, .p3Win, .n3Win, .s3Win, .no2Win, .ppWin {
     transition:all 200ms;
     opacity:1;
     text-align:center;
@@ -764,7 +819,7 @@ input, button, div, span, p {
     color:black;
     background:rgba(0,0,0,0);
 }
-.co2Win_full, .sn2Win_full, .ns2Win_full, .sh2Win_full, .np2Win_full, .c3Win_full, .o3Win_full, .h3Win_full, .p3Win_full, .n3Win_full, .s3Win_full, .no2Win_full {
+.co2Win_full, .c2Win_full, .sn2Win_full, .ns2Win_full, .sh2Win_full, .np2Win_full, .c3Win_full, .o3Win_full, .o2Win_full, .h3Win_full, .p3Win_full, .n3Win_full, .s3Win_full, .no2Win_full, .ppWin_full {
     transition:all 100ms;
     opacity:1;
     text-align:center;
