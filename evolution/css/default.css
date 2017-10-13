@@ -6,6 +6,7 @@
     overflow: hidden;
     -ms-overflow-style: none;
     font-family: 'Comic Sans MS';
+    font-weight:800 !important;
 }
 
 a {
@@ -66,7 +67,7 @@ input, button, div, span, p {
 }
 
 .table {
-    transition:all 1s;
+    transition:all 600ms;
     text-shadow:1px 1px 5px #000, 1px 2px 8px #112D5C;
     width:250px;
     height:80vh;
@@ -76,7 +77,8 @@ input, button, div, span, p {
 }
 
 .table_full {
-    transition:all 1s;
+    transition:all 600ms;
+    transition-delay:100ms;
     text-shadow:1px 1px 5px #112D5C, 1px 2px 8px #112D5C;
     width:250px;
     height:80vh;
@@ -87,7 +89,7 @@ input, button, div, span, p {
 }
 
 
-.tableC, .tableO, .tableN, .tableH, .tableP, .tableS {
+.tableC, .tableO, .tableN, .tableH, .tableP, .tableS, .tableStatusData, .needsTable, .wantsTable {
     margin-top:5px;
     background:silver;
     text-align:center;
@@ -100,29 +102,73 @@ input, button, div, span, p {
     display:inline-block;
     text-align:left;
     text-wrap:avoid;
-    text-indent:4px;
+    text-indent:8px;
     width:60%;
-    padding:15px 0;
+    line-height:45px;
 }
 .table div div span:nth-child(2), .table_full div div span:nth-child(2) {
     background:#112D5C;
     display:inline-block;
     width:20%;
-    padding:15px 0;
+    line-height:45px;
 
 }
 .table div div span:nth-child(3), .table_full div div span:nth-child(3) {
     background:#112D5C;
     display:inline-block;
     width:20%;
-    padding:15px 0;
+    line-height:45px;
 }
+
+.tableStatus {
+    transition:all 600ms;
+    text-shadow:1px 1px 5px #000, 1px 2px 8px #112D5C;
+    width:250px;
+    height:80vh;
+    position:fixed;
+    right:-310px;
+    top:10vh;
+}
+
+.tableStatus_full {
+    transition:all 600ms;
+    transition-delay:100ms;
+    text-shadow:1px 1px 5px #112D5C, 1px 2px 8px #112D5C;
+    width:250px;
+    height:40vh;
+    position:fixed;
+    right:5px;
+    top:10vh;
+    overflow-y:auto;
+}
+
+.tableStatus div div span:nth-child(1), .tableStatus_full div div span:nth-child(1) {
+    background:#112D5C;
+    display:inline-block;
+    text-align:left;
+    text-wrap:avoid;
+    text-indent:8px;
+    width:60%;
+    line-height:45px;
+}
+.tableStatus div div span:nth-child(2), .tableStatus_full div div span:nth-child(2) {
+    background:#112D5C;
+    display:inline-block;
+    width:20%;
+    line-height:45px;
+
+}
+.tableStatus div div span:nth-child(3), .tableStatus_full div div span:nth-child(3) {
+    background:#112D5C;
+    display:inline-block;
+    width:20%;
+    line-height:45px;
+}
+
 .gameArena {
     transition: all 800ms;
-    
     background-image: url('../images/assets/ooze.jpg');
-    
-    background-size: cover ;
+    background-size: cover;
     background-repeat:no-repeat;
     box-shadow:0 70px 170px -70px red inset;
     position: absolute;

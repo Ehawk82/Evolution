@@ -60,7 +60,7 @@
         // You might use the WinJS.Application.sessionState object, which is automatically saved and restored across suspension.
         // If you need to complete an asynchronous operation before your application is suspended, call args.setPromise().
     };
-    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, images, ls, cBool, atoms, tBool, progMark;
+    var UI, uTime, skyeLvl, skyeChat, uData, myBlocks, title, images, ls, cBool, atoms, tBool, progMark, cellType;
 
     progMark = 0;
     tBool = 0; // game timer status
@@ -77,7 +77,8 @@
     }// game board peices.
 
     uData = {
-        lvl: 0
+        lvl: 0,
+        mod: 0
     };  //used to track user level
 
     uTime = "4000330000"; // the time is measured during BCE
@@ -117,7 +118,28 @@
         18: "Pre Complex Life Phase",
         19: "Complex Life Phase"
     }; // game phases
-
+    cellType = {
+        0: "Carbon Gook",
+        1: "Carbon Glob",
+        2: "Carbon Crysalis",
+        3: "Carbon Factory",
+        4: "Manufactory",
+        5: "Autofactory",
+        6: "Organic Gook",
+        7: "Organic Glob",
+        8: "Organic Crysalis",
+        9: "Organic Factory",
+        10: "Organic Manufactory",
+        11: "Organic Autofactory",
+        12: "Cellular Glob",
+        13: "Single Celled Organism",
+        14: "Bi-celled Organism",
+        15: "Multi-celled Organism",
+        16: "Simple Lifeform",
+        17: "Complex Lifeform",
+        18: "Sentient Lifeform",
+        19: "Galactic Lifeform"
+    }; // game phases
     images = {
         0: "url(../images/assets/sheet.jpg)",
         1: "url(../images/assets/sheet1.jpg)",
@@ -412,6 +434,7 @@
             if (!mlcs) {
                 localStorage.setItem("molecules", JSON.stringify(molecules));
             }
+
             UI.myLoad();
         },
         //loading and UI stuffs
@@ -568,11 +591,6 @@
                 progressBar.style.width = progMark + "%";
                 progressBar.innerHTML = "&nbsp;";
             }
-            //if (progMark >= 101 && progMark >= 20) {
-            // progressBar.className = "progressBar";
-            //  progressBar.style.width = progMark + "%";
-            //  progressBar.innerHTML = "&nbsp;";
-            // }
 
             chatBtn.className = "chatBtn";
             chatBtn.innerHTML = "&nbsp;";
@@ -588,14 +606,11 @@
             changeHomeCellBtn.className = "changeHomeCellBtn";
             changeHomeCellBtn.onclick = UI.homeCellCreate(gameFrame, chatBox, chatBtn, gameArena, turnBtn, clock, cells, mmb, changeHomeCellBtn);
 
-
-            //console.log(localStorage);
             gameArena.className = "gameArena";
             var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
             if (mB) {
                 var b = JSON.parse(mB);
-                //console.log(b.bNum);
 
                 if (b.bNum === 0) { } else {
                     for (var k = 0; k < +ls; k++) {
@@ -604,9 +619,7 @@
                         if (mBs != null) {
                             if (mBs) {
                                 var mmb = JSON.parse(mBs);
-
                                 var cells = UI.createEle("div");
-
 
                                 cells.className = "cells";
                                 cells.innerHTML = "&nbsp;";
@@ -617,20 +630,14 @@
                                 cells.onmouseout = UI.outHoverCell(cells);
                                 cells.onclick = UI.cellSelected(cells);
                                 cells.style.backgroundColor = mmb.bg;
-
                             }
-
                             gameArena.appendChild(cells);
                             setTimeout(() => {
                                 UI.setCells();
                             }, 300);
-
                         }
                     }
-
-
                 }
-
             }
             turnBtn.innerHTML = "🌞";
             turnBtn.className = "turnBtn";
@@ -642,7 +649,7 @@
                 turnBtn.onclick = UI.cycle(turnBtn, clock);
             }
 
-            header.innerHTML = title[uuu.lvl];
+            header.innerHTML = title[uuu.lvl] + "&nbsp;" + +progMark + "/100";
             header.style.backgroundImage = images[uuu.lvl];
             header.appendChild(progressBar);
             header.className = "header";
@@ -753,12 +760,14 @@
                     localStorage.setItem("uData", JSON.stringify(uuu));
 
 
-                    pg.innerHTML = title[uuu.lvl]
+                    
                     localStorage.setItem("progMark", 1);
 
                 }
             }
+            
             var nPm = localStorage.getItem("progMark");
+            pg.innerHTML = title[uuu.lvl] + "&nbsp;" + +nPm + "/100";
             var progBar = UI.bySel(".progressBar");
             if (!progBar) {
                 var progBar = UI.createEle("div");
@@ -769,7 +778,11 @@
                 pg.appendChild(progBar);
 
             }
+
             progBar.style.width = +nPm + "%";
+
+            
+
             var turnBtn = UI.bySel(".turnBtn"),
                 header = UI.bySel(".header"),
                 slot = UI.bySel(".slot"),
@@ -1312,7 +1325,6 @@
                     c2Win.remove();
                     c2Btn.remove();
 
-
                     icon_full[1].remove();
                     icon_full[0].remove();
                 }, 1000);
@@ -1541,7 +1553,7 @@
                 document.body.appendChild(o2Btn);
 
                 setTimeout(() => {
-                    o2Btn.className = "o3Btn_full";
+                    o2Btn.className = "o2Btn_full";
                     o2Btn.onclick = UI.o2Collect(active_cells, icon_full, o2Btn, cells);
                 }, 80);
             } else {
@@ -1767,10 +1779,11 @@
                 }
             }
         },
-        closeMarket: (market, table) => {
+        closeMarket: (market, table, tableStatus) => {
             return () => {
                 market.className = "market";
                 table.className = "table";
+                tableStatus.className = "tableStatus";
                 setTimeout(() => {
                     market.remove();
                 }, 1005);
@@ -1778,12 +1791,15 @@
         },
         marketPage: (gameFrame) => {
             return () => {
-                var mk = UI.bySel(".market"),
-                    mlcs = localStorage.getItem("molecules");
+                var mk = UI.bySel(".market") || UI.bySel(".market_full"),
+                    mlcs = localStorage.getItem("molecules"),
+                    uD = localStorage.getItem("uData");
                 if (mlcs) {
                     var mcc = JSON.parse(mlcs);
                 }
-
+                if (uD) {
+                    var uuu = JSON.parse(uD);
+                }
                 if (mk) { } else {
                     var market = UI.createEle("div"),
                         closeBtn = UI.createEle("button"),
@@ -1808,25 +1824,34 @@
                         PP = UI.createEle("div"),
                         N3 = UI.createEle("div"),
                         S3 = UI.createEle("div"),
-                        NO2 = UI.createEle("div");
+                        NO2 = UI.createEle("div"),
+                        tableStatus = UI.createEle("div"),
+                        tableStatusData = UI.createEle("div"),
+                        happiness = UI.createEle("div"),
+                        health = UI.createEle("div"),
+                        current = UI.createEle("div"),
+                        needsTable = UI.createEle("div"),
+                        wantsTable = UI.createEle("div"),
+                        wants = UI.createEle("div"),
+                        needs = UI.createEle("div");
 
 
-
-                    NO2.innerHTML = "<span>Nitrogen Dioxide</span>" + "<span>&nbsp;</span><span>" + mcc.NO2 + "</span>";
-                    S3.innerHTML = "<span>Trisulfur</span>" + "<span>&nbsp;</span><span>" + mcc.S3 + "</span>";
-                    N3.innerHTML = "<span>Trinitrogen</span>" + "<span>&nbsp;</span><span>" + mcc.N3 + "</span>";
-                    PP.innerHTML = "<span>Diphosphorus</span>" + "<span>&nbsp;</span><span>" + mcc.PP + "</span>";
-                    P3.innerHTML = "<span>Triphosphorus</span>" + "<span>&nbsp;</span><span>" + mcc.P3 + "</span>";
-                    H3.innerHTML = "<span>Molecular Hydrogen III</span>" + "<span>&nbsp;</span><span>" + mcc.H3 + "</span>";
-                    O3.innerHTML = "<span>Ozone</span>" + "<span>&nbsp;</span><span>" + mcc.O3 + "</span>";
-                    O2.innerHTML = "<span>Molecular Oxygen II</span>" + "<span>&nbsp;</span><span>" + mcc.O2 + "</span>";
-                    NP2.innerHTML = "<span>Diphosphorus Mononitride</span>" + "<span>&nbsp;</span><span>" + mcc.NP2 + "</span>";
-                    SH2.innerHTML = "<span>Dihydrogen Monosulfide</span>" + "<span>&nbsp;</span><span>" + mcc.SH2 + "</span>";
-                    NS2.innerHTML = "<span>Disulfur Mononitride</span>" + "<span>&nbsp;</span><span>" + mcc.NS2 + "</span>";
-                    SN2.innerHTML = "<span>Sulfur Dinitride</span>" + "<span>&nbsp;</span><span>" + mcc.SN2 + "</span>";
-                    C3.innerHTML = "<span>Tricarbon</span>" + "<span>&nbsp;</span><span>" + mcc.C3 + "</span>";
-                    C2.innerHTML = "<span>Diatomic Carbon</span>" + "<span>&nbsp;</span><span>" + mcc.C2 + "</span>";
-                    CO2.innerHTML = "<span>Carbon Dioxide</span>" + "<span>&nbsp;</span><span>" + mcc.CO2 + "</span>";
+                    ////table stuffs
+                    NO2.innerHTML = "<span>Nitrogen Dioxide<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>NO<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.NO2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    S3.innerHTML = "<span>Trisulfur<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>S<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.S3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    N3.innerHTML = "<span>Trinitrogen<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>N<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.N3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    PP.innerHTML = "<span>Diphosphorus<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>P<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.PP + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    P3.innerHTML = "<span>Triphosphorus<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>P<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.P3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    H3.innerHTML = "<span>Molecular Hydrogen<sub>&nbsp;</sub><sup>III</sup></span>" + "<span>H<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.H3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    O3.innerHTML = "<span>Ozone<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>O<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.O3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    O2.innerHTML = "<span>Molecular Oxygen<sub>&nbsp;</sub><sup>II</sup></span>" + "<span>O<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.O2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    NP2.innerHTML = "<span>Diphosphorus Mononitride<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>NP<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.NP2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    SH2.innerHTML = "<span>Dihydrogen Monosulfide<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>HS<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.SH2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    NS2.innerHTML = "<span>Disulfur Mononitride<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>NS<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.NS2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    SN2.innerHTML = "<span>Sulfur Dinitride<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>SN<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.SN2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    C3.innerHTML = "<span>Tricarbon<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>C<sub>3</sub><sup>&nbsp;</sup></span><span>" + mcc.C3 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    C2.innerHTML = "<span>Diatomic Carbon<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>C<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.C2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
+                    CO2.innerHTML = "<span>Carbon Dioxide<sub>&nbsp;</sub><sup>&nbsp;</sup></span>" + "<span>CO<sub>2</sub><sup>&nbsp;</sup></span><span>" + mcc.CO2 + "<sub>&nbsp;</sub><sup>&nbsp;</sup></span>";
                     /*  
                     CO2 Carbon dioxide
                     C2 Diatomic Carbon
@@ -1862,6 +1887,7 @@
                     tableC.className = "tableC";
                     tableC.innerHTML = "<p>Carbon Group</p>";
 
+                    /////table
                     table.className = "table";
                     table.appendChild(tableC);
                     table.appendChild(tableO);
@@ -1869,6 +1895,39 @@
                     table.appendChild(tableH);
                     table.appendChild(tableP);
                     table.appendChild(tableS);
+
+                    /////tableStatus stuffs
+                    happiness.innerHTML = "<span>Happiness</span>" + "<span>&nbsp;</span><span>💀</span>";
+                    health.innerHTML = "<span>Health</span>" + "<span>&nbsp;</span><span>🖤</span>";
+                    current.innerHTML = "<span>Status</span>" + "<span>&nbsp;</span><span>☠</span>";
+
+                    needs.innerHTML = "<span>Next</span>" + "<span>&nbsp;</span><span>Code</span>";
+                    wants.innerHTML = "<span>Next</span>" + "<span>&nbsp;</span><span>Code</span>";
+
+                    tableStatusData.className = "tableStatusData";
+                    tableStatusData.innerHTML = "<p>" + cellType[uuu.lvl] + "</p>";
+
+                    needsTable.className = "needsTable";
+                    needsTable.innerHTML = "<p>Planet Needs</p>";
+
+                    wantsTable.className = "wantsTable";
+                    wantsTable.innerHTML = "<p>Life Needs</p>";
+
+                    /////tableStatus
+                    tableStatus.className = "tableStatus";
+                    tableStatus.appendChild(tableStatusData);
+                    tableStatus.appendChild(needsTable);
+                    tableStatus.appendChild(wantsTable);
+                    
+                    ///tableStatus items
+                    tableStatusData.appendChild(happiness);
+                    tableStatusData.appendChild(health);
+                    tableStatusData.appendChild(current);
+
+                    needsTable.appendChild(needs);
+
+                    wantsTable.appendChild(wants);
+
 
                     //sulfer elements
                     tableS.appendChild(S3);
@@ -1898,7 +1957,7 @@
                     tableC.appendChild(C2);
 
                     closeBtn.className = "closeBtn";
-                    closeBtn.onclick = UI.closeMarket(market, table);
+                    closeBtn.onclick = UI.closeMarket(market, table, tableStatus);
                     closeBtn.innerHTML = "❌";
 
                     market.className = "market";
@@ -1906,18 +1965,24 @@
 
                     market.appendChild(closeBtn);
                     market.appendChild(table);
-
+                    market.appendChild(tableStatus);
 
                     gameFrame.appendChild(market);
 
                     setTimeout(() => {
                         market.className = "market_full";
                         table.className = "table_full";
+                        tableStatus.className = "tableStatus_full";
 
-                    }, 600);
+                        UI.assembleMarketSkye(uuu);
+                    }, 100);
 
                 }
             }
+        },
+        assembleMarketSkye: (uuu) => {
+            
+            console.log(uuu.mod);
         },
         timerToggle: (turnBtn, clock, timeBtn) => {
             return () => {
@@ -1940,10 +2005,10 @@
                 UI.cellFlush();
                 setTimeout(() => {
                     UI.runTimerCheck();
-                }, 500);
+                }, 200);
 
             } else {
-                return false;
+                localStorage.setItem("tBool", 0);
             }
         },
         setCells: () => {
@@ -2170,27 +2235,14 @@
             return () => {
                 turnBtn.innerHTML = "⌛";
 
-                var uT = localStorage.getItem("uTime"),
-                    uD = localStorage.getItem("uData");
+                var uD = localStorage.getItem("uData");
 
                 if (uD) {
                     var udd = JSON.parse(uD);
                 }
                 if (udd.lvl <= 20) {
-                    var uuu = +uT - +1;
-
-                    localStorage.setItem("uTime", uuu);
-                    if (!clock) {
-                        var clock = UI.bySel(".clock");
-                        clock.value = uuu + " BCE";
-                    } else {
-                        clock.value = uuu + " BCE";
-                    }
-
 
                     UI.cellFlush();
-
-
 
                     setTimeout(() => {
                         turnBtn.innerHTML = "🌞";
@@ -2199,101 +2251,113 @@
             };
         },
         cellFlush: () => {
-            var matter = UI.createEle("div"),
-                rand = Math.floor((Math.random() * window.screen.availHeight)),
-                rColor = Math.floor((Math.random() * 6) + 1), tColor;
-
-            var mB = localStorage.getItem("myBlocks_1");
             var ls = localStorage.getItem("ls");
+            if (+ls < 20) {
+                var matter = UI.createEle("div"),
+                    rand = Math.floor((Math.random() * window.screen.availHeight)),
+                    rColor = Math.floor((Math.random() * 6) + 1), tColor;
 
-            if (mB) {
-                var mmm = JSON.parse(mB);
-            }
-            if (rColor === 6) {//Phosphorous
-                matter.style.backgroundColor = "yellow";
-                matter.id = "P";
-            }
-            if (rColor === 5) {//Oxygen
-                matter.style.backgroundColor = "red";
-                matter.id = "O";
-            }
-            if (rColor === 4) {//Carbon
-                matter.style.backgroundColor = "black";
-                matter.id = "C";
-            }
-            if (rColor === 3) {//Hydrogen
-                matter.style.backgroundColor = "blue";
-                matter.id = "H";
-            }
-            if (rColor === 2) {//Sodium
-                matter.style.backgroundColor = "white";
-                matter.id = "S";
-            }
-            if (rColor === 1) {//Nitrogen
-                matter.style.backgroundColor = "limegreen";
-                matter.id = "N";
-            }
-            if (rand > 100 && rand < 800) {
-                matter.style.top = "" + rand + "px";
-            } else {
-                if (rand < 100) {
-                    matter.style.top = "" + (rand + 200) + "px";
-                    //console.log(matter.style.top);
-                } else {
-                    matter.style.top = "" + (rand - 200) + "px";
-                    //console.log(matter.style.top);
+                var mB = localStorage.getItem("myBlocks_1");
+
+
+                if (mB) {
+                    var mmm = JSON.parse(mB);
                 }
-            }
+                if (rColor === 6) {//Phosphorous
+                    matter.style.backgroundColor = "yellow";
+                    matter.id = "P";
+                }
+                if (rColor === 5) {//Oxygen
+                    matter.style.backgroundColor = "red";
+                    matter.id = "O";
+                }
+                if (rColor === 4) {//Carbon
+                    matter.style.backgroundColor = "black";
+                    matter.id = "C";
+                }
+                if (rColor === 3) {//Hydrogen
+                    matter.style.backgroundColor = "blue";
+                    matter.id = "H";
+                }
+                if (rColor === 2) {//Sodium
+                    matter.style.backgroundColor = "white";
+                    matter.id = "S";
+                }
+                if (rColor === 1) {//Nitrogen
+                    matter.style.backgroundColor = "limegreen";
+                    matter.id = "N";
+                }
+                if (rand > 100 && rand < 800) {
+                    matter.style.top = "" + rand + "px";
+                } else {
+                    if (rand < 100) {
+                        matter.style.top = "" + (rand + 200) + "px";
+                        //console.log(matter.style.top);
+                    } else {
+                        matter.style.top = "" + (rand - 200) + "px";
+                        //console.log(matter.style.top);
+                    }
+                }
+                var uT = localStorage.getItem("uTime");
+                var uuu = +uT - +1;
+                localStorage.setItem("uTime", +uuu - +1);
+                if (!clock) {
+                    var clock = UI.bySel(".clock");
+                    clock.value = uuu + " BCE";
+                } else {
+                    clock.value = uuu + " BCE";
+                }
+
+                matter.className = "matter";
+
+                matter.style.left = "101%";
+
+                matter.innerHTML = "&nbsp;";
+
+                matter.onmouseover = UI.hoverCell(matter);
+                matter.onmouseout = UI.outHoverCell(matter);
+                matter.onclick = UI.cellSelected(matter);
+                if (mmm) {
+                    var mUpper = +mmm.top + +20;
+                    var mLower = +mmm.top - +20;
+
+                }
+                var gameArena = UI.bySel(".gameArena");
+                if (!gameArena) {
 
 
-            matter.className = "matter";
 
-            matter.style.left = "101%";
+                } else {
+                    gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
+                    gameArena.appendChild(matter);
 
-            matter.innerHTML = "&nbsp;";
+                    setTimeout(() => {
+                        gameArena.style.boxShadow = "0 70px 170px -70px red inset";
 
-            matter.onmouseover = UI.hoverCell(matter);
-            matter.onmouseout = UI.outHoverCell(matter);
-            matter.onclick = UI.cellSelected(matter);
-            if (mmm) {
-                var mUpper = +mmm.top + +20;
-                var mLower = +mmm.top - +20;
+                        if (rand <= mUpper && rand >= mLower) {
+                            //console.log(ls)
+                            var nls = localStorage.getItem("ls");
+                            var x = Math.floor((Math.random() * (+15 + +nls))),
+                                rSpot = +mmm.left - +x;
+                            matter.style.left = rSpot + "px";
+                            matter.style.transition = "all 400ms";
+                            UI.newCellBlock(matter, mmm, gameArena);
+                            //console.log(nls);
+                        } else {
+                            matter.style.left = "-10%";
+                            if (matter.style.left === "-10%") {
+                                setTimeout(() => {
+                                    matter.remove();
+                                }, 1000);
 
-            }
-            var gameArena = UI.bySel(".gameArena");
-            if (!gameArena) {
-
-
+                            }
+                        }
+                    }, 300);
+                }
 
             } else {
-                gameArena.style.boxShadow = " 0 70px 170px -70px gold inset";
-                gameArena.appendChild(matter);
-
-                setTimeout(() => {
-                    gameArena.style.boxShadow = "0 70px 170px -70px red inset";
-
-                    if (rand <= mUpper && rand >= mLower) {
-                        //console.log(ls)
-                        var nls = localStorage.getItem("ls");
-                        var x = Math.floor((Math.random() * (+15 + +nls))),
-                            rSpot = +mmm.left - +x;
-                        matter.style.left = rSpot + "px";
-                        matter.style.transition = "all 400ms";
-                        UI.newCellBlock(matter, mmm, gameArena);
-                        //console.log(nls);
-                    } else {
-                        matter.style.left = "-10%";
-                        if (matter.style.left === "-10%") {
-                            setTimeout(() => {
-                                matter.remove();
-                            }, 1000);
-
-                        }
-                    }
-                }, 300);
+                return false;
             }
-
-
 
 
         },
