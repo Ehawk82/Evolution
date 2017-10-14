@@ -11,17 +11,35 @@ HTML/CSS/JavaScript
 responsive hub design
 
 ## Tutorial
--Skye will be our guide
+- Skye will be our guide
 
 ## Game stages
--Atomic
--Metabolic
--Natural Selection
--Life
+- Atomic
+- Metabolic
+- Natural Selection
+- Life
 
-## 1. Atomic Stages
--Crash random atoms in to each other. Plot a spot and make random molecules. AI-SKYE will guide the user with a checklist of things to make.  
--Once the list has been completed, the user gets a new list and repeats the process.  Only that instead of atoms, it's the molecules from the last list.  AI-SKYE will also guide the user through this part as well.
--Once the list thas been completed, the user gets a new list. except this time you connect different molecule and atoms to create compoud elements.  Success in this stage would be to complete a list of amino acids
+## elements
+- Phosphorus
+- Oxygen
+- Carbon
+- Nitrogen
+- Hydrogen
 
+## Game Flow
+The idea is to collect atoms and merge them to make molecules.  Users can make any element when clearing the board.  On the research page, there will be options to apply molecules to your planet. Your planet will have needs and when life starts to take hold, the life will have needs as well. The planet appearance will reflect the users level.  
 
+## Planet features
+- Zoomable?
+- Animated with CSS3 keyframes (reflected by data)
+- More Ideas from friends
+- atmosphere gif's... maybe
+
+## Creature View
+- UI not made yet
+- Creature appearance reflects the DNA tracker
+- User uploaded skins? 
+- parameters based on DNA tracker
+
+## DNA Tracker
+- Coming Soon
